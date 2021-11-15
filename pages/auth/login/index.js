@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import Layout from "components/Layout";
+import AuthLayout from "components/layouts/AuthLayout";
 import axios from "utils/axios";
 import { useRouter } from "next/router";
 import Cookie from "js-cookie";
 import { getDataCookie } from "middleware/authorizationPage";
+import Link from "next/link";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -42,12 +43,19 @@ export default function Login() {
   };
 
   return (
-    <Layout title="Login">
+    <AuthLayout title="Login">
       <div className="container">
-        <h1>Login Page</h1>
-        <hr />
+        <h1 className="font-black nunito-700">
+          Start Accessing Banking Needs With All Devices and All Platforms With
+          30.000+ Users
+        </h1>
+        <p>
+          Transfering money is eassier than ever, you can access Zwallet
+          wherever you are. Desktop, laptop, mobile phone? we cover all of that
+          for you!
+        </p>
         <div className="mt-2">
-          <form className="card p-5" onSubmit={handleSubmit}>
+          <form className="p-5" onSubmit={handleSubmit}>
             <label className="form-label">Email</label>
             <input
               name="email"
@@ -66,8 +74,13 @@ export default function Login() {
             />
             <button className="btn btn-primary mt-3">Submit</button>
           </form>
+
+          <p>
+            Don’t have an account? Let’s
+            <Link href="/register">Sign Up</Link>
+          </p>
         </div>
       </div>
-    </Layout>
+    </AuthLayout>
   );
 }

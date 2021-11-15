@@ -1,0 +1,9 @@
+.layout__overlay {
+  /* position: absolute;
+  left: 0;
+  top: 0; */
+  background-image: url("../public/assets/images/auth/background.png");
+  background-size: cover;
+  /* height: 100vh; */
+  padding: 50px 20%;
+}
