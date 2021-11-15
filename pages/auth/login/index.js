@@ -3,13 +3,19 @@ import Layout from "components/Layout";
 import axios from "utils/axios";
 import { useRouter } from "next/router";
 import Cookie from "js-cookie";
-import { unAuthPage } from "middleware/authorizationPage";
+import { getDataCookie } from "middleware/authorizationPage";
 
 export async function getServerSideProps(context) {
-  await unAuthPage(context); // login, register, forgot password
-  return {
-    props: {},
-  };
+  const dataCookie = await getDataCookie(context);
+  if (dataCookie.isLogin) {
+    return {
+      redirect: {
+        destination: "/main/home",
+        permanent: false,
+      },
+    };
+  }
+  return { props: {} };
 }
 
 export default function Login() {
