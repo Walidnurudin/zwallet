@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import AuthLayout from "components/layouts/AuthLayout";
+import Link from "next/link";
 import axios from "utils/axios";
+import AuthLayout from "components/layouts/AuthLayout";
 import { useRouter } from "next/router";
 import Cookie from "js-cookie";
 import { getDataCookie } from "middleware/authorizationPage";
-import Link from "next/link";
+import { Input, Button } from "components/module";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -35,7 +36,7 @@ export default function Login() {
         console.log(res);
         Cookie.set("token", res.data.data.token);
         Cookie.set("id", res.data.data.id);
-        router.push("/main/home");
+        router.push("/home");
       })
       .catch((err) => {
         console.log(err);
@@ -44,40 +45,54 @@ export default function Login() {
 
   return (
     <AuthLayout title="Login">
-      <div className="container">
-        <h1 className="font-black nunito-700">
+      <div className="login__header">
+        <h1 className="font-black nunito-700" style={{ marginBottom: "30px" }}>
           Start Accessing Banking Needs With All Devices and All Platforms With
           30.000+ Users
         </h1>
-        <p>
+        <p className="nunito-400 font-secondary">
           Transfering money is eassier than ever, you can access Zwallet
           wherever you are. Desktop, laptop, mobile phone? we cover all of that
           for you!
         </p>
+
         <div className="mt-2">
-          <form className="p-5" onSubmit={handleSubmit}>
-            <label className="form-label">Email</label>
-            <input
+          <form>
+            <Input
+              image="../assets/images/auth/mail.png"
               name="email"
-              type="email"
-              className="form-control"
-              onChange={handleChangeText}
+              type="text"
+              placeholder="Enter your e-mail"
+              top="60px"
+              handleChange={handleChangeText}
             />
-            <label name="password" className="form-label">
-              Password
-            </label>
-            <input
+            <Input
+              image="../assets/images/auth/mail.png"
               name="password"
-              type="password"
-              className="form-control"
-              onChange={handleChangeText}
+              type="text"
+              placeholder="Enter your password"
+              isPassword={true}
+              top="70px"
+              handleChange={handleChangeText}
             />
-            <button className="btn btn-primary mt-3">Submit</button>
+
+            <div className="d-flex justify-content-end mt-3">
+              <Link href="/reset-password" className="nunito-600">
+                Forgot password?
+              </Link>
+            </div>
+
+            <Button
+              name="Login"
+              top="90px"
+              bottom="40px"
+              handleClick={handleSubmit}
+            />
           </form>
 
-          <p>
+          <p className="text-center font-secondary">
             Don’t have an account? Let’s
-            <Link href="/register">Sign Up</Link>
+            <Link href="/register"> Sign Up</Link>
           </p>
         </div>
       </div>

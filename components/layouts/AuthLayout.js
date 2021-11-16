@@ -1,7 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import Head from "next/head";
-import Image from "next/image";
-import { background, zwallet2, auth } from "public/assets/images";
 
 export default function AuthLayout(props) {
   return (

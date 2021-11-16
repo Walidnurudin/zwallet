@@ -1,6 +1,15 @@
 /* IMPORT ALL FILE CSS */
+
+/* PAGE */
+@import url("../pages/auth/login/Login.css");
+
+/* COMPONENT */
+@import url("../styles/Layout.css");
+
+@import url("../components/module/Input/Input.css");
 @import url("../components/module/Navbar/Navbar.css");
 @import url("../components/module/Sidebar/Sidebar.css");
+@import url("../components/module/Button/Button.css");
 
 html,
 body {
