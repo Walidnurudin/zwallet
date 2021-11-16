@@ -93,7 +93,7 @@ export default function Register() {
             </div>
 
             <Button
-              name="Login"
+              name="Sign Up"
               top="90px"
               bottom="40px"
               handleClick={handleSubmit}
