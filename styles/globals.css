@@ -1,3 +1,7 @@
+/* IMPORT ALL FILE CSS */
+@import url("../components/module/Navbar/Navbar.css");
+@import url("../components/module/Sidebar/Sidebar.css");
+
 html,
 body {
   padding: 0;

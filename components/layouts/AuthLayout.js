@@ -1,8 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import { background, zwallet2, auth } from "public/assets/images";
-import Footer from "components/module/Footer";
-import Navbar from "components/module/Navbar";
+import { Footer, Navbar } from "components/module";
 
 export default function AuthLayout(props) {
   return (

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "components/module/Navbar";
-import Layout from "components/Layout";
 import axios from "utils/axios";
 import { getDataCookie } from "middleware/authorizationPage";
+import MainLayout from "components/layouts/MainLayout";
 
 // SERVER SIDE RENDERING
 export async function getServerSideProps(context) {
@@ -58,8 +57,7 @@ function Home(props) {
   console.log(props);
 
   return (
-    <Layout title="Home">
-      <Navbar />
+    <MainLayout title="Home">
       <h1 className="font-primary">Home Page</h1>
       <p className="font-secondary">lorem ipsum</p>
       {data.map((item) => (
@@ -67,7 +65,7 @@ function Home(props) {
           <h3>{item.firstName}</h3>
         </div>
       ))}
-    </Layout>
+    </MainLayout>
   );
 }
 

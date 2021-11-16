@@ -1,5 +1,5 @@
 import React from "react";
-import Navbar from "components/module/Navbar";
+import { Navbar } from "components/module";
 import Layout from "components/Layout";
 
 function Profile() {
