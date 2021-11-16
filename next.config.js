@@ -18,6 +18,10 @@ module.exports = {
         source: "/create-pin",
         destination: "/auth/create-pin",
       },
+      {
+        source: "/reset-password",
+        destination: "/auth/reset-password",
+      },
 
       // MAIN PAGE
       {

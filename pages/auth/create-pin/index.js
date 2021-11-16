@@ -43,7 +43,7 @@ export default function CreatePin() {
   };
 
   return (
-    <AuthLayout title="Register">
+    <AuthLayout title="Create Pin">
       <div className="create__pin__header">
         {isSuccess ? (
           <PinSuccess />
