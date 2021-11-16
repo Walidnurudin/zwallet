@@ -2,6 +2,7 @@
 
 /* PAGE */
 @import url("../pages/auth/login/Login.css");
+@import url("../pages/auth/register/Register.css");
 
 /* COMPONENT */
 @import url("../styles/Layout.css");

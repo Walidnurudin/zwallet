@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import axios from "utils/axios";
-import AuthLayout from "components/layouts/AuthLayout";
 import { useRouter } from "next/router";
-import Cookie from "js-cookie";
-import { getDataCookie } from "middleware/authorizationPage";
+import AuthLayout from "components/layouts/AuthLayout";
 import { Input, Button } from "components/module";
+import { getDataCookie } from "middleware/authorizationPage";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -20,9 +19,14 @@ export async function getServerSideProps(context) {
   return { props: {} };
 }
 
-export default function Login() {
+export default function Register() {
   const router = useRouter();
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+  });
 
   const handleChangeText = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -30,22 +34,12 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("/auth/login", form)
-      .then((res) => {
-        console.log(res);
-        Cookie.set("token", res.data.data.token);
-        Cookie.set("id", res.data.data.id);
-        router.push("/home");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    console.log(form);
   };
 
   return (
-    <AuthLayout title="Login">
-      <div className="login__header">
+    <AuthLayout title="Register">
+      <div className="register__header">
         <h1 className="font-black nunito-700" style={{ marginBottom: "30px" }}>
           Start Accessing Banking Needs With All Devices and All Platforms With
           30.000+ Users
@@ -59,20 +53,36 @@ export default function Login() {
         <div className="mt-2">
           <form>
             <Input
+              image="../assets/images/auth/person.png"
+              name="firstName"
+              type="text"
+              placeholder="Enter your firstname"
+              top="60px"
+              handleChange={handleChangeText}
+            />
+            <Input
+              image="../assets/images/auth/person.png"
+              name="lastName"
+              type="text"
+              placeholder="Enter your lastname"
+              top="40px"
+              handleChange={handleChangeText}
+            />
+            <Input
               image="../assets/images/auth/mail.png"
               name="email"
               type="text"
               placeholder="Enter your e-mail"
-              top="60px"
+              top="40px"
               handleChange={handleChangeText}
             />
             <Input
               image="../assets/images/auth/lock.png"
               name="password"
               type="text"
-              placeholder="Enter your password"
+              placeholder="Create your password"
               isPassword={true}
-              top="70px"
+              top="40px"
               handleChange={handleChangeText}
             />
 
@@ -91,8 +101,8 @@ export default function Login() {
           </form>
 
           <p className="text-center font-secondary">
-            Don’t have an account? Let’s
-            <Link href="/register"> Sign Up</Link>
+            Already have an account? Let’s
+            <Link href="/login"> Login</Link>
           </p>
         </div>
       </div>
