@@ -5,6 +5,13 @@ module.exports = {
   },
   async rewrites() {
     return [
+      // AUTH PAGE
+      {
+        source: "/login",
+        destination: "/auth/login",
+      },
+
+      // MAIN PAGE
       {
         source: "/profile", // source = path sesudah diubah
         destination: "/main/profile", //destination = path sebelum dirubah
@@ -12,6 +19,14 @@ module.exports = {
       {
         source: "/home",
         destination: "/main/home",
+      },
+      {
+        source: "/transfer",
+        destination: "/main/transfer",
+      },
+      {
+        source: "/history",
+        destination: "/main/history",
       },
     ];
   },

@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { useRouter } from "next/router";
+import Cookie from "js-cookie";
 
 export default function Sidebar() {
   const router = useRouter();
@@ -9,7 +10,7 @@ export default function Sidebar() {
   };
 
   const handleTranfer = () => {
-    router.push("/tranfer");
+    router.push("/transfer");
   };
 
   const handleTopup = () => {

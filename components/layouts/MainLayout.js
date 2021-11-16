@@ -5,7 +5,7 @@ export default function MainLayout(props) {
   return (
     <>
       <Head>
-        <title>{props.title}</title>
+        <title>zwallet | {props.title}</title>
       </Head>
 
       <Navbar firsName="Walid" lastName="nurudin" noTelp="0865342" />
