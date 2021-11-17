@@ -58,7 +58,7 @@ export default function Sidebar() {
             height="28px"
           />
           <div className="align-self-center nunito-400 font-secondary">
-            Tranfer
+            Transfer
           </div>
         </div>
         <div

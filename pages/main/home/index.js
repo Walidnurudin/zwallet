@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "utils/axios";
 import { getDataCookie } from "middleware/authorizationPage";
 import MainLayout from "components/layouts/MainLayout";
+import { Balance, Dashboard, TransactionHistory } from "components/molecules";
 
 // SERVER SIDE RENDERING
 export async function getServerSideProps(context) {
@@ -58,13 +59,15 @@ function Home(props) {
 
   return (
     <MainLayout title="Home">
-      <h1 className="font-primary">Home Page</h1>
-      <p className="font-secondary">lorem ipsum</p>
-      {data.map((item) => (
-        <div key={item.id}>
-          <h3>{item.firstName}</h3>
+      <Balance balance="120.000" noTelp="08321" />
+      <div className="row">
+        <div className="col-7">
+          <Dashboard incoming="2.200.000" expense="1.500.00" />
         </div>
-      ))}
+        <div className="col-5">
+          <TransactionHistory />
+        </div>
+      </div>
     </MainLayout>
   );
 }

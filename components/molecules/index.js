@@ -1,4 +1,6 @@
 import PinSuccess from "./PinSuccess";
-import FormResetPassword from "./FormResetPassword";
+import Balance from "./Balance";
+import Dashboard from "./Dashboard";
+import TransactionHistory from "./TransactionHistory";
 
-export { PinSuccess, FormResetPassword };
+export { PinSuccess, Balance, Dashboard, TransactionHistory };

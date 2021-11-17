@@ -19,8 +19,8 @@ export async function getServerSideProps(context) {
   return { props: {} };
 }
 
-export default function ResetPassword() {
-  const [form, setForm] = useState({ email: "" });
+export default function ResetPasswordFrom() {
+  const [form, setForm] = useState({ newPassword: "", confirmPassword: "" });
 
   const handleChangeText = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -39,18 +39,28 @@ export default function ResetPassword() {
           In a Minutes.
         </h1>
         <p className="nunito-400 font-secondary">
-          To reset your password, you must type your e-mail and we will send a
-          link to your email and you will be directed to the reset password
-          screens.
+          Now you can create a new password for your Zwallet account. Type your
+          password twice so we can confirm your new passsword.
         </p>
 
         <div className="mt-2">
           <form>
             <Input
-              image="../assets/images/auth/mail.png"
-              name="email"
+              image="../assets/images/auth/lock.png"
+              name="newPassword"
               type="text"
-              placeholder="Enter your e-mail"
+              isPassword={true}
+              placeholder="Create new password"
+              top="60px"
+              handleChange={handleChangeText}
+            />
+
+            <Input
+              image="../assets/images/auth/lock.png"
+              name="confirmPassword"
+              type="text"
+              isPassword={true}
+              placeholder="Create new password"
               top="60px"
               handleChange={handleChangeText}
             />

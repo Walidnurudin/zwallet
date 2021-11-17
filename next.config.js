@@ -22,6 +22,10 @@ module.exports = {
         source: "/reset-password",
         destination: "/auth/reset-password",
       },
+      {
+        source: "/reset-password/:id",
+        destination: "/auth/reset-password/:id",
+      },
 
       // MAIN PAGE
       {
