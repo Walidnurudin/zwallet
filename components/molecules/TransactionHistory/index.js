@@ -42,6 +42,7 @@ function TransactionHistory() {
         boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
         borderRadius: "25px",
         marginTop: "20px",
+        marginBottom: "40px",
         background: "#ffffff",
       }}
     >

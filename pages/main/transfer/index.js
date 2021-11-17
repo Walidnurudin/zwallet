@@ -36,9 +36,16 @@ export default function Transfer() {
 
   return (
     <MainLayout title="Transfer">
-      {/* <SearchReceiver data={data} /> */}
-      <Amount name="Walid nurudin" noTelp="0987324" />
-      {/* <ConfirmationTransfer /> */}
+      <SearchReceiver data={data} />
+      {/* <Amount name="Walid nurudin" noTelp="0987324" /> */}
+      {/* <ConfirmationTransfer
+        name="Walid nurudin"
+        noTelp="0987324"
+        amount="50.000"
+        balance="1.000.000"
+        date="May 11, 2020 - 12.20"
+        notes="Uang jajan"
+      /> */}
     </MainLayout>
   );
 }

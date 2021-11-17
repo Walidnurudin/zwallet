@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
+import React from "react";
 
 function SearchReceiver({ data }) {
   return (
@@ -9,6 +9,7 @@ function SearchReceiver({ data }) {
         boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
         borderRadius: "25px",
         marginTop: "40px",
+        marginBottom: "40px",
         background: "#ffffff",
       }}
     >
