@@ -3,5 +3,6 @@ import Input from "./Input";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import Button from "./Button";
+import ModalComponent from "./ModalComponent";
 
-export { Footer, Input, Navbar, Sidebar, Button };
+export { Footer, Input, Navbar, Sidebar, Button, ModalComponent };

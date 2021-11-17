@@ -2,11 +2,15 @@
 import React from "react";
 import { Button } from "components/module";
 
-function ConfirmationTransfer({ name, noTelp, amount, balance, date, notes }) {
-  const handleSubmit = () => {
-    alert("Continue");
-  };
-
+function ConfirmationTransfer({
+  name,
+  noTelp,
+  amount,
+  balance,
+  date,
+  notes,
+  handleSubmit,
+}) {
   return (
     <div
       style={{

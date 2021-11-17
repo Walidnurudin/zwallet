@@ -1,10 +1,31 @@
 /* eslint-disable @next/next/no-img-element */
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Cookie from "js-cookie";
+import { ModalComponent } from "..";
 
 export default function Sidebar() {
   const router = useRouter();
 
+  // MODAL
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  // TOP UP
+  const [data, setData] = useState("");
+
+  const handleTextTopup = (e) => {
+    setData(e.target.value);
+  };
+
+  const handleSubmitTopup = () => {
+    console.log(data);
+    handleClose();
+  };
+
+  // SIDEBAR
   const handleDashboard = () => {
     router.push("/home");
   };
@@ -14,7 +35,7 @@ export default function Sidebar() {
   };
 
   const handleTopup = () => {
-    alert("Topup");
+    handleShow();
   };
 
   const handleProfile = () => {
@@ -110,6 +131,15 @@ export default function Sidebar() {
           </div>
         </div>
       </div>
+
+      {/* MODAL */}
+      <ModalComponent
+        show={show}
+        onHide={handleClose}
+        isPin={false}
+        handleTextTopup={handleTextTopup}
+        handleSubmitTopup={handleSubmitTopup}
+      />
     </div>
   );
 }
