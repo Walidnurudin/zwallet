@@ -5,6 +5,7 @@ import TransactionHistory from "./TransactionHistory";
 import SearchReceiver from "./SearchReceiver";
 import ConfirmationTransfer from "./ConfirmationTransfer";
 import Amount from "./Amount";
+import Status from "./Status";
 
 export {
   PinSuccess,
@@ -14,4 +15,5 @@ export {
   SearchReceiver,
   ConfirmationTransfer,
   Amount,
+  Status,
 };

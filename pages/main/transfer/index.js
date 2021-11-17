@@ -6,6 +6,7 @@ import {
   SearchReceiver,
   ConfirmationTransfer,
   Amount,
+  Status,
 } from "components/molecules";
 
 export default function Transfer() {
@@ -71,9 +72,10 @@ export default function Transfer() {
 
   return (
     <MainLayout title="Transfer">
+      {/* COMPONENT */}
       {/* <SearchReceiver data={data} /> */}
       {/* <Amount name="Walid nurudin" noTelp="0987324" /> */}
-      <ConfirmationTransfer
+      {/* <ConfirmationTransfer
         name="Walid nurudin"
         noTelp="0987324"
         amount="50.000"
@@ -81,8 +83,18 @@ export default function Transfer() {
         date="May 11, 2020 - 12.20"
         notes="Uang jajan"
         handleSubmit={handleShow}
+      /> */}
+      <Status
+        name="Walid nurudin"
+        noTelp="0987324"
+        amount="50.000"
+        balance="1.000.000"
+        date="May 11, 2020 - 12.20"
+        notes="Uang jajan"
+        isSuccess={true}
       />
 
+      {/* MODAL */}
       <ModalComponent
         show={show}
         onHide={handleClose}
