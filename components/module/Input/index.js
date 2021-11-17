@@ -10,6 +10,7 @@ export default function Input({
   isPassword,
   top,
   bottom,
+  width,
 }) {
   return (
     <div
@@ -23,6 +24,7 @@ export default function Input({
         name={name}
         placeholder={placeholder}
         onChange={handleChange}
+        style={{ width: width }}
       />
       {isPassword ? (
         <>
