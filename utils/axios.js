@@ -2,7 +2,8 @@ import axios from "axios";
 import Cookie from "js-cookie";
 
 const axiosApiIntances = axios.create({
-  baseURL: "https://zwalet.herokuapp.com",
+  // baseURL: "https://zwalet.herokuapp.com",
+  baseURL: "http://localhost:3001",
 });
 
 if (Cookie.get("token")) {
@@ -11,7 +12,7 @@ if (Cookie.get("token")) {
     function (config) {
       // Do something before request is sent
       config.headers = {
-        Authorization: `Bearer ${Cookie.get("token")}`,
+        authorization: `Bearer ${Cookie.get("token")}`,
       };
       return config;
     },

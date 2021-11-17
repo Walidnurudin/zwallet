@@ -4,13 +4,15 @@ import AuthLayout from "components/layouts/AuthLayout";
 import { Input, Button } from "components/module";
 import { getDataCookie } from "middleware/authorizationPage";
 import { PinSuccess } from "components/molecules";
+import Cookie from "js-cookie";
+import { useRouter } from "next/router";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
-  if (dataCookie.isLogin) {
+  if (!dataCookie.isLogin) {
     return {
       redirect: {
-        destination: "/home",
+        destination: "/login",
         permanent: false,
       },
     };
@@ -19,6 +21,7 @@ export async function getServerSideProps(context) {
 }
 
 export default function CreatePin() {
+  const router = useRouter();
   const [pin, setPin] = useState({});
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -36,10 +39,20 @@ export default function CreatePin() {
     setPin({ ...pin, [`pin${event.target.name}`]: event.target.value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
     const allPin =
       pin.pin1 + pin.pin2 + pin.pin3 + pin.pin4 + pin.pin5 + pin.pin6;
-    console.log(allPin);
+
+    e.preventDefault();
+    axios
+      .patch(`/user/pin/${Cookie.get("id")}`, { pin: allPin })
+      .then((res) => {
+        console.log(res);
+        router.push("/home");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

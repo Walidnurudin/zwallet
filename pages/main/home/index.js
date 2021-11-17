@@ -10,7 +10,7 @@ export async function getServerSideProps(context) {
   if (!dataCookie.isLogin) {
     return {
       redirect: {
-        destination: "/auth/login",
+        destination: "/login",
         permanent: false,
       },
     };

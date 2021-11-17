@@ -34,7 +34,15 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(form);
+    axios
+      .post("/auth/register", form)
+      .then((res) => {
+        console.log(res);
+        router.push("/login");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

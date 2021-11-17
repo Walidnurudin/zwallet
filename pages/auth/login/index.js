@@ -33,10 +33,16 @@ export default function Login() {
     axios
       .post("/auth/login", form)
       .then((res) => {
-        console.log(res);
-        Cookie.set("token", res.data.data.token);
-        Cookie.set("id", res.data.data.id);
-        router.push("/home");
+        console.log(res.data.data.pin);
+        if (res.data.data.pin !== null) {
+          Cookie.set("token", res.data.data.token);
+          Cookie.set("id", res.data.data.id);
+          router.push("/home");
+        } else {
+          Cookie.set("token", res.data.data.token);
+          Cookie.set("id", res.data.data.id);
+          router.push("/create-pin");
+        }
       })
       .catch((err) => {
         console.log(err);
