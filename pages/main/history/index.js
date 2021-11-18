@@ -17,7 +17,7 @@ export async function getServerSideProps(context) {
 
   // GET HISTORY
   const history = await axios
-    .get(`/transaction/history?page=1&limit=3&filter=WEEK`, {
+    .get(`/transaction/history?page=1&limit=5&filter=WEEK`, {
       headers: {
         Authorization: `Bearer ${dataCookie.token}`,
       },

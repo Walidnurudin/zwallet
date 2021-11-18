@@ -43,7 +43,7 @@ function ConfirmationTransfer({
             />
             <div className="ms-3">
               <h5 className="nunito-600">{name}</h5>
-              <span className="nunito-400 font-thrid">{noTelp}</span>
+              <span className="nunito-400 font-thrid">{noTelp || "-"}</span>
             </div>
           </div>
         </div>

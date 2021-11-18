@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 
-function SearchReceiver({ data }) {
+function SearchReceiver({ data, handleClick }) {
   return (
     <div
       style={{
@@ -44,6 +44,7 @@ function SearchReceiver({ data }) {
           {data.map((item) => (
             <div
               key={item.id}
+              onClick={() => handleClick(item)}
               className="d-flex"
               style={{
                 boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
@@ -58,8 +59,12 @@ function SearchReceiver({ data }) {
                   width="56px"
                 />
                 <div className="ms-3">
-                  <h5 className="nunito-600">{item.nama}</h5>
-                  <span className="nunito-400 font-thrid">{item.noTelp}</span>
+                  <h5 className="nunito-600">
+                    {item.firstName} {item.lastName}
+                  </h5>
+                  <span className="nunito-400 font-thrid">
+                    {item.noTelp || "-"}
+                  </span>
                 </div>
               </div>
             </div>

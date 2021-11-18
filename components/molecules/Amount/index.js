@@ -2,23 +2,7 @@
 import React, { useState } from "react";
 import { Input, Button } from "components/module";
 
-function Amount({ name, noTelp }) {
-  const [data, setData] = useState({
-    amount: "",
-    notes: "",
-  });
-
-  const handleText = (e) => {
-    setData({
-      ...data,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleSubmit = () => {
-    console.log(data);
-  };
-
+function Amount({ name, noTelp, handleText, handleSubmit }) {
   return (
     <div
       style={{

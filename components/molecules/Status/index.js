@@ -10,6 +10,8 @@ export default function Status({
   date,
   notes,
   isSuccess,
+  msg,
+  handleTryAgain,
 }) {
   return (
     <div
@@ -49,8 +51,7 @@ export default function Status({
               style={{ marginTop: "20px" }}
               className="nunito-400 font-secondary"
             >
-              We can’t transfer your money at the moment, we recommend you to
-              check your internet connection and try again.
+              {msg}
             </p>
           </div>
         )}
@@ -159,7 +160,11 @@ export default function Status({
               <Button name="Back to Home" width="170px" />
             </>
           ) : (
-            <Button name="Try Again" width="170px" />
+            <Button
+              name="Try Again"
+              width="170px"
+              handleClick={handleTryAgain}
+            />
           )}
         </div>
       </div>
