@@ -6,6 +6,7 @@ import SearchReceiver from "./SearchReceiver";
 import ConfirmationTransfer from "./ConfirmationTransfer";
 import Amount from "./Amount";
 import Status from "./Status";
+import ProfileComponent from "./ProfileComponent";
 
 export {
   PinSuccess,
@@ -16,4 +17,5 @@ export {
   ConfirmationTransfer,
   Amount,
   Status,
+  ProfileComponent,
 };

@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { Button } from "components/module";
+import { useRouter } from "next/router";
 
 export default function Status({
   name,
@@ -13,6 +14,7 @@ export default function Status({
   msg,
   handleTryAgain,
 }) {
+  const router = useRouter();
   return (
     <div
       style={{
@@ -157,7 +159,11 @@ export default function Status({
           {isSuccess ? (
             <>
               <button>Download PDF</button>
-              <Button name="Back to Home" width="170px" />
+              <Button
+                name="Back to Home"
+                width="170px"
+                handleClick={() => router.push("/home")}
+              />
             </>
           ) : (
             <Button
