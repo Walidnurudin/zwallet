@@ -7,7 +7,6 @@ import { Balance, Dashboard, TransactionHistory } from "components/molecules";
 // SERVER SIDE RENDERING
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
-  console.log("DATA COOKIE", dataCookie);
   if (!dataCookie.isLogin) {
     return {
       redirect: {
@@ -17,8 +16,9 @@ export async function getServerSideProps(context) {
     };
   }
 
-  const res = await axios
-    .get("/user?page=1&limit=2&search=&sort=", {
+  // GET DASHBOARD
+  const dashboard = await axios
+    .get(`/dashboard/${dataCookie.id}`, {
       headers: {
         Authorization: `Bearer ${dataCookie.token}`,
       },
@@ -27,11 +27,43 @@ export async function getServerSideProps(context) {
       return res.data.data;
     })
     .catch((err) => {
+      console.log(err.response.data);
       return [];
     });
+
+  // GET USER
+  const user = await axios
+    .get(`/user/profile/${dataCookie.id}`, {
+      headers: {
+        Authorization: `Bearer ${dataCookie.token}`,
+      },
+    })
+    .then((res) => {
+      return res.data.data;
+    })
+    .catch((err) => {
+      console.log(err.response.data);
+      return [];
+    });
+
+  // GET HISTORY
+  const history = await axios
+    .get(`/transaction/history?page=1&limit=3&filter=WEEK`, {
+      headers: {
+        Authorization: `Bearer ${dataCookie.token}`,
+      },
+    })
+    .then((res) => {
+      return res.data.data;
+    })
+    .catch((err) => {
+      console.log(err.response.data);
+      return [];
+    });
+
   return {
     props: {
-      data: res,
+      data: { user, dashboard, history },
     },
   };
 }
@@ -56,14 +88,21 @@ function Home(props) {
   // };
   // ==================
 
-  console.log(props);
-
+  console.log(data);
   return (
-    <MainLayout title="Home">
-      <Balance balance="120.000" noTelp="08321" />
+    <MainLayout
+      title="Home"
+      firstName={data.user.firstName}
+      lastName={data.user.lastName}
+      noTelp={data.user.noTelp}
+    >
+      <Balance balance={data.user.balance} noTelp={data.user.noTelp} />
       <div className="row">
         <div className="col-7">
-          <Dashboard incoming="2.200.000" expense="1.500.00" />
+          <Dashboard
+            income={data.dashboard.totalIncome}
+            expense={data.dashboard.totalExpense}
+          />
         </div>
         <div className="col-5">
           <TransactionHistory />

@@ -1,10 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
 import { useRouter } from "next/router";
+import axios from "utils/axios";
 import Cookie from "js-cookie";
 import { ModalComponent } from "..";
 
-export default function Sidebar() {
+export default function Sidebar({ handleGetAfterTopup }) {
   const router = useRouter();
 
   // MODAL
@@ -21,8 +22,17 @@ export default function Sidebar() {
   };
 
   const handleSubmitTopup = () => {
-    console.log(data);
-    handleClose();
+    axios
+      .post(`/transaction/top-up`, { amount: data })
+      .then((res) => {
+        console.log(res.data);
+        router.push(res.data.data.redirectUrl);
+        handleClose();
+        // handleGetAfterTopup();
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
   };
 
   // SIDEBAR

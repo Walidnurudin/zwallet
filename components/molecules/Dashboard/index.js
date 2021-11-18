@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 
-export default function Dashboard({ incoming, expense }) {
+export default function Dashboard({ income, expense }) {
   return (
     <div
       style={{
@@ -24,7 +24,7 @@ export default function Dashboard({ incoming, expense }) {
             width="28px"
           />
           <p className="nunito-400 font-secondary my-2">Income</p>
-          <h5 className="nunito-700">Rp{incoming}</h5>
+          <h5 className="nunito-700">Rp{income}</h5>
         </div>
 
         <div>
@@ -34,7 +34,7 @@ export default function Dashboard({ incoming, expense }) {
             width="28px"
           />
           <p className="nunito-400 font-secondary my-2">Expense</p>
-          <h5 className="nunito-700">Rp{incoming}</h5>
+          <h5 className="nunito-700">Rp{expense}</h5>
         </div>
       </div>
 

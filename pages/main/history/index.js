@@ -1,81 +1,168 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import MainLayout from "components/layouts/MainLayout";
+import axios from "utils/axios";
+import { getDataCookie } from "middleware/authorizationPage";
 
-export default function Transfer() {
-  const [data, setData] = useState([
-    {
-      id: 1,
-      nama: "Samuel Suhi",
-      status: "Accept",
-      nominal: "+Rp50.000",
+export async function getServerSideProps(context) {
+  const dataCookie = await getDataCookie(context);
+  if (!dataCookie.isLogin) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  // GET HISTORY
+  const history = await axios
+    .get(`/transaction/history?page=1&limit=3&filter=WEEK`, {
+      headers: {
+        Authorization: `Bearer ${dataCookie.token}`,
+      },
+    })
+    .then((res) => {
+      return res.data.data;
+    })
+    .catch((err) => {
+      console.log(err.response.data);
+      return [];
+    });
+
+  return {
+    props: {
+      data: { history },
     },
-    {
-      id: 2,
-      nama: "Suhi Maulina",
-      status: "Accept",
-      nominal: "+Rp50.000",
-    },
-    {
-      id: 3,
-      nama: "Samuel Lukman",
-      status: "Accept",
-      nominal: "+Rp50.000",
-    },
-    {
-      id: 4,
-      nama: "Samuel Eto'o",
-      status: "Accept",
-      nominal: "+Rp50.000",
-    },
-    {
-      id: 5,
-      nama: "Samuel Suhi",
-      status: "Accept",
-      nominal: "+Rp50.000",
-    },
-    {
-      id: 6,
-      nama: "Suhi Maulina",
-      status: "Accept",
-      nominal: "+Rp50.000",
-    },
-  ]);
+  };
+}
+
+export default function Transfer(props) {
+  const [data, setData] = useState([]);
+  const [filter, setFilter] = useState({
+    page: 1,
+    limit: 5,
+    filter: "WEEK",
+  });
+
+  const chngeFilter = (e) => {
+    setFilter({
+      ...filter,
+      filter: e.target.value,
+    });
+  };
+
+  // GET HISTORY
+  const history = () => {
+    axios
+      .get(
+        `/transaction/history?page=${filter.page}&limit=${filter.limit}3&filter=${filter.filter}`
+      )
+      .then((res) => {
+        console.log(res.data);
+        setData(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
+  // did mount
+  useEffect(() => {
+    history();
+  }, []);
+
+  // did update
+  useEffect(() => {
+    history();
+  }, [filter]);
 
   return (
-    <MainLayout title="Transfer">
+    <MainLayout
+      title="Transfer"
+      firstName="walid"
+      lastName="Nurudin"
+      // handleGetAfterTopup={history}
+    >
       <div
         style={{
           marginTop: "40px",
           background: "white",
           boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
           padding: "30px",
+          marginBottom: "40px",
           borderRadius: "20px",
         }}
       >
         <div>
           <div className="d-flex justify-content-between mb-5">
             <h5 className="nunito-700">Transaction History</h5>
-            <div>filter</div>
+            <div>
+              <select
+                className="nunito-400"
+                style={{
+                  borderRadius: "12px",
+                  padding: "8px 28px",
+                  background: "rgba(58, 61, 66, 0.1)",
+                  outline: "none",
+                  border: "none",
+                }}
+                defaultValue=""
+                onChange={chngeFilter}
+              >
+                <option value="">select filter</option>
+                <option value="WEEK">week</option>
+                <option value="MONTH">month</option>
+                <option value="YEAR">year</option>
+              </select>
+            </div>
           </div>
 
           <div className="d-flex flex-column gap-5">
-            {data.map((item) => (
-              <div key={item.id} className="d-flex justify-content-between">
-                <div className="d-flex">
-                  <img
-                    src="../assets/images/landing-page/user1.png"
-                    alt="porfile"
-                    width="56px"
-                  />
-                  <div className="ms-3">
-                    <h5 className="nunito-600">{item.nama}</h5>
-                    <span className="nunito-400 font-thrid">{item.status}</span>
+            {data.length > 0 ? (
+              <>
+                {data.map((item) => (
+                  <div key={item.id} className="d-flex justify-content-between">
+                    <div className="d-flex">
+                      <img
+                        src="../assets/images/landing-page/user1.png"
+                        alt="porfile"
+                        width="56px"
+                      />
+                      <div className="ms-3">
+                        <h5 className="nunito-600">
+                          {item.firstName} {item.lastName}
+                        </h5>
+                        <span className="nunito-400 font-thrid">
+                          {item.type}
+                        </span>
+                      </div>
+                    </div>
+                    {item.type === "Accept" ? (
+                      <div
+                        className="align-self-center nunito-700"
+                        style={{ color: "#1EC15F" }}
+                      >
+                        +Rp{item.amount}
+                      </div>
+                    ) : (
+                      <div
+                        className="align-self-center nunito-700"
+                        style={{ color: "#FF5B37" }}
+                      >
+                        -Rp{item.amount}
+                      </div>
+                    )}
                   </div>
-                </div>
-                <div className="align-self-center">{item.nominal}</div>
-              </div>
-            ))}
+                ))}
+              </>
+            ) : (
+              <>
+                <h1 className="text-center font-secondary nunito-700">
+                  no transaction
+                </h1>
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -26,7 +26,7 @@ export default function Navbar(props) {
               className="nunito-400 font-secondary"
               style={{ fontSize: "13px" }}
             >
-              {props.noTelp}
+              {props.noTelp || "-"}
             </div>
           </div>
           <img

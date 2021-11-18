@@ -30,13 +30,13 @@ export default function Balance({ balance, noTelp }) {
             style={{ marginTop: "10px", marginBottom: "15px" }}
             className="text-white nunito-700"
           >
-            Rp{balance}
+            Rp{balance || 0}
           </h1>
           <p
             className="text-white nunito-400 m-0"
             style={{ fontSize: "14px", lineHeight: "19px" }}
           >
-            {noTelp}
+            {noTelp || "-"}
           </p>
         </div>
 

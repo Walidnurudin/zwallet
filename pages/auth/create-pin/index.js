@@ -51,25 +51,11 @@ export default function CreatePin(props) {
 
     console.log("SUBMIT PIN");
 
-    // axios
-    //   .patch(`/user/pin/${Cookie.get("id")}`, { pin: allPin })
-    //   .then((res) => {
-    //     console.log(res);
-    //     router.push("/home");
-    //   })
-    //   .catch((err) => {
-    //     console.log(err.response);
-    //   });
-
     axios
-      .get("/user?page=1&limit=2&search=&sort=", {
-        headers: {
-          Authorization: `Bearer ${props.token}`,
-        },
-      })
+      .patch(`/user/pin/${Cookie.get("id")}`, { pin: allPin })
       .then((res) => {
-        // setData(res.data.data);
-        console.log(res.data);
+        console.log(res);
+        router.push("/home");
       })
       .catch((err) => {
         console.log(err.response);
