@@ -34,13 +34,15 @@ export default function Login() {
       .post("/auth/login", form)
       .then((res) => {
         console.log(res.data.data.pin);
-        if (res.data.data.pin !== null) {
+        if (res.data.data.pin) {
           Cookie.set("token", res.data.data.token);
           Cookie.set("id", res.data.data.id);
+          console.log("Home");
           router.push("/home");
         } else {
           Cookie.set("token", res.data.data.token);
           Cookie.set("id", res.data.data.id);
+          console.log("pin");
           router.push("/create-pin");
         }
       })

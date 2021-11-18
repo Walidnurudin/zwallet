@@ -7,6 +7,7 @@ import { Balance, Dashboard, TransactionHistory } from "components/molecules";
 // SERVER SIDE RENDERING
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
+  console.log("DATA COOKIE", dataCookie);
   if (!dataCookie.isLogin) {
     return {
       redirect: {

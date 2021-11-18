@@ -74,8 +74,10 @@ export default function Transfer() {
     <MainLayout title="Transfer">
       {/* COMPONENT */}
       {/* <SearchReceiver data={data} /> */}
+
       {/* <Amount name="Walid nurudin" noTelp="0987324" /> */}
-      {/* <ConfirmationTransfer
+
+      <ConfirmationTransfer
         name="Walid nurudin"
         noTelp="0987324"
         amount="50.000"
@@ -83,8 +85,9 @@ export default function Transfer() {
         date="May 11, 2020 - 12.20"
         notes="Uang jajan"
         handleSubmit={handleShow}
-      /> */}
-      <Status
+      />
+
+      {/* <Status
         name="Walid nurudin"
         noTelp="0987324"
         amount="50.000"
@@ -92,7 +95,7 @@ export default function Transfer() {
         date="May 11, 2020 - 12.20"
         notes="Uang jajan"
         isSuccess={true}
-      />
+      /> */}
 
       {/* MODAL */}
       <ModalComponent

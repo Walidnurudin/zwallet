@@ -17,10 +17,14 @@ export async function getServerSideProps(context) {
       },
     };
   }
-  return { props: {} };
+  return {
+    props: {
+      token: dataCookie.token,
+    },
+  };
 }
 
-export default function CreatePin() {
+export default function CreatePin(props) {
   const router = useRouter();
   const [pin, setPin] = useState({});
   const [isSuccess, setIsSuccess] = useState(false);
@@ -44,14 +48,31 @@ export default function CreatePin() {
       pin.pin1 + pin.pin2 + pin.pin3 + pin.pin4 + pin.pin5 + pin.pin6;
 
     e.preventDefault();
+
+    console.log("SUBMIT PIN");
+
+    // axios
+    //   .patch(`/user/pin/${Cookie.get("id")}`, { pin: allPin })
+    //   .then((res) => {
+    //     console.log(res);
+    //     router.push("/home");
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.response);
+    //   });
+
     axios
-      .patch(`/user/pin/${Cookie.get("id")}`, { pin: allPin })
+      .get("/user?page=1&limit=2&search=&sort=", {
+        headers: {
+          Authorization: `Bearer ${props.token}`,
+        },
+      })
       .then((res) => {
-        console.log(res);
-        router.push("/home");
+        // setData(res.data.data);
+        console.log(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.response);
       });
   };
 
