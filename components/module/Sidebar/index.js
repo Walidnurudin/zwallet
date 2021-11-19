@@ -33,7 +33,6 @@ export default function Sidebar({ handleGetAfterTopup }) {
         console.log(res.data);
         router.push(res.data.data.redirectUrl);
         handleClose();
-        // handleGetAfterTopup();
       })
       .catch((err) => {
         console.log(err.response);

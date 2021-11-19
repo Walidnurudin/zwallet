@@ -108,11 +108,7 @@ export default function Transfer(props) {
       firstName={dataUser.firstName}
       lastName={dataUser.lastName}
       noTelp={dataUser.noTelp}
-      image={
-        dataUser.image
-          ? `http://localhost:3001/uploads/${dataUser.image}`
-          : "../assets/images/landing-page/user1.png"
-      }
+      image={dataUser.image}
     >
       <div
         style={{

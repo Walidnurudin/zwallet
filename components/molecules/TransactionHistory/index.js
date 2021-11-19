@@ -2,34 +2,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 
-function TransactionHistory() {
+function TransactionHistory({ data }) {
   const router = useRouter();
-  const [data, setData] = useState([
-    {
-      id: 1,
-      nama: "Samuel Suhi",
-      status: "Accept",
-      nominal: "+Rp50.000",
-    },
-    {
-      id: 2,
-      nama: "Suhi Maulina",
-      status: "Accept",
-      nominal: "+Rp50.000",
-    },
-    {
-      id: 3,
-      nama: "Samuel Lukman",
-      status: "Accept",
-      nominal: "+Rp50.000",
-    },
-    {
-      id: 4,
-      nama: "Samuel Eto'o",
-      status: "Accept",
-      nominal: "+Rp50.000",
-    },
-  ]);
 
   const handleHistory = () => {
     router.push("/history");
@@ -47,7 +21,7 @@ function TransactionHistory() {
       }}
     >
       <div>
-        <div className="d-flex justify-content-between mb-5">
+        <div className="d-flex justify-content-between mb-2">
           <h5 className="nunito-700">Transaction History</h5>
           <span
             className="nunito-400 font-primary"
@@ -58,23 +32,70 @@ function TransactionHistory() {
           </span>
         </div>
 
-        <div className="d-flex flex-column gap-4 ">
-          {data.map((item) => (
-            <div key={item.id} className="d-flex justify-content-between">
-              <div className="d-flex">
-                <img
-                  src="../assets/images/landing-page/user1.png"
-                  alt="porfile"
-                  width="56px"
-                />
-                <div className="ms-3">
-                  <h5 className="nunito-600">{item.nama}</h5>
-                  <span className="nunito-400 font-thrid">{item.status}</span>
+        <div className="d-flex flex-column">
+          {data?.length > 0 ? (
+            <>
+              {data.map((item) => (
+                <div key={item.id}>
+                  {item.status === "success" ? (
+                    <div className="d-flex justify-content-between mt-4">
+                      <div className="d-flex">
+                        <img
+                          src={
+                            item.image
+                              ? `http://localhost:3001/uploads/${item.image}`
+                              : "../assets/images/transaction/def.jpeg"
+                          }
+                          alt="porfile"
+                          width="56px"
+                          height="56px"
+                          style={{ borderRadius: "10px", objectFit: "cover" }}
+                        />
+                        <div className="ms-3">
+                          <h5 className="nunito-600">
+                            {item.firstName} {item.lastName}
+                          </h5>
+                          <span className="nunito-400 font-thrid">
+                            {item.type}
+                          </span>
+                        </div>
+                      </div>
+                      {item.type === "send" ? (
+                        <div
+                          className="align-self-center nunito-700"
+                          style={{ color: "#FF5B37" }}
+                        >
+                          -Rp{item.amount}
+                        </div>
+                      ) : item.type === "topup" ? (
+                        <div
+                          className="align-self-center nunito-700"
+                          style={{ color: "#FF5B37" }}
+                        >
+                          +Rp{item.amount}
+                        </div>
+                      ) : (
+                        <div
+                          className="align-self-center nunito-700"
+                          style={{ color: "#1EC15F" }}
+                        >
+                          +Rp{item.amount}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <></>
+                  )}
                 </div>
-              </div>
-              <div className="align-self-center">{item.nominal}</div>
-            </div>
-          ))}
+              ))}
+            </>
+          ) : (
+            <>
+              <h1 className="text-center font-secondary nunito-700">
+                no transaction
+              </h1>
+            </>
+          )}
         </div>
       </div>
     </div>

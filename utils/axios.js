@@ -9,9 +9,13 @@ const axiosApiIntances = axios.create({
 axiosApiIntances.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-    config.headers = {
-      Authorization: `Bearer ${Cookie.get("token")}`,
-    };
+
+    if (Cookie.get("token")) {
+      config.headers = {
+        Authorization: `Bearer ${Cookie.get("token")}`,
+      };
+    }
+
     return config;
   },
   function (error) {
@@ -31,10 +35,13 @@ axiosApiIntances.interceptors.response.use(
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     if (error.response.status === 403) {
-      // alert(error.response.data.msg);
       Cookie.remove("token");
       Cookie.remove("id");
-      // window.location.href = "/login";
+
+      if (Cookie.get("token")) {
+        alert(error.response.data.msg);
+        window.location.href = "/login";
+      }
     }
     return Promise.reject(error);
   }

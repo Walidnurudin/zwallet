@@ -4,6 +4,7 @@ import MainLayout from "components/layouts/MainLayout";
 import axios from "utils/axios";
 import { getDataCookie } from "middleware/authorizationPage";
 import { useRouter } from "next/router";
+import Pagination from "react-paginate";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -16,21 +17,6 @@ export async function getServerSideProps(context) {
     };
   }
 
-  // // GET HISTORY
-  // const history = await axios
-  //   .get(`/transaction/history?page=1&limit=5&filter=WEEK`, {
-  //     headers: {
-  //       Authorization: `Bearer ${dataCookie.token}`,
-  //     },
-  //   })
-  //   .then((res) => {
-  //     return res.data.data;
-  //   })
-  //   .catch((err) => {
-  //     console.log(err.response.data);
-  //     return [];
-  //   });
-
   return {
     props: {
       data: { dataCookie },
@@ -40,7 +26,7 @@ export async function getServerSideProps(context) {
 
 export default function Transfer(props) {
   const router = useRouter();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   const [dataUser, setDataUser] = useState({});
   const [filter, setFilter] = useState({
     page: 1,
@@ -53,6 +39,20 @@ export default function Transfer(props) {
       ...filter,
       filter: e.target.value,
     });
+
+    axios
+      .get(
+        `/transaction/history?page=${filter.page}&limit=${filter.limit}&filter=${filter.filter}`
+      )
+      .then((res) => {
+        setData(res.data);
+        router.push(
+          `/history?page=${filter.page}&limit=${filter.limit}&filter=${filter.filter}`
+        );
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
   };
 
   // GET USER
@@ -60,9 +60,7 @@ export default function Transfer(props) {
     axios
       .get(`/user/profile/${props.data.dataCookie.id}`)
       .then((res) => {
-        console.log(res);
         setDataUser(res.data.data);
-        console.log(dataUser);
       })
       .catch((err) => {
         console.log(err);
@@ -73,13 +71,34 @@ export default function Transfer(props) {
   const history = () => {
     axios
       .get(
-        `/transaction/history?page=${filter.page}&limit=${filter.limit}3&filter=${filter.filter}`
+        `/transaction/history?page=${filter.page}&limit=${filter.limit}&filter=${filter.filter}`
       )
       .then((res) => {
-        console.log(res.data);
-        setData(res.data.data);
+        setData(res.data);
         router.push(
-          `/history?page=${filter.page}&limit=${filter.limit}3&filter=${filter.filter}`
+          `/history?page=${filter.page}&limit=${filter.limit}&filter=${filter.filter}`
+        );
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
+  const handlePagination = (e) => {
+    const selectedPage = e.selected + 1;
+    setFilter({
+      ...filter,
+      page: selectedPage,
+    });
+
+    axios
+      .get(
+        `/transaction/history?page=${selectedPage}&limit=${filter.limit}&filter=${filter.filter}`
+      )
+      .then((res) => {
+        setData(res.data);
+        router.push(
+          `/history?page=${selectedPage}&limit=${filter.limit}&filter=${filter.filter}`
         );
       })
       .catch((err) => {
@@ -93,10 +112,8 @@ export default function Transfer(props) {
     getUser();
   }, []);
 
-  // did update
-  useEffect(() => {
-    history();
-  }, [filter]);
+  console.log(data);
+  console.log(data.pagination);
 
   return (
     <MainLayout
@@ -140,60 +157,60 @@ export default function Transfer(props) {
             </div>
           </div>
 
-          <div className="d-flex flex-column gap-5">
-            {data.length > 0 ? (
+          <div className="d-flex flex-column">
+            {data.data?.length > 0 ? (
               <>
-                {data.map((item) => (
-                  <div key={item.id} className="d-flex justify-content-between">
-                    {item.status === "success" ? (
-                      <>
-                        <div className="d-flex">
-                          <img
-                            src={
-                              item.image
-                                ? `http://localhost:3001/uploads/${item.image}`
-                                : "../assets/images/transaction/def.jpeg"
-                            }
-                            alt="porfile"
-                            width="56px"
-                            height="56px"
-                            style={{ borderRadius: "10px", objectFit: "cover" }}
-                          />
-                          <div className="ms-3">
-                            <h5 className="nunito-600">
-                              {item.firstName} {item.lastName}
-                            </h5>
-                            <span className="nunito-400 font-thrid">
-                              {item.type}
-                            </span>
-                          </div>
+                {data.data.map((item) => (
+                  <div key={item.id}>
+                    {/* {item.status === "success" ? ( */}
+                    <div className="d-flex justify-content-between mt-4">
+                      <div className="d-flex">
+                        <img
+                          src={
+                            item.image
+                              ? `http://localhost:3001/uploads/${item.image}`
+                              : "../assets/images/transaction/def.jpeg"
+                          }
+                          alt="porfile"
+                          width="56px"
+                          height="56px"
+                          style={{ borderRadius: "10px", objectFit: "cover" }}
+                        />
+                        <div className="ms-3">
+                          <h5 className="nunito-600">
+                            {item.firstName} {item.lastName}
+                          </h5>
+                          <span className="nunito-400 font-thrid">
+                            {item.type} - {item.status}
+                          </span>
                         </div>
-                        {item.type === "send" ? (
-                          <div
-                            className="align-self-center nunito-700"
-                            style={{ color: "#FF5B37" }}
-                          >
-                            -Rp{item.amount}
-                          </div>
-                        ) : item.type === "topup" ? (
-                          <div
-                            className="align-self-center nunito-700"
-                            style={{ color: "#FF5B37" }}
-                          >
-                            +Rp{item.amount}
-                          </div>
-                        ) : (
-                          <div
-                            className="align-self-center nunito-700"
-                            style={{ color: "#1EC15F" }}
-                          >
-                            +Rp{item.amount}
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <></>
-                    )}
+                      </div>
+                      {item.type === "send" ? (
+                        <div
+                          className="align-self-center nunito-700"
+                          style={{ color: "#FF5B37" }}
+                        >
+                          -Rp{item.amount}
+                        </div>
+                      ) : item.type === "topup" ? (
+                        <div
+                          className="align-self-center nunito-700"
+                          style={{ color: "#FF5B37" }}
+                        >
+                          +Rp{item.amount}
+                        </div>
+                      ) : (
+                        <div
+                          className="align-self-center nunito-700"
+                          style={{ color: "#1EC15F" }}
+                        >
+                          +Rp{item.amount}
+                        </div>
+                      )}
+                    </div>
+                    {/* ) : ( */}
+                    {/* <></> */}
+                    {/* )} */}
                   </div>
                 ))}
               </>
@@ -204,6 +221,19 @@ export default function Transfer(props) {
                 </h1>
               </>
             )}
+          </div>
+
+          <div className="mt-5">
+            <Pagination
+              previousLabel={"Previous"}
+              nextLabel={"Next"}
+              breakLabel={"..."}
+              pageCount={data.pagination.totalPage}
+              onPageChange={handlePagination}
+              containerClassName={"pagination"}
+              disabledClassName={"pagination__disabled"}
+              activeClassName={"pagination__active"}
+            />
           </div>
         </div>
       </div>

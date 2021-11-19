@@ -16,6 +16,8 @@ export async function getServerSideProps(context) {
     };
   }
 
+  console.log(dataCookie.token);
+
   // GET DASHBOARD
   const dashboard = await axios
     .get(`/dashboard/${dataCookie.id}`, {
@@ -27,7 +29,7 @@ export async function getServerSideProps(context) {
       return res.data.data;
     })
     .catch((err) => {
-      console.log(err.response.data);
+      console.log(err.response);
       return [];
     });
 
@@ -42,7 +44,7 @@ export async function getServerSideProps(context) {
       return res.data.data;
     })
     .catch((err) => {
-      console.log(err.response.data);
+      console.log(err.response);
       return [];
     });
 
@@ -57,7 +59,7 @@ export async function getServerSideProps(context) {
       return res.data.data;
     })
     .catch((err) => {
-      console.log(err.response.data);
+      console.log(err.response);
       return [];
     });
 
@@ -95,6 +97,7 @@ function Home(props) {
       firstName={data.user.firstName}
       lastName={data.user.lastName}
       noTelp={data.user.noTelp}
+      image={data.user.image}
     >
       <Balance balance={data.user.balance} noTelp={data.user.noTelp} />
       <div className="row">
@@ -105,7 +108,7 @@ function Home(props) {
           />
         </div>
         <div className="col-5">
-          <TransactionHistory />
+          <TransactionHistory data={data.history} />
         </div>
       </div>
     </MainLayout>

@@ -40,7 +40,7 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      data: { allUser },
+      data: { dataCookie, allUser },
     },
   };
 }
@@ -110,12 +110,12 @@ export default function Transfer(props) {
 
     axios
       .get(
-        `/user?page=${query.page}&limit=${query.limit}&search=${query.search}&sort=${query.sort}`
+        `/user?page=${selectedPage}&limit=${query.limit}&search=${query.search}&sort=${query.sort}`
       )
       .then((res) => {
         setData(res.data);
         router.push(
-          `/transfer?page=${query.page}&limit=${query.limit}&search=${query.search}&sort=${query.sort}`
+          `/transfer?page=${selectedPage}&limit=${query.limit}&search=${query.search}&sort=${query.sort}`
         );
       })
       .catch((err) => {
@@ -131,12 +131,12 @@ export default function Transfer(props) {
 
     axios
       .get(
-        `/user?page=${query.page}&limit=${query.limit}&search=${query.search}&sort=${query.sort}`
+        `/user?page=${query.page}&limit=${query.limit}&search=${e.target.value}&sort=${query.sort}`
       )
       .then((res) => {
         setData(res.data);
         router.push(
-          `/transfer?page=${query.page}&limit=${query.limit}&search=${query.search}&sort=${query.sort}`
+          `/transfer?page=${query.page}&limit=${query.limit}&search=${e.target.value}&sort=${query.sort}`
         );
       })
       .catch((err) => {
@@ -160,9 +160,25 @@ export default function Transfer(props) {
       });
   };
 
+  // GET USER
+  const [dataUser, setDataUser] = useState({});
+
+  const getUser = () => {
+    axios
+      .get(`/user/profile/${props.data.dataCookie.id}`)
+      .then((res) => {
+        console.log(res);
+        setDataUser(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   // did mount
   useEffect(() => {
     getAllUser();
+    getUser();
   }, []);
 
   // did update
@@ -191,7 +207,7 @@ export default function Transfer(props) {
   const continueAmount = () => {
     setTransfer({
       ...transfer,
-      date: "2012",
+      date: new Date().toString(),
     });
 
     setComp({
@@ -260,7 +276,13 @@ export default function Transfer(props) {
   console.log(data.pagination);
 
   return (
-    <MainLayout title="Transfer">
+    <MainLayout
+      title="Transfer"
+      firstName={dataUser.firstName}
+      lastName={dataUser.lastName}
+      noTelp={dataUser.noTelp}
+      image={dataUser.image}
+    >
       {/* COMPONENT */}
 
       {comp.isSearch ? (

@@ -1,16 +1,33 @@
 /* eslint-disable @next/next/no-img-element */
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
+import { ModalComponent } from "components/module";
 
 export default function Balance({ balance, noTelp }) {
   const router = useRouter();
 
-  const handleTranfer = () => {
-    router.push("/transfer");
+  // TOP UP
+  const [data, setData] = useState("");
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const handleTextTopup = (e) => {
+    setData(e.target.value);
   };
 
-  const handleTopup = () => {
-    alert("Topup");
+  const handleSubmitTopup = () => {
+    axios
+      .post(`/transaction/top-up`, { amount: data })
+      .then((res) => {
+        console.log(res.data);
+        router.push(res.data.data.redirectUrl);
+        handleClose();
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
   };
 
   return (
@@ -50,7 +67,7 @@ export default function Balance({ balance, noTelp }) {
               marginBottom: "15px",
               cursor: "pointer",
             }}
-            onClick={handleTranfer}
+            onClick={() => router.push("/transfer")}
           >
             <img
               src="../assets/images/transaction/arrow-balance.png"
@@ -69,7 +86,7 @@ export default function Balance({ balance, noTelp }) {
               background: "rgba(255, 255, 255, 0.2)",
               cursor: "pointer",
             }}
-            onClick={handleTopup}
+            onClick={handleShow}
           >
             <img
               src="../assets/images/transaction/plus-balance.png"
@@ -81,6 +98,15 @@ export default function Balance({ balance, noTelp }) {
           </div>
         </div>
       </div>
+
+      {/* MODAL */}
+      <ModalComponent
+        show={show}
+        onHide={handleClose}
+        isPin={false}
+        handleTextTopup={handleTextTopup}
+        handleSubmitTopup={handleSubmitTopup}
+      />
     </>
   );
 }

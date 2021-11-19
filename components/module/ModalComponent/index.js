@@ -145,7 +145,7 @@ export default function ModalComponent({
               Enter the amount of money, and click submit
             </p>
             <input
-              type="text"
+              type="number"
               name="amount"
               placeholder="0.00"
               onChange={handleTextTopup}
