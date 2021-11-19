@@ -4,5 +4,6 @@ import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import Button from "./Button";
 import ModalComponent from "./ModalComponent";
+import ModalLogout from "./ModalLogout";
 
-export { Footer, Input, Navbar, Sidebar, Button, ModalComponent };
+export { Footer, Input, Navbar, Sidebar, Button, ModalComponent, ModalLogout };

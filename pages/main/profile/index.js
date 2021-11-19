@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "utils/axios";
 import { getDataCookie } from "middleware/authorizationPage";
+import { ModalLogout } from "components/module";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -26,6 +27,12 @@ export async function getServerSideProps(context) {
 export default function Transfer(props) {
   const router = useRouter();
   const inputFile = useRef(null);
+
+  // MODAL LOGOUT
+  const [showLogout, setShowLogout] = useState(false);
+
+  const handleCloseLogout = () => setShowLogout(false);
+  const handleShowLogout = () => setShowLogout(true);
 
   const [image, setImage] = useState({ image: "" });
   const [dataUser, setDataUser] = useState({});
@@ -245,13 +252,20 @@ export default function Transfer(props) {
                 marginTop: "20px",
               }}
               className="d-flex justify-content-between align-items-center"
-              onClick={() => alert("Logout")}
+              onClick={handleShowLogout}
             >
               <p className="nunito-700 m-0">Logout</p>
             </div>
           </div>
         </div>
       </div>
+
+      {/* MODAL LOGOUT */}
+      <ModalLogout
+        show={showLogout}
+        onHide={handleCloseLogout}
+        handleClose={handleCloseLogout}
+      />
     </MainLayout>
   );
 }

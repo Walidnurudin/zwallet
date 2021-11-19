@@ -2,8 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "utils/axios";
-import Cookie from "js-cookie";
-import { ModalComponent } from "..";
+import { ModalComponent, ModalLogout } from "..";
 
 export default function Sidebar({ handleGetAfterTopup }) {
   const router = useRouter();
@@ -13,6 +12,12 @@ export default function Sidebar({ handleGetAfterTopup }) {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  // MODAL LOGOUT
+  const [showLogout, setShowLogout] = useState(false);
+
+  const handleCloseLogout = () => setShowLogout(false);
+  const handleShowLogout = () => setShowLogout(true);
 
   // TOP UP
   const [data, setData] = useState("");
@@ -52,11 +57,8 @@ export default function Sidebar({ handleGetAfterTopup }) {
     router.push("/profile");
   };
 
-  const handleLogout = () => {
-    alert("Logout");
-    Cookie.remove("token");
-    Cookie.remove("id");
-    router.push("/login");
+  const isActive = (path) => {
+    return router.pathname.includes(path);
   };
 
   return (
@@ -67,30 +69,68 @@ export default function Sidebar({ handleGetAfterTopup }) {
           style={{ cursor: "pointer" }}
           onClick={handleDashboard}
         >
-          <img
-            src="../assets/images/sidebar/grid.png"
-            alt="img"
-            width="28px"
-            height="28px"
-          />
-          <div className="align-self-center nunito-400 font-secondary">
-            Dashboard
-          </div>
+          {isActive("/main/home") ? (
+            <>
+              <img
+                src="../assets/images/sidebar/grid-active.png"
+                alt="img"
+                width="28px"
+                height="28px"
+              />
+              <div
+                className="align-self-center nunito-700 font-secondary"
+                style={{ color: "#6379F4" }}
+              >
+                Dashboard
+              </div>
+            </>
+          ) : (
+            <>
+              <img
+                src="../assets/images/sidebar/grid.png"
+                alt="img"
+                width="28px"
+                height="28px"
+              />
+              <div className="align-self-center nunito-400 font-secondary">
+                Dashboard
+              </div>
+            </>
+          )}
         </div>
         <div
           className="d-flex gap-3"
           style={{ cursor: "pointer" }}
           onClick={handleTranfer}
         >
-          <img
-            src="../assets/images/sidebar/arrow.png"
-            alt="img"
-            width="28px"
-            height="28px"
-          />
-          <div className="align-self-center nunito-400 font-secondary">
-            Transfer
-          </div>
+          {isActive("/main/transfer") ? (
+            <>
+              <img
+                src="../assets/images/sidebar/arrow-active.png"
+                alt="img"
+                width="28px"
+                height="28px"
+              />
+              <div
+                className="align-self-center nunito-700 font-secondary"
+                style={{ color: "#6379F4" }}
+              >
+                Transfer
+              </div>
+            </>
+          ) : (
+            <>
+              <img
+                src="../assets/images/sidebar/arrow.png"
+                alt="img"
+                width="28px"
+                height="28px"
+              />
+              <div className="align-self-center nunito-400 font-secondary">
+                Transfer
+              </div>
+            </>
+          )}
         </div>
         <div
           className="d-flex gap-3"
@@ -112,15 +152,34 @@ export default function Sidebar({ handleGetAfterTopup }) {
           style={{ cursor: "pointer" }}
           onClick={handleProfile}
         >
-          <img
-            src="../assets/images/sidebar/user.png"
-            alt="img"
-            width="28px"
-            height="28px"
-          />
-          <div className="align-self-center nunito-400 font-secondary">
-            Profile
-          </div>
+          {isActive("/main/profile") ? (
+            <>
+              <img
+                src="../assets/images/sidebar/user-active.png"
+                alt="img"
+                width="28px"
+                height="28px"
+              />
+              <div
+                className="align-self-center nunito-700 font-secondary"
+                style={{ color: "#6379F4" }}
+              >
+                Profile
+              </div>
+            </>
+          ) : (
+            <>
+              <img
+                src="../assets/images/sidebar/user.png"
+                alt="img"
+                width="28px"
+                height="28px"
+              />
+              <div className="align-self-center nunito-400 font-secondary">
+                Profile
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -128,7 +187,7 @@ export default function Sidebar({ handleGetAfterTopup }) {
         <div
           className="d-flex gap-3"
           style={{ cursor: "pointer" }}
-          onClick={handleLogout}
+          onClick={() => handleShowLogout()}
         >
           <img
             src="../assets/images/sidebar/logout.png"
@@ -149,6 +208,13 @@ export default function Sidebar({ handleGetAfterTopup }) {
         isPin={false}
         handleTextTopup={handleTextTopup}
         handleSubmitTopup={handleSubmitTopup}
+      />
+
+      {/* MODAL LOGOUT */}
+      <ModalLogout
+        show={showLogout}
+        onHide={handleCloseLogout}
+        handleClose={handleCloseLogout}
       />
     </div>
   );

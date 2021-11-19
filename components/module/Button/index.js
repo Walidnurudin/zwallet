@@ -4,6 +4,7 @@ export default function Button({
   bottom,
   width,
   handleClick,
+  color,
   ...rest
 }) {
   return (
@@ -11,7 +12,12 @@ export default function Button({
       className="button__component"
       {...rest}
       onClick={handleClick}
-      style={{ marginTop: top, marginBottom: bottom, width: width }}
+      style={{
+        marginTop: top,
+        marginBottom: bottom,
+        width: width,
+        background: color,
+      }}
     >
       {name}
     </button>
