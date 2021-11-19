@@ -103,11 +103,7 @@ export default function Transfer(props) {
       title="Transfer"
       firstName={dataUser.firstName}
       lastName={dataUser.lastName}
-      image={
-        dataUser.image
-          ? `http://localhost:3001/uploads/${dataUser.image}`
-          : "../assets/images/landing-page/user1.png"
-      }
+      image={dataUser.image}
       // handleGetAfterTopup={history}
     >
       <div
@@ -172,19 +168,26 @@ export default function Transfer(props) {
                             </span>
                           </div>
                         </div>
-                        {item.type === "Accept" ? (
+                        {item.type === "send" ? (
                           <div
                             className="align-self-center nunito-700"
-                            style={{ color: "#1EC15F" }}
+                            style={{ color: "#FF5B37" }}
+                          >
+                            -Rp{item.amount}
+                          </div>
+                        ) : item.type === "topup" ? (
+                          <div
+                            className="align-self-center nunito-700"
+                            style={{ color: "#FF5B37" }}
                           >
                             +Rp{item.amount}
                           </div>
                         ) : (
                           <div
                             className="align-self-center nunito-700"
-                            style={{ color: "#FF5B37" }}
+                            style={{ color: "#1EC15F" }}
                           >
-                            -Rp{item.amount}
+                            +Rp{item.amount}
                           </div>
                         )}
                       </>

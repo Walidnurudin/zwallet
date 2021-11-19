@@ -10,6 +10,7 @@ import {
 } from "components/molecules";
 import axios from "utils/axios";
 import { getDataCookie } from "middleware/authorizationPage";
+import { useRouter } from "next/router";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -33,7 +34,7 @@ export async function getServerSideProps(context) {
       return res.data.data;
     })
     .catch((err) => {
-      console.log(err.response);
+      console.log(err.response.data);
       return [];
     });
 
@@ -45,6 +46,7 @@ export async function getServerSideProps(context) {
 }
 
 export default function Transfer(props) {
+  const router = useRouter();
   // MODAL
   const [show, setShow] = useState(false);
 
@@ -88,14 +90,70 @@ export default function Transfer(props) {
   };
 
   // USER DATA
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({
+    data: [],
+    pagination: {},
+  });
+  const [query, setQuery] = useState({
+    page: 1,
+    limit: 1,
+    search: "",
+    sort: "firstName ASC",
+  });
+
+  const handlePagination = (e) => {
+    const selectedPage = e.selected + 1;
+    setQuery({
+      ...query,
+      page: selectedPage,
+    });
+
+    axios
+      .get(
+        `/user?page=${query.page}&limit=${query.limit}&search=${query.search}&sort=${query.sort}`
+      )
+      .then((res) => {
+        setData(res.data);
+        router.push(
+          `/transfer?page=${query.page}&limit=${query.limit}&search=${query.search}&sort=${query.sort}`
+        );
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
+
+  const changeSearch = (e) => {
+    setQuery({
+      ...query,
+      search: e.target.value,
+    });
+
+    axios
+      .get(
+        `/user?page=${query.page}&limit=${query.limit}&search=${query.search}&sort=${query.sort}`
+      )
+      .then((res) => {
+        setData(res.data);
+        router.push(
+          `/transfer?page=${query.page}&limit=${query.limit}&search=${query.search}&sort=${query.sort}`
+        );
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
 
   const getAllUser = () => {
     axios
-      .get(`/user?page=1&limit=10&search=&sort=firstName ASC`)
+      .get(
+        `/user?page=${query.page}&limit=${query.limit}&search=${query.search}&sort=${query.sort}`
+      )
       .then((res) => {
-        console.log(res.data.data);
-        setData(res.data.data);
+        setData(res.data);
+        router.push(
+          `/transfer?page=${query.page}&limit=${query.limit}&search=${query.search}&sort=${query.sort}`
+        );
       })
       .catch((err) => {
         console.log(err.response);
@@ -106,6 +164,11 @@ export default function Transfer(props) {
   useEffect(() => {
     getAllUser();
   }, []);
+
+  // did update
+  // useEffect(() => {
+  //   getAllUser();
+  // }, [query.search]);
 
   // ALUR APP
   const [comp, setComp] = useState({
@@ -193,14 +256,21 @@ export default function Transfer(props) {
     // continueConfirmation();
   };
 
+  console.log(data.data);
+  console.log(data.pagination);
+
   return (
     <MainLayout title="Transfer">
       {/* COMPONENT */}
 
       {comp.isSearch ? (
         <SearchReceiver
-          data={data}
+          data={data.data}
           handleClick={(item) => continueSearch(item)}
+          onChange={changeSearch}
+          // pagination
+          countPagination={data.pagination.totalPage}
+          handlePagination={handlePagination}
         />
       ) : comp.isAmount ? (
         <Amount

@@ -1,7 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
+import Pagination from "react-paginate";
 
-function SearchReceiver({ data, handleClick }) {
+function SearchReceiver({
+  data,
+  onChange,
+  handleClick,
+  countPagination,
+  handlePagination,
+}) {
   return (
     <div
       style={{
@@ -26,6 +33,8 @@ function SearchReceiver({ data, handleClick }) {
           <input
             className="nunito-400 font-secondary"
             type="text"
+            name="search"
+            onChange={onChange}
             placeholder="Search receiver here"
             style={{
               marginTop: "25px",
@@ -41,34 +50,59 @@ function SearchReceiver({ data, handleClick }) {
         </div>
 
         <div className="d-flex flex-column gap-3">
-          {data.map((item) => (
-            <div
-              key={item.id}
-              onClick={() => handleClick(item)}
-              className="d-flex"
-              style={{
-                boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
-                borderRadius: "10px",
-                padding: "20px",
-              }}
-            >
-              <div className="d-flex">
-                <img
-                  src="../assets/images/landing-page/user1.png"
-                  alt="porfile"
-                  width="56px"
-                />
-                <div className="ms-3">
-                  <h5 className="nunito-600">
-                    {item.firstName} {item.lastName}
-                  </h5>
-                  <span className="nunito-400 font-thrid">
-                    {item.noTelp || "-"}
-                  </span>
+          {data.length > 0 ? (
+            <>
+              {data.map((item) => (
+                <div
+                  key={item.id}
+                  onClick={() => handleClick(item)}
+                  className="d-flex"
+                  style={{
+                    boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
+                    borderRadius: "10px",
+                    padding: "20px",
+                  }}
+                >
+                  <div className="d-flex">
+                    <img
+                      src={
+                        item.image
+                          ? `http://localhost:3001/uploads/${item.image}`
+                          : "../assets/images/transaction/def.jpeg"
+                      }
+                      alt="porfile"
+                      width="56px"
+                    />
+                    <div className="ms-3">
+                      <h5 className="nunito-600">
+                        {item.firstName} {item.lastName}
+                      </h5>
+                      <span className="nunito-400 font-thrid">
+                        {item.noTelp || "-"}
+                      </span>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              ))}
+            </>
+          ) : (
+            <>
+              <h1 className="text-center font-secondary nunito-700">no data</h1>
+            </>
+          )}
+        </div>
+
+        <div className="mt-5">
+          <Pagination
+            previousLabel={"Previous"}
+            nextLabel={"Next"}
+            breakLabel={"..."}
+            pageCount={countPagination}
+            onPageChange={handlePagination}
+            containerClassName={"pagination"}
+            disabledClassName={"pagination__disabled"}
+            activeClassName={"pagination__active"}
+          />
         </div>
       </div>
     </div>

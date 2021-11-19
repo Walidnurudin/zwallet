@@ -149,7 +149,9 @@ export default function Sidebar({ handleGetAfterTopup }) {
         </div>
         <div
           className="d-flex gap-3"
-          style={{ cursor: "pointer" }}
+          style={{
+            cursor: "pointer",
+          }}
           onClick={handleProfile}
         >
           {isActive("/main/profile") ? (

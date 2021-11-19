@@ -13,7 +13,11 @@ export default function Navbar(props) {
 
         <div className="d-flex gap-4 align-self-center">
           <img
-            src={props.image}
+            src={
+              props.image
+                ? `http://localhost:3001/uploads/${props.image}`
+                : "../assets/images/transaction/def.jpeg"
+            }
             alt="logo"
             width="52px"
             height="52px"
