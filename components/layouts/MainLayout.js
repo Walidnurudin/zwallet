@@ -12,6 +12,7 @@ export default function MainLayout(props) {
         firstName={props.firstName}
         lastName={props.lastName}
         noTelp={props.noTelp}
+        image={props.image}
       />
       <div style={{ background: "rgba(99, 121, 244, 0.05)" }}>
         <div className="container">

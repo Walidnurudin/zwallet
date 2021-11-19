@@ -29,10 +29,6 @@ module.exports = {
 
       // MAIN PAGE
       {
-        source: "/profile", // source = path sesudah diubah
-        destination: "/main/profile", //destination = path sebelum dirubah
-      },
-      {
         source: "/home",
         destination: "/main/home",
       },
@@ -43,6 +39,28 @@ module.exports = {
       {
         source: "/history",
         destination: "/main/history",
+      },
+
+      // PROFILE
+      {
+        source: "/profile", // source = path sesudah diubah
+        destination: "/main/profile", //destination = path sebelum dirubah
+      },
+      {
+        source: "/profile/personal-info",
+        destination: "/main/profile/personal-info",
+      },
+      {
+        source: "/profile/manage-phone",
+        destination: "/main/profile/manage-phone",
+      },
+      {
+        source: "/profile/change-pin",
+        destination: "/main/profile/change-pin",
+      },
+      {
+        source: "/profile/change-password",
+        destination: "/main/profile/change-password",
       },
     ];
   },

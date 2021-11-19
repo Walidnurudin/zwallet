@@ -13,10 +13,11 @@ export default function Navbar(props) {
 
         <div className="d-flex gap-4 align-self-center">
           <img
-            src="../assets/images/landing-page/user1.png"
+            src={props.image}
             alt="logo"
             width="52px"
             height="52px"
+            style={{ borderRadius: "10px", objectFit: "cover" }}
           />
           <div>
             <div className="nunito-700" style={{ fontSize: "18px" }}>
