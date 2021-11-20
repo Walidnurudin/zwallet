@@ -120,9 +120,7 @@ export default function HistoryDetail(props) {
           </div>
         ) : (
           <>
-            <h1 className="text-center font-secondary nunito-700">
-              no transaction
-            </h1>
+            <h1 className="text-center font-secondary nunito-700">no data</h1>
           </>
         )}
       </div>

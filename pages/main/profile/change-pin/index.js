@@ -13,7 +13,19 @@ export default function ChangePin() {
           background: "#ffffff",
         }}
       >
-        Change Pin
+        <h5 className="nunito-700">Change PIN</h5>
+        <p
+          className="nunito-400 font-secondary"
+          style={{
+            width: "40%",
+            marginTop: "25px",
+            marginBottom: "40px",
+            lineHeight: "28px",
+          }}
+        >
+          Enter your current 6 digits Zwallet PIN below to continue to the next
+          steps.
+        </p>
       </div>
     </MainLayout>
   );

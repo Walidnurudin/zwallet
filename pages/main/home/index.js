@@ -33,21 +33,6 @@ export async function getServerSideProps(context) {
       return [];
     });
 
-  // GET USER
-  const user = await axios
-    .get(`/user/profile/${dataCookie.id}`, {
-      headers: {
-        Authorization: `Bearer ${dataCookie.token}`,
-      },
-    })
-    .then((res) => {
-      return res.data.data;
-    })
-    .catch((err) => {
-      console.log(err.response);
-      return [];
-    });
-
   // GET HISTORY
   const history = await axios
     .get(`/transaction/history?page=1&limit=3&filter=WEEK`, {
@@ -65,41 +50,41 @@ export async function getServerSideProps(context) {
 
   return {
     props: {
-      data: { user, dashboard, history },
+      data: { dataCookie, dashboard, history },
     },
   };
 }
 
 function Home(props) {
   const [data, setData] = useState(props.data);
-  // CLIENT SIDE RENDERING
+  const [userData, setUserData] = useState({});
 
-  // useEffect(() => {
-  //   getDataUser();
-  // }, []);
+  useEffect(() => {
+    getUser();
+  }, []);
 
-  // const getDataUser = () => {
-  //   axios
-  //     .get("/user?page=1&limit=2&search=&sort=")
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-  // ==================
+  // GET USER
+  const getUser = () => {
+    axios
+      .get(`/user/profile/${props.data.dataCookie.id}`)
+      .then((res) => {
+        setUserData(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err.response);
+      });
+  };
 
   console.log(data);
   return (
     <MainLayout
       title="Home"
-      firstName={data.user.firstName}
-      lastName={data.user.lastName}
-      noTelp={data.user.noTelp}
-      image={data.user.image}
+      firstName={userData.firstName}
+      lastName={userData.lastName}
+      noTelp={userData.noTelp}
+      image={userData.image}
     >
-      <Balance balance={data.user.balance} noTelp={data.user.noTelp} />
+      <Balance balance={userData.balance} noTelp={userData.noTelp} />
       <div className="row">
         <div className="col-7">
           <Dashboard
