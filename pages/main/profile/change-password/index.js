@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MainLayout from "components/layouts/MainLayout";
 import { getDataCookie } from "middleware/authorizationPage";
-import { Input, Button } from "components/module";
+import { Input, Button, ErrorHandling } from "components/module";
 import axios from "utils/axios";
 
 export async function getServerSideProps(context) {
@@ -27,6 +27,15 @@ export default function ChangePassword(props) {
     oldPassword: "",
     newPassword: "",
     confirmPassword: "",
+  });
+  const [isError, setIsError] = useState({
+    status: false,
+    msg: "",
+  });
+
+  const [isSuccess, setIsSuccess] = useState({
+    status: false,
+    msg: "",
   });
 
   const [userData, setUserData] = useState({});
@@ -54,7 +63,17 @@ export default function ChangePassword(props) {
     axios
       .patch(`/user/password/${props.data.dataCookie.id}`, password)
       .then((res) => {
-        console.log(res);
+        setIsSuccess({
+          status: true,
+          msg: res.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsSuccess({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
         setPassword({
           oldPassword: "",
           newPassword: "",
@@ -62,7 +81,17 @@ export default function ChangePassword(props) {
         });
       })
       .catch((err) => {
-        console.log(err.response);
+        setIsError({
+          status: true,
+          msg: err.response.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsError({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
       });
   };
 
@@ -71,7 +100,13 @@ export default function ChangePassword(props) {
   }, []);
 
   return (
-    <MainLayout title="Personal Info" firstName="walid" lastName="Nurudin">
+    <MainLayout
+      title="Change Password"
+      firstName={userData.firstName}
+      lastName={userData.lastName}
+      noTelp={userData.noTelp}
+      image={userData.image}
+    >
       <div
         style={{
           padding: "30px",
@@ -132,12 +167,17 @@ export default function ChangePassword(props) {
           />
         </div>
 
+        {isError.status && <ErrorHandling msg={isError.msg} top="50px" />}
+        {isSuccess.status && (
+          <ErrorHandling msg={isSuccess.msg} top="50px" isSuccess={true} />
+        )}
+
         <div className="d-flex justify-content-center">
           <Button
             name="Change Password"
             handleClick={handleSubmit}
             width="432px"
-            top="70px"
+            top="50px"
           />
         </div>
       </div>

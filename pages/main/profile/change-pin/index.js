@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MainLayout from "components/layouts/MainLayout";
 import { getDataCookie } from "middleware/authorizationPage";
-import { Button } from "components/module";
+import { Button, ErrorHandling } from "components/module";
 import axios from "utils/axios";
 
 export async function getServerSideProps(context) {
@@ -24,6 +24,17 @@ export async function getServerSideProps(context) {
 
 export default function ChangePin(props) {
   const [pin, setPin] = useState({});
+  const [userData, setUserData] = useState({});
+
+  const [isError, setIsError] = useState({
+    status: false,
+    msg: "",
+  });
+
+  const [isSuccess, setIsSuccess] = useState({
+    status: false,
+    msg: "",
+  });
 
   const addPin = (event) => {
     if (event.target.value) {
@@ -50,15 +61,58 @@ export default function ChangePin(props) {
     axios
       .patch(`/user/pin/${props.data.dataCookie.id}`, { pin: allPin })
       .then((res) => {
-        console.log(res);
+        setIsSuccess({
+          status: true,
+          msg: res.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsSuccess({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
       })
       .catch((err) => {
-        console.log(err.response);
+        setIsError({
+          status: true,
+          msg: err.response.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsError({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
       });
   };
 
+  const getUser = () => {
+    axios
+      .get(`/user/profile/${props.data.dataCookie.id}`)
+      .then((res) => {
+        console.log(res);
+        setUserData(res.data.data);
+        console.log(userData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
-    <MainLayout title="Personal Info" firstName="walid" lastName="Nurudin">
+    <MainLayout
+      title="Change PIN"
+      firstName={userData.firstName}
+      lastName={userData.lastName}
+      noTelp={userData.noTelp}
+      image={userData.image}
+    >
       <div
         style={{
           padding: "30px",
@@ -185,6 +239,11 @@ export default function ChangePin(props) {
             </div>
           </div>
         </div>
+
+        {isError.status && <ErrorHandling msg={isError.msg} top="50px" />}
+        {isSuccess.status && (
+          <ErrorHandling msg={isSuccess.msg} top="50px" isSuccess={true} />
+        )}
 
         <div className="text-center">
           <Button

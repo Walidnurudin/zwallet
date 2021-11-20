@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "utils/axios";
 import { getDataCookie } from "middleware/authorizationPage";
-import { ModalLogout } from "components/module";
+import { ModalLogout, ErrorHandling } from "components/module";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -36,6 +36,15 @@ export default function Transfer(props) {
 
   const [image, setImage] = useState({ image: "" });
   const [dataUser, setDataUser] = useState({});
+  const [isError, setIsError] = useState({
+    status: false,
+    msg: "",
+  });
+
+  const [isSuccess, setIsSuccess] = useState({
+    status: false,
+    msg: "",
+  });
 
   const onButtonClick = () => {
     // `current` points to the mounted file input element
@@ -64,6 +73,17 @@ export default function Transfer(props) {
         .patch(`/user/image/${props.data.dataCookie.id}`, formData)
         .then((res) => {
           console.log(res);
+          setIsSuccess({
+            status: true,
+            msg: res.data.msg,
+          });
+
+          setTimeout(() => {
+            setIsSuccess({
+              status: false,
+              msg: "",
+            });
+          }, 3000);
           axios
             .get(`/user/profile/${props.data.dataCookie.id}`)
             .then((res) => {
@@ -76,7 +96,17 @@ export default function Transfer(props) {
             });
         })
         .catch((err) => {
-          console.log(err);
+          setIsError({
+            status: true,
+            msg: err.response.data.msg,
+          });
+
+          setTimeout(() => {
+            setIsError({
+              status: false,
+              msg: "",
+            });
+          }, 3000);
         });
     }
   };
@@ -131,7 +161,7 @@ export default function Transfer(props) {
             src={
               dataUser.image
                 ? `http://localhost:3001/uploads/${dataUser.image}`
-                : "../assets/images/landing-page/user1.png"
+                : "../assets/images/transaction/def.jpeg"
             }
             alt="user"
             width="80px"
@@ -174,6 +204,11 @@ export default function Transfer(props) {
               {dataUser.noTelp || "-"}
             </p>
           </div>
+
+          {isError.status && <ErrorHandling msg={isError.msg} bottom="50px" />}
+          {isSuccess.status && (
+            <ErrorHandling msg={isSuccess.msg} bottom="50px" isSuccess={true} />
+          )}
 
           <div className="d-flex justify-content-center align-items-center flex-column">
             <div

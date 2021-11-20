@@ -3,7 +3,7 @@ import Link from "next/link";
 import axios from "utils/axios";
 import { useRouter } from "next/router";
 import AuthLayout from "components/layouts/AuthLayout";
-import { Input, Button } from "components/module";
+import { Input, Button, ErrorHandling } from "components/module";
 import { getDataCookie } from "middleware/authorizationPage";
 
 export async function getServerSideProps(context) {
@@ -27,6 +27,10 @@ export default function Register() {
     email: "",
     password: "",
   });
+  const [isError, setIsError] = useState({
+    status: false,
+    msg: "",
+  });
 
   const handleChangeText = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -41,7 +45,17 @@ export default function Register() {
         router.push("/login");
       })
       .catch((err) => {
-        console.log(err);
+        setIsError({
+          status: true,
+          msg: err.response.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsError({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
       });
   };
 
@@ -100,9 +114,11 @@ export default function Register() {
               </Link>
             </div>
 
+            {isError.status && <ErrorHandling msg={isError.msg} top="60px" />}
+
             <Button
               name="Sign Up"
-              top="90px"
+              top="30px"
               bottom="40px"
               handleClick={handleSubmit}
             />

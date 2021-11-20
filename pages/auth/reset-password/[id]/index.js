@@ -3,7 +3,7 @@ import Link from "next/link";
 import axios from "utils/axios";
 import { useRouter } from "next/router";
 import AuthLayout from "components/layouts/AuthLayout";
-import { Input, Button } from "components/module";
+import { Input, Button, ErrorHandling } from "components/module";
 import { getDataCookie } from "middleware/authorizationPage";
 
 export async function getServerSideProps(context) {
@@ -21,14 +21,23 @@ export async function getServerSideProps(context) {
 
 export default function ResetPasswordFrom() {
   const router = useRouter();
+  const [isError, setIsError] = useState({
+    status: false,
+    msg: "",
+  });
+
+  const [isSuccess, setIsSuccess] = useState({
+    status: false,
+    msg: "",
+  });
+
   const [form, setForm] = useState({ newPassword: "", confirmPassword: "" });
 
   const handleChangeText = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     console.log(form);
     axios
       .patch("/auth/reset-password", {
@@ -36,10 +45,30 @@ export default function ResetPasswordFrom() {
         ...form,
       })
       .then((res) => {
-        console.log(res);
+        setIsSuccess({
+          status: true,
+          msg: res.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsSuccess({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
       })
       .catch((err) => {
-        console.log(err);
+        setIsError({
+          status: true,
+          msg: err.response.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsError({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
       });
   };
 
@@ -76,6 +105,11 @@ export default function ResetPasswordFrom() {
               top="60px"
               handleChange={handleChangeText}
             />
+
+            {isError.status && <ErrorHandling msg={isError.msg} top="50px" />}
+            {isSuccess.status && (
+              <ErrorHandling msg={isSuccess.msg} top="50px" isSuccess={true} />
+            )}
 
             <Button
               name="confirm"

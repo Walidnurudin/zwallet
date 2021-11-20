@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "utils/axios";
 import AuthLayout from "components/layouts/AuthLayout";
-import { Input, Button } from "components/module";
+import { Input, Button, ErrorHandling } from "components/module";
 import { getDataCookie } from "middleware/authorizationPage";
 import { PinSuccess } from "components/molecules";
 import Cookie from "js-cookie";
@@ -27,6 +27,11 @@ export async function getServerSideProps(context) {
 export default function CreatePin(props) {
   const router = useRouter();
   const [pin, setPin] = useState({});
+  const [isError, setIsError] = useState({
+    status: false,
+    msg: "",
+  });
+
   const [isSuccess, setIsSuccess] = useState(false);
 
   const addPin = (event) => {
@@ -58,7 +63,17 @@ export default function CreatePin(props) {
         router.push("/home");
       })
       .catch((err) => {
-        console.log(err.response);
+        setIsError({
+          status: true,
+          msg: err.response.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsError({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
       });
   };
 
@@ -184,7 +199,10 @@ export default function CreatePin(props) {
                 </div>
               </div>
             </div>
-            <Button name="Confirm" top="90px" handleClick={handleSubmit} />
+
+            {isError.status && <ErrorHandling msg={isError.msg} top="60px" />}
+
+            <Button name="Confirm" top="30px" handleClick={handleSubmit} />
           </>
         )}
       </div>

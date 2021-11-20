@@ -166,7 +166,7 @@ export default function PersonalInfo(props) {
           <div>
             <div>
               <span className="nunito-400 font-thrid">Verified E-mail</span>
-              <h5 className="nunito-600 mt-2">{data.email}</h5>
+              <h5 className="nunito-600 mt-2 font-secondary">{data.email}</h5>
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@ import AuthLayout from "components/layouts/AuthLayout";
 import { useRouter } from "next/router";
 import Cookie from "js-cookie";
 import { getDataCookie } from "middleware/authorizationPage";
-import { Input, Button } from "components/module";
+import { Input, Button, ErrorHandling } from "components/module";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -23,6 +23,10 @@ export async function getServerSideProps(context) {
 export default function Login() {
   const router = useRouter();
   const [form, setForm] = useState({ email: "", password: "" });
+  const [isError, setIsError] = useState({
+    status: false,
+    msg: "",
+  });
 
   const handleChangeText = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -44,7 +48,17 @@ export default function Login() {
         }
       })
       .catch((err) => {
-        console.log(err);
+        setIsError({
+          status: true,
+          msg: err.response.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsError({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
       });
   };
 
@@ -87,9 +101,11 @@ export default function Login() {
               </Link>
             </div>
 
+            {isError.status && <ErrorHandling msg={isError.msg} top="60px" />}
+
             <Button
               name="Login"
-              top="90px"
+              top="30px"
               bottom="40px"
               handleClick={handleSubmit}
             />
@@ -97,7 +113,9 @@ export default function Login() {
 
           <p className="text-center font-secondary">
             Don’t have an account? Let’s
-            <Link href="/register"> Sign Up</Link>
+            <span style={{ textDecoration: "none" }}>
+              <Link href="/register"> Sign Up</Link>
+            </span>
           </p>
         </div>
       </div>
