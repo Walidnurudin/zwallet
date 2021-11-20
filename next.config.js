@@ -40,6 +40,10 @@ module.exports = {
         source: "/history",
         destination: "/main/history",
       },
+      {
+        source: "/history/:id",
+        destination: "/main/history/:id",
+      },
 
       // PROFILE
       {
@@ -49,10 +53,6 @@ module.exports = {
       {
         source: "/profile/personal-info",
         destination: "/main/profile/personal-info",
-      },
-      {
-        source: "/profile/manage-phone",
-        destination: "/main/profile/manage-phone",
       },
       {
         source: "/profile/change-pin",

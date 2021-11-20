@@ -42,12 +42,12 @@ export default function Transfer(props) {
 
     axios
       .get(
-        `/transaction/history?page=${filter.page}&limit=${filter.limit}&filter=${filter.filter}`
+        `/transaction/history?page=${filter.page}&limit=${filter.limit}&filter=${e.target.value}`
       )
       .then((res) => {
         setData(res.data);
         router.push(
-          `/history?page=${filter.page}&limit=${filter.limit}&filter=${filter.filter}`
+          `/history?page=${filter.page}&limit=${filter.limit}&filter=${e.target.value}`
         );
       })
       .catch((err) => {
@@ -163,7 +163,16 @@ export default function Transfer(props) {
                 {data.data.map((item) => (
                   <div key={item.id}>
                     {/* {item.status === "success" ? ( */}
-                    <div className="d-flex justify-content-between mt-4">
+                    <div
+                      className="d-flex justify-content-between mt-4"
+                      onClick={() =>
+                        router.push({
+                          pathname: `/history/${item.id}`,
+                          query: { type: item.type },
+                        })
+                      }
+                      style={{ cursor: "pointer" }}
+                    >
                       <div className="d-flex">
                         <img
                           src={
@@ -228,7 +237,7 @@ export default function Transfer(props) {
               previousLabel={"Previous"}
               nextLabel={"Next"}
               breakLabel={"..."}
-              pageCount={data.pagination.totalPage}
+              pageCount={data.pagination?.totalPage}
               onPageChange={handlePagination}
               containerClassName={"pagination"}
               disabledClassName={"pagination__disabled"}

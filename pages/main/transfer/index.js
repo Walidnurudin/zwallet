@@ -96,7 +96,7 @@ export default function Transfer(props) {
   });
   const [query, setQuery] = useState({
     page: 1,
-    limit: 1,
+    limit: 5,
     search: "",
     sort: "firstName ASC",
   });
