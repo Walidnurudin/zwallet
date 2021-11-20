@@ -20,7 +20,10 @@ export async function getServerSideProps(context) {
 }
 
 export default function ResetPassword() {
-  const [form, setForm] = useState({ email: "" });
+  const [form, setForm] = useState({
+    email: "",
+    linkDirect: "http://localhost:3000/reset-password",
+  });
 
   const handleChangeText = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -29,6 +32,14 @@ export default function ResetPassword() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(form);
+    axios
+      .post("/auth/forgot-password", form)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

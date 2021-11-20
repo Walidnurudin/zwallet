@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Input, Button } from "components/module";
 
-function Amount({ name, noTelp, handleText, handleSubmit }) {
+function Amount({ name, noTelp, balance, handleText, handleSubmit }) {
   return (
     <div
       style={{
@@ -81,7 +81,7 @@ function Amount({ name, noTelp, handleText, handleSubmit }) {
             className="nunito-700"
             style={{ marginTop: "40px", marginBottom: "60px" }}
           >
-            Rp120.000 Available
+            Rp{balance} Available
           </h5>
 
           <Input

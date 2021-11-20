@@ -20,6 +20,7 @@ export async function getServerSideProps(context) {
 }
 
 export default function ResetPasswordFrom() {
+  const router = useRouter();
   const [form, setForm] = useState({ newPassword: "", confirmPassword: "" });
 
   const handleChangeText = (e) => {
@@ -29,6 +30,17 @@ export default function ResetPasswordFrom() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(form);
+    axios
+      .patch("/auth/reset-password", {
+        keysChangePassword: router.query.id,
+        ...form,
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

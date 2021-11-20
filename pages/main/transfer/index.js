@@ -298,6 +298,7 @@ export default function Transfer(props) {
         <Amount
           name={`${transfetUser.firstName} ${transfetUser.lastName}`}
           noTelp={transfetUser.noTelp}
+          balance={dataUser.balance}
           handleText={handleText}
           handleSubmit={continueAmount}
         />
@@ -306,7 +307,7 @@ export default function Transfer(props) {
           name={`${transfetUser.firstName} ${transfetUser.lastName}`}
           noTelp={transfetUser.noTelp}
           amount={transfer.amount}
-          balance="1.000.000"
+          balance={dataUser.balance}
           date={transfer.date}
           notes={transfer.notes}
           handleSubmit={handleSubmit}
@@ -316,7 +317,7 @@ export default function Transfer(props) {
           name={`${transfetUser.firstName} ${transfetUser.lastName}`}
           noTelp={transfetUser.noTelp}
           amount={transfer.amount}
-          balance="1.000.000"
+          balance={dataUser.balance}
           date={transfer.date}
           notes={transfer.notes}
           isSuccess={isSuccess}

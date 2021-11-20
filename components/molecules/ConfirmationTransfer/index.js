@@ -99,7 +99,7 @@ function ConfirmationTransfer({
           <div>
             <div>
               <span className="nunito-400 font-thrid">Date & Time</span>
-              {/* <h5 className="nunito-600 mt-2">{date}</h5> */}
+              <h5 className="nunito-600 mt-2">{date}</h5>
             </div>
           </div>
         </div>
