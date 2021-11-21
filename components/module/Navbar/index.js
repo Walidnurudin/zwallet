@@ -15,7 +15,7 @@ export default function Navbar(props) {
           <img
             src={
               props.image
-                ? `http://localhost:3001/uploads/${props.image}`
+                ? `${process.env.URL_BACKEND}uploads/${props.image}`
                 : "../assets/images/transaction/def.jpeg"
             }
             alt="logo"

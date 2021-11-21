@@ -160,7 +160,7 @@ export default function Transfer(props) {
           <img
             src={
               dataUser.image
-                ? `http://localhost:3001/uploads/${dataUser.image}`
+                ? `${process.env.URL_BACKEND}uploads/${dataUser.image}`
                 : "../assets/images/transaction/def.jpeg"
             }
             alt="user"

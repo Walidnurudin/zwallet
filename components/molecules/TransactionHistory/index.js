@@ -43,7 +43,7 @@ function TransactionHistory({ data }) {
                       <img
                         src={
                           item.image
-                            ? `http://localhost:3001/uploads/${item.image}`
+                            ? `${process.env.URL_BACKEND}uploads/${item.image}`
                             : "../assets/images/transaction/def.jpeg"
                         }
                         alt="porfile"

@@ -92,7 +92,7 @@ export default function HistoryDetail(props) {
             <img
               src={
                 history[0].image
-                  ? `http://localhost:3001/uploads/${history[0].image}`
+                  ? `${process.env.URL_BACKEND}uploads/${history[0].image}`
                   : "../assets/images/landing-page/user1.png"
               }
               alt="user"
