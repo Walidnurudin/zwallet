@@ -1,5 +1,6 @@
 export default function Button({
   name,
+  children,
   top,
   bottom,
   width,
@@ -20,6 +21,7 @@ export default function Button({
       }}
     >
       {name}
+      {children}
     </button>
   );
 }

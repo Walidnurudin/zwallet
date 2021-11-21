@@ -3,6 +3,7 @@ import MainLayout from "components/layouts/MainLayout";
 import { getDataCookie } from "middleware/authorizationPage";
 import { Button, ErrorHandling } from "components/module";
 import axios from "utils/axios";
+import { Spinner } from "react-bootstrap";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -35,6 +36,7 @@ export default function ChangePin(props) {
     status: false,
     msg: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const addPin = (event) => {
     if (event.target.value) {
@@ -58,6 +60,7 @@ export default function ChangePin(props) {
 
     console.log("SUBMIT PIN");
 
+    setIsLoading(true);
     axios
       .patch(`/user/pin/${props.data.dataCookie.id}`, { pin: allPin })
       .then((res) => {
@@ -72,6 +75,7 @@ export default function ChangePin(props) {
             msg: "",
           });
         }, 3000);
+        setIsLoading(false);
       })
       .catch((err) => {
         setIsError({
@@ -85,6 +89,7 @@ export default function ChangePin(props) {
             msg: "",
           });
         }, 3000);
+        setIsLoading(false);
       });
   };
 
@@ -246,12 +251,18 @@ export default function ChangePin(props) {
         )}
 
         <div className="text-center">
-          <Button
-            name="Continue"
-            top="90px"
-            handleClick={handleSubmit}
-            width="432px"
-          />
+          {isLoading ? (
+            <Button top="90px" width="432px">
+              <Spinner animation="border" variant="light" />
+            </Button>
+          ) : (
+            <Button
+              name="Continue"
+              top="90px"
+              handleClick={handleSubmit}
+              width="432px"
+            />
+          )}
         </div>
       </div>
     </MainLayout>

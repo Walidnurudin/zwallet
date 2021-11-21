@@ -71,6 +71,16 @@ a {
   background-color: #6379f4;
 }
 
+.link-none a {
+  text-decoration: none;
+  color: #3a3d42 !important;
+}
+
+.link-none-primary a {
+  text-decoration: none;
+  color: #6379f4 !important;
+}
+
 /* PAGINATION */
 
 .pagination {

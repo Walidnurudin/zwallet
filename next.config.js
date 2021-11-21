@@ -2,6 +2,7 @@ module.exports = {
   reactStrictMode: true,
   env: {
     URL_BACKEND: "https://jsonplaceholder.typicode.com/",
+    URL_LOCAL: "http://localhost:3001/",
   },
   async rewrites() {
     return [

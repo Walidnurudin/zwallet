@@ -6,6 +6,7 @@ import { getDataCookie } from "middleware/authorizationPage";
 import { PinSuccess } from "components/molecules";
 import Cookie from "js-cookie";
 import { useRouter } from "next/router";
+import { Spinner } from "react-bootstrap";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -33,6 +34,7 @@ export default function CreatePin(props) {
   });
 
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const addPin = (event) => {
     if (event.target.value) {
@@ -56,11 +58,14 @@ export default function CreatePin(props) {
 
     console.log("SUBMIT PIN");
 
+    setIsLoading(true);
+
     axios
       .patch(`/user/pin/${Cookie.get("id")}`, { pin: allPin })
       .then((res) => {
         console.log(res);
         router.push("/home");
+        setIsLoading(false);
       })
       .catch((err) => {
         setIsError({
@@ -74,6 +79,7 @@ export default function CreatePin(props) {
             msg: "",
           });
         }, 3000);
+        setIsLoading(false);
       });
   };
 
@@ -202,7 +208,13 @@ export default function CreatePin(props) {
 
             {isError.status && <ErrorHandling msg={isError.msg} top="60px" />}
 
-            <Button name="Confirm" top="30px" handleClick={handleSubmit} />
+            {isLoading ? (
+              <Button top="30px">
+                <Spinner animation="border" variant="light" />
+              </Button>
+            ) : (
+              <Button name="Confirm" top="30px" handleClick={handleSubmit} />
+            )}
           </>
         )}
       </div>

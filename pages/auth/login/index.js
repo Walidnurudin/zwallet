@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import Cookie from "js-cookie";
 import { getDataCookie } from "middleware/authorizationPage";
 import { Input, Button, ErrorHandling } from "components/module";
+import { Spinner } from "react-bootstrap";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -27,6 +28,7 @@ export default function Login() {
     status: false,
     msg: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChangeText = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -34,6 +36,7 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     axios
       .post("/auth/login", form)
       .then((res) => {
@@ -41,10 +44,12 @@ export default function Login() {
           Cookie.set("token", res.data.data.token);
           Cookie.set("id", res.data.data.id);
           router.push("/home");
+          setIsLoading(false);
         } else {
           Cookie.set("token", res.data.data.token);
           Cookie.set("id", res.data.data.id);
           router.push("/create-pin");
+          setIsLoading(false);
         }
       })
       .catch((err) => {
@@ -59,6 +64,7 @@ export default function Login() {
             msg: "",
           });
         }, 3000);
+        setIsLoading(false);
       });
   };
 
@@ -95,7 +101,7 @@ export default function Login() {
               handleChange={handleChangeText}
             />
 
-            <div className="d-flex justify-content-end mt-3">
+            <div className="d-flex justify-content-end mt-3 link-none">
               <Link href="/reset-password" className="nunito-600">
                 Forgot password?
               </Link>
@@ -103,17 +109,23 @@ export default function Login() {
 
             {isError.status && <ErrorHandling msg={isError.msg} top="60px" />}
 
-            <Button
-              name="Login"
-              top="30px"
-              bottom="40px"
-              handleClick={handleSubmit}
-            />
+            {isLoading ? (
+              <Button top="30px" bottom="40px">
+                <Spinner animation="border" variant="light" />
+              </Button>
+            ) : (
+              <Button
+                name="Login"
+                top="30px"
+                bottom="40px"
+                handleClick={handleSubmit}
+              />
+            )}
           </form>
 
           <p className="text-center font-secondary">
             Don’t have an account? Let’s
-            <span style={{ textDecoration: "none" }}>
+            <span className="link-none-primary">
               <Link href="/register"> Sign Up</Link>
             </span>
           </p>

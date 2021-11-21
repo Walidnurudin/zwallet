@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import AuthLayout from "components/layouts/AuthLayout";
 import { Input, Button, ErrorHandling } from "components/module";
 import { getDataCookie } from "middleware/authorizationPage";
+import { Spinner } from "react-bootstrap";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -31,14 +32,17 @@ export default function ResetPasswordFrom() {
     msg: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [form, setForm] = useState({ newPassword: "", confirmPassword: "" });
 
   const handleChangeText = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    console.log(form);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
     axios
       .patch("/auth/reset-password", {
         keysChangePassword: router.query.id,
@@ -56,6 +60,8 @@ export default function ResetPasswordFrom() {
             msg: "",
           });
         }, 3000);
+        router.push("/login");
+        setIsLoading(false);
       })
       .catch((err) => {
         setIsError({
@@ -69,6 +75,7 @@ export default function ResetPasswordFrom() {
             msg: "",
           });
         }, 3000);
+        setIsLoading(false);
       });
   };
 
@@ -111,12 +118,18 @@ export default function ResetPasswordFrom() {
               <ErrorHandling msg={isSuccess.msg} top="50px" isSuccess={true} />
             )}
 
-            <Button
-              name="confirm"
-              top="90px"
-              bottom="40px"
-              handleClick={handleSubmit}
-            />
+            {isLoading ? (
+              <Button top="90px" bottom="40px">
+                <Spinner animation="border" variant="light" />
+              </Button>
+            ) : (
+              <Button
+                name="confirm"
+                top="90px"
+                bottom="40px"
+                handleClick={handleSubmit}
+              />
+            )}
           </form>
         </div>
       </div>

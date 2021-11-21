@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import AuthLayout from "components/layouts/AuthLayout";
 import { Input, Button, ErrorHandling } from "components/module";
 import { getDataCookie } from "middleware/authorizationPage";
+import { Spinner } from "react-bootstrap";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -32,17 +33,21 @@ export default function Register() {
     msg: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleChangeText = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     axios
       .post("/auth/register", form)
       .then((res) => {
         console.log(res);
         router.push("/login");
+        setIsLoading(false);
       })
       .catch((err) => {
         setIsError({
@@ -56,6 +61,7 @@ export default function Register() {
             msg: "",
           });
         }, 3000);
+        setIsLoading(false);
       });
   };
 
@@ -108,25 +114,27 @@ export default function Register() {
               handleChange={handleChangeText}
             />
 
-            <div className="d-flex justify-content-end mt-3">
-              <Link href="/reset-password" className="nunito-600">
-                Forgot password?
-              </Link>
-            </div>
-
             {isError.status && <ErrorHandling msg={isError.msg} top="60px" />}
 
-            <Button
-              name="Sign Up"
-              top="30px"
-              bottom="40px"
-              handleClick={handleSubmit}
-            />
+            {isLoading ? (
+              <Button top="30px" bottom="40px">
+                <Spinner animation="border" variant="light" />
+              </Button>
+            ) : (
+              <Button
+                name="Sign Up"
+                top="30px"
+                bottom="40px"
+                handleClick={handleSubmit}
+              />
+            )}
           </form>
 
           <p className="text-center font-secondary">
             Already have an account? Let’s
-            <Link href="/login"> Login</Link>
+            <span className="link-none-primary">
+              <Link href="/login"> Login</Link>
+            </span>
           </p>
         </div>
       </div>
