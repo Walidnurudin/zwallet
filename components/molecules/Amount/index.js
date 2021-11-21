@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Input, Button } from "components/module";
 
-function Amount({ name, noTelp, balance, handleText, handleSubmit }) {
+function Amount({ name, noTelp, balance, image, handleText, handleSubmit }) {
   return (
     <div
       style={{
@@ -10,6 +10,7 @@ function Amount({ name, noTelp, balance, handleText, handleSubmit }) {
         boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
         borderRadius: "25px",
         marginTop: "40px",
+        marginBottom: "40px",
         background: "#ffffff",
       }}
     >
@@ -28,13 +29,17 @@ function Amount({ name, noTelp, balance, handleText, handleSubmit }) {
         >
           <div className="d-flex">
             <img
-              src="../assets/images/landing-page/user1.png"
+              src={
+                image
+                  ? `${process.env.URL_BACKEND}uploads/${image}`
+                  : "../assets/images/transaction/def.jpeg"
+              }
               alt="porfile"
               width="56px"
             />
             <div className="ms-3">
               <h5 className="nunito-600">{name}</h5>
-              <span className="nunito-400 font-thrid">{noTelp}</span>
+              <span className="nunito-400 font-thrid">{noTelp || "-"}</span>
             </div>
           </div>
         </div>

@@ -142,9 +142,8 @@ export default function PersonalInfo(props) {
       >
         <h5 className="nunito-700">Personal Info</h5>
         <p
-          className="nunito-400 font-secondary"
+          className="nunito-400 font-secondary w-100"
           style={{
-            width: "40%",
             marginTop: "25px",
             marginBottom: "40px",
             lineHeight: "28px",

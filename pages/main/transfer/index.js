@@ -228,7 +228,7 @@ export default function Transfer(props) {
   };
 
   // TRANSFER DATA
-  const [transfetUser, setTransferUser] = useState({});
+  const [transferUser, setTransferUser] = useState({});
   const [transfer, setTransfer] = useState({
     amount: "",
     notes: "",
@@ -240,7 +240,7 @@ export default function Transfer(props) {
   const postTransfer = () => {
     axios
       .post(`/transaction/transfer`, {
-        receiverId: transfetUser.id,
+        receiverId: transferUser.id,
         amount: transfer.amount,
         notes: transfer.notes,
       })
@@ -296,16 +296,17 @@ export default function Transfer(props) {
         />
       ) : comp.isAmount ? (
         <Amount
-          name={`${transfetUser.firstName} ${transfetUser.lastName}`}
-          noTelp={transfetUser.noTelp}
+          name={`${transferUser.firstName} ${transferUser.lastName}`}
+          noTelp={transferUser.noTelp}
           balance={dataUser.balance}
+          image={transferUser.image}
           handleText={handleText}
           handleSubmit={continueAmount}
         />
       ) : comp.isConfirmation ? (
         <ConfirmationTransfer
-          name={`${transfetUser.firstName} ${transfetUser.lastName}`}
-          noTelp={transfetUser.noTelp}
+          name={`${transferUser.firstName} ${transferUser.lastName}`}
+          noTelp={transferUser.noTelp}
           amount={transfer.amount}
           balance={dataUser.balance}
           date={transfer.date}
@@ -314,8 +315,8 @@ export default function Transfer(props) {
         />
       ) : (
         <Status
-          name={`${transfetUser.firstName} ${transfetUser.lastName}`}
-          noTelp={transfetUser.noTelp}
+          name={`${transferUser.firstName} ${transferUser.lastName}`}
+          noTelp={transferUser.noTelp}
           amount={transfer.amount}
           balance={dataUser.balance}
           date={transfer.date}

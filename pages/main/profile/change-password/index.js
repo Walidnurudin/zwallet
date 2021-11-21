@@ -127,7 +127,7 @@ export default function ChangePassword(props) {
         <p
           className="nunito-400 font-secondary"
           style={{
-            width: "40%",
+            // width: "40%",
             marginTop: "25px",
             marginBottom: "40px",
             lineHeight: "28px",

@@ -87,7 +87,13 @@ export default function Home() {
       </section>
 
       {/* ABOUT */}
-      <section></section>
+      <section>About</section>
+
+      {/* FEATURES */}
+      <section>Features</section>
+
+      {/* COMMENT */}
+      <section>Comment</section>
 
       {/* FOOTER */}
       <section style={{ background: "#6379F4" }}>

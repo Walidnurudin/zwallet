@@ -30,7 +30,7 @@ This application is a web-based Digital financial services application for the F
 
 some technology used in this project.
 
-- [NextJs](https://reactjs.org/)
+- [NextJs](https://nextjs.org/)
 - [Bootstrap](https://https://getbootstrap.com)
 - [React paginate](https://www.npmjs.com/package/react-paginate)
 - [Axios](https://www.npmjs.com/package/axios)

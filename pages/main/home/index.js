@@ -146,7 +146,7 @@ function Home(props) {
     >
       <Balance balance={userData.balance} noTelp={userData.noTelp} />
       <div className="row">
-        <div className="col-7">
+        <div className="col-12 col-md-7">
           <Dashboard
             income={data.dashboard.totalIncome}
             expense={data.dashboard.totalExpense}
@@ -155,7 +155,7 @@ function Home(props) {
             options={options}
           />
         </div>
-        <div className="col-5">
+        <div className="col-12 col-md-5">
           <TransactionHistory data={data.history} />
         </div>
       </div>

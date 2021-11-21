@@ -43,6 +43,7 @@ export default function Input({
             src="../assets/images/auth/eye-crossed.png"
             className="input__icon--password"
             onClick={handlePassword}
+            style={{ cursor: "pointer" }}
           />
         </>
       ) : isPassword && !typePassword ? (
@@ -58,9 +59,10 @@ export default function Input({
             value={value}
           />
           <img
-            src="../assets/images/auth/eye-crossed.png"
+            src="../assets/images/auth/eye.png"
             className="input__icon--password"
             onClick={handlePassword}
+            style={{ cursor: "pointer" }}
           />
         </>
       ) : (

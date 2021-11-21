@@ -17,13 +17,13 @@ export default function MainLayout(props) {
       <div style={{ background: "rgba(99, 121, 244, 0.05)" }}>
         <div className="container">
           <div className="row">
-            <div className="col-3">
+            <div className="col-12 col-md-3">
               <Sidebar
               // handleGetAfterTopup={props.handleGetAfterTopup}
               />
             </div>
 
-            <div className="col-9">{props.children}</div>
+            <div className="col-12 col-md-9">{props.children}</div>
           </div>
         </div>
       </div>
