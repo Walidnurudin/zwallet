@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import MainLayout from "components/layouts/MainLayout";
 import { getDataCookie } from "middleware/authorizationPage";
 import axios from "utils/axios";
-import { Modal } from "react-bootstrap";
-import { Button } from "components/module";
+import { Modal, Spinner } from "react-bootstrap";
+import { Button, ErrorHandling } from "components/module";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -45,18 +45,43 @@ export default function PersonalInfo(props) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [isError, setIsError] = useState({
+    status: false,
+    msg: "",
+  });
+
+  const [isSuccess, setIsSuccess] = useState({
+    status: false,
+    msg: "",
+  });
+
   const [noTelp, setNoTelp] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleText = (e) => {
     setNoTelp(e.target.value);
   };
 
   const handleSubmit = () => {
+    setIsLoading(true);
     axios
       .patch(`/user/profile/${props.data.dataCookie.id}`, { noTelp: noTelp })
       .then((res) => {
         console.log(res);
-        notifSuccess(res.data.msg);
+        // setIsSuccess({
+        //   status: true,
+        //   msg: res.data.msg,
+        // });
+
+        // setTimeout(() => {
+        //   setIsSuccess({
+        //     status: false,
+        //     msg: "",
+        //   });
+        // }, 3000);
+        setIsLoading(false);
+        handleClose();
+
         axios
           .get(`/user/profile/${props.data.dataCookie.id}`)
           .then((res) => {
@@ -66,9 +91,21 @@ export default function PersonalInfo(props) {
           .catch((err) => {
             console.log(err.response);
           });
-        handleClose();
       })
       .catch((err) => {
+        setIsError({
+          status: true,
+          msg: err.response.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsError({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
+        setIsLoading(false);
+        setIsLoading(false);
         console.log(err.response);
       });
   };
@@ -224,9 +261,20 @@ export default function PersonalInfo(props) {
               outline: "none",
             }}
           />
+
+          {isError.status && <ErrorHandling msg={isError.msg} top="50px" />}
+          {isSuccess.status && (
+            <ErrorHandling msg={isSuccess.msg} top="50px" isSuccess={true} />
+          )}
         </Modal.Body>
         <Modal.Footer>
-          <Button name="Submit" width="170px" handleClick={handleSubmit} />
+          {isLoading ? (
+            <Button width="170px">
+              <Spinner animation="border" variant="light" />
+            </Button>
+          ) : (
+            <Button name="Submit" width="170px" handleClick={handleSubmit} />
+          )}
         </Modal.Footer>
       </Modal>
     </MainLayout>

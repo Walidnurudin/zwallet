@@ -3,6 +3,7 @@ import MainLayout from "components/layouts/MainLayout";
 import { getDataCookie } from "middleware/authorizationPage";
 import { Input, Button, ErrorHandling } from "components/module";
 import axios from "utils/axios";
+import { Spinner } from "react-bootstrap";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -38,6 +39,8 @@ export default function ChangePassword(props) {
     msg: "",
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const [userData, setUserData] = useState({});
 
   // GET USER
@@ -60,6 +63,7 @@ export default function ChangePassword(props) {
   };
 
   const handleSubmit = () => {
+    setIsLoading(true);
     axios
       .patch(`/user/password/${props.data.dataCookie.id}`, password)
       .then((res) => {
@@ -79,6 +83,7 @@ export default function ChangePassword(props) {
           newPassword: "",
           confirmPassword: "",
         });
+        setIsLoading(false);
       })
       .catch((err) => {
         setIsError({
@@ -92,6 +97,7 @@ export default function ChangePassword(props) {
             msg: "",
           });
         }, 3000);
+        setIsLoading(false);
       });
   };
 
@@ -173,12 +179,18 @@ export default function ChangePassword(props) {
         )}
 
         <div className="d-flex justify-content-center">
-          <Button
-            name="Change Password"
-            handleClick={handleSubmit}
-            width="432px"
-            top="50px"
-          />
+          {isLoading ? (
+            <Button width="432px" top="50px">
+              <Spinner animation="border" variant="light" />
+            </Button>
+          ) : (
+            <Button
+              name="Change Password"
+              handleClick={handleSubmit}
+              width="432px"
+              top="50px"
+            />
+          )}
         </div>
       </div>
     </MainLayout>
