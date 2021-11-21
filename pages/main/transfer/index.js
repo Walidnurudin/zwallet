@@ -234,6 +234,7 @@ export default function Transfer(props) {
     notes: "",
     date: "",
   });
+  const [redirectPdf, setRedirectPdf] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
   const [msg, setMsg] = useState("");
 
@@ -249,6 +250,16 @@ export default function Transfer(props) {
         setIsSuccess(true);
         continueConfirmation();
         handleClose();
+
+        axios
+          .get(`/export/transaction/${res.data.data.id}`)
+          .then((res) => {
+            console.log("GENERATE ", res.data);
+            setRedirectPdf(res.data.data.url);
+          })
+          .catch((err) => {
+            console.log(err.response);
+          });
       })
       .catch((err) => {
         console.log(err.response);
@@ -257,6 +268,10 @@ export default function Transfer(props) {
         continueConfirmation();
         handleClose();
       });
+  };
+
+  const handlePdf = () => {
+    router.push(redirectPdf);
   };
 
   const handleText = (e) => {
@@ -310,6 +325,7 @@ export default function Transfer(props) {
           amount={transfer.amount}
           balance={dataUser.balance}
           date={transfer.date}
+          image={transferUser.image}
           notes={transfer.notes}
           handleSubmit={handleSubmit}
         />
@@ -320,10 +336,12 @@ export default function Transfer(props) {
           amount={transfer.amount}
           balance={dataUser.balance}
           date={transfer.date}
+          image={transferUser.image}
           notes={transfer.notes}
           isSuccess={isSuccess}
           msg={msg}
           handleTryAgain={handleSubmit}
+          handlePdf={handlePdf}
         />
       )}
 

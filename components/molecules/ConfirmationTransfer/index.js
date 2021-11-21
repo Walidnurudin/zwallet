@@ -9,10 +9,9 @@ function ConfirmationTransfer({
   balance,
   date,
   notes,
+  image,
   handleSubmit,
 }) {
-  console.log(typeof date);
-  console.log(date);
   return (
     <div
       style={{
@@ -39,7 +38,11 @@ function ConfirmationTransfer({
         >
           <div className="d-flex">
             <img
-              src="../assets/images/landing-page/user1.png"
+              src={
+                image
+                  ? `${process.env.URL_BACKEND}uploads/${image}`
+                  : "../assets/images/transaction/def.jpeg"
+              }
               alt="porfile"
               width="56px"
             />

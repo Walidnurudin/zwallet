@@ -26,7 +26,8 @@ export async function getServerSideProps(context) {
 
 export default function Transfer(props) {
   const router = useRouter();
-  const [data, setData] = useState({});
+  const [data, setData] = useState([]);
+  const [pagination, setPagination] = useState({});
   const [dataUser, setDataUser] = useState({});
   const [filter, setFilter] = useState({
     page: 1,
@@ -45,7 +46,9 @@ export default function Transfer(props) {
         `/transaction/history?page=${filter.page}&limit=${filter.limit}&filter=${e.target.value}`
       )
       .then((res) => {
-        setData(res.data);
+        let temp = res.data.data.reverse();
+        setData(temp);
+        setPagination(res.data.pagination);
         router.push(
           `/history?page=${filter.page}&limit=${filter.limit}&filter=${e.target.value}`
         );
@@ -74,7 +77,9 @@ export default function Transfer(props) {
         `/transaction/history?page=${filter.page}&limit=${filter.limit}&filter=${filter.filter}`
       )
       .then((res) => {
-        setData(res.data);
+        let temp = res.data.data.reverse();
+        setData(temp);
+        setPagination(res.data.pagination);
         router.push(
           `/history?page=${filter.page}&limit=${filter.limit}&filter=${filter.filter}`
         );
@@ -96,7 +101,9 @@ export default function Transfer(props) {
         `/transaction/history?page=${selectedPage}&limit=${filter.limit}&filter=${filter.filter}`
       )
       .then((res) => {
-        setData(res.data);
+        let temp = res.data.data.reverse();
+        setData(temp);
+        setPagination(res.data.pagination);
         router.push(
           `/history?page=${selectedPage}&limit=${filter.limit}&filter=${filter.filter}`
         );
@@ -111,9 +118,6 @@ export default function Transfer(props) {
     history();
     getUser();
   }, []);
-
-  console.log(data);
-  console.log(data.pagination);
 
   return (
     <MainLayout
@@ -158,9 +162,9 @@ export default function Transfer(props) {
           </div>
 
           <div className="d-flex flex-column">
-            {data.data?.length > 0 ? (
+            {data?.length > 0 ? (
               <>
-                {data.data.map((item) => (
+                {data.map((item) => (
                   <div key={item.id}>
                     {/* {item.status === "success" ? ( */}
                     <div
@@ -237,7 +241,7 @@ export default function Transfer(props) {
               previousLabel={"Previous"}
               nextLabel={"Next"}
               breakLabel={"..."}
-              pageCount={data.pagination?.totalPage}
+              pageCount={pagination?.totalPage}
               onPageChange={handlePagination}
               containerClassName={"pagination"}
               disabledClassName={"pagination__disabled"}

@@ -7,12 +7,14 @@ export default function Status({
   name,
   noTelp,
   amount,
+  image,
   balance,
   date,
   notes,
   isSuccess,
   msg,
   handleTryAgain,
+  handlePdf,
 }) {
   const router = useRouter();
   return (
@@ -141,13 +143,17 @@ export default function Status({
         >
           <div className="d-flex">
             <img
-              src="../assets/images/landing-page/user1.png"
+              src={
+                image
+                  ? `${process.env.URL_BACKEND}uploads/${image}`
+                  : "../assets/images/transaction/def.jpeg"
+              }
               alt="porfile"
               width="56px"
             />
             <div className="ms-3">
               <h5 className="nunito-600">{name}</h5>
-              <span className="nunito-400 font-thrid">{noTelp}</span>
+              <span className="nunito-400 font-thrid">{noTelp || "-"}</span>
             </div>
           </div>
         </div>
@@ -158,7 +164,25 @@ export default function Status({
         >
           {isSuccess ? (
             <>
-              <button>Download PDF</button>
+              <button
+                style={{
+                  backgroundColor: "rgba(99, 121, 244, 0.15)",
+                  padding: "16px 0px",
+                  color: "rgba(99, 121, 244, 1)",
+                  border: "none",
+                  width: "170px",
+                  borderRadius: "12px",
+                  marginRight: "20px",
+                }}
+                onClick={handlePdf}
+              >
+                <img
+                  src="../assets/images/transaction/download.png"
+                  alt="icon"
+                  width="22px"
+                />
+                <span className="nunito-400 ms-2">Download PDF</span>
+              </button>
               <Button
                 name="Back to Home"
                 width="170px"

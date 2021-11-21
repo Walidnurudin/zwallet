@@ -13,8 +13,8 @@ export default function Navbar(props) {
     axios
       .get(`/transaction/history?page=1&limit=5&filter=WEEK`)
       .then((res) => {
-        console.log(res);
-        setData(res.data.data);
+        let temp = res.data.data.reverse();
+        setData(temp);
       })
       .catch((err) => {
         console.log(err.response);

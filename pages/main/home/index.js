@@ -35,13 +35,14 @@ export async function getServerSideProps(context) {
 
   // GET HISTORY
   const history = await axios
-    .get(`/transaction/history?page=1&limit=3&filter=WEEK`, {
+    .get(`/transaction/history?page=1&limit=4&filter=WEEK`, {
       headers: {
         Authorization: `Bearer ${dataCookie.token}`,
       },
     })
     .then((res) => {
-      return res.data.data;
+      let temp = res.data.data.reverse();
+      return temp;
     })
     .catch((err) => {
       console.log(err.response);
@@ -60,17 +61,17 @@ function Home(props) {
   const [userData, setUserData] = useState({});
 
   let labelChart = [];
-  data.dashboard.listIncome.map((item) => {
+  data.dashboard.listIncome?.map((item) => {
     labelChart.push(item.day);
   });
 
   let dataChart = [];
-  data.dashboard.listIncome.map((item) => {
+  data.dashboard.listIncome?.map((item) => {
     dataChart.push(item.total);
   });
 
   let dataChartExpense = [];
-  data.dashboard.listExpense.map((item) => {
+  data.dashboard.listExpense?.map((item) => {
     dataChartExpense.push(item.total);
   });
 
@@ -105,6 +106,9 @@ function Home(props) {
           display: true,
           position: "left",
           id: "y-axis-1",
+          ticks: {
+            beginAtZero: true,
+          },
         },
         {
           type: "linear",
@@ -113,6 +117,9 @@ function Home(props) {
           id: "y-axis-2",
           gridLines: {
             drawOnArea: false,
+          },
+          ticks: {
+            beginAtZero: true,
           },
         },
       ],

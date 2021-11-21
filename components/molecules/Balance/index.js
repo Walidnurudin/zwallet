@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { ModalComponent } from "components/module";
+import axios from "utils/axios";
 
 export default function Balance({ balance, noTelp }) {
   const router = useRouter();
