@@ -37,55 +37,55 @@ function TransactionHistory({ data }) {
             <>
               {data.map((item) => (
                 <div key={item.id}>
-                  {item.status === "success" ? (
-                    <div className="d-flex justify-content-between mt-4">
-                      <div className="d-flex">
-                        <img
-                          src={
-                            item.image
-                              ? `http://localhost:3001/uploads/${item.image}`
-                              : "../assets/images/transaction/def.jpeg"
-                          }
-                          alt="porfile"
-                          width="56px"
-                          height="56px"
-                          style={{ borderRadius: "10px", objectFit: "cover" }}
-                        />
-                        <div className="ms-3">
-                          <h5 className="nunito-600">
-                            {item.firstName} {item.lastName}
-                          </h5>
-                          <span className="nunito-400 font-thrid">
-                            {item.type}
-                          </span>
-                        </div>
+                  {/* {item.status === "success" ? ( */}
+                  <div className="d-flex justify-content-between mt-4">
+                    <div className="d-flex">
+                      <img
+                        src={
+                          item.image
+                            ? `http://localhost:3001/uploads/${item.image}`
+                            : "../assets/images/transaction/def.jpeg"
+                        }
+                        alt="porfile"
+                        width="56px"
+                        height="56px"
+                        style={{ borderRadius: "10px", objectFit: "cover" }}
+                      />
+                      <div className="ms-3">
+                        <h5 className="nunito-600">
+                          {item.firstName} {item.lastName}
+                        </h5>
+                        <span className="nunito-400 font-thrid">
+                          {item.type}
+                        </span>
                       </div>
-                      {item.type === "send" ? (
-                        <div
-                          className="align-self-center nunito-700"
-                          style={{ color: "#FF5B37" }}
-                        >
-                          -Rp{item.amount}
-                        </div>
-                      ) : item.type === "topup" ? (
-                        <div
-                          className="align-self-center nunito-700"
-                          style={{ color: "#FF5B37" }}
-                        >
-                          +Rp{item.amount}
-                        </div>
-                      ) : (
-                        <div
-                          className="align-self-center nunito-700"
-                          style={{ color: "#1EC15F" }}
-                        >
-                          +Rp{item.amount}
-                        </div>
-                      )}
                     </div>
-                  ) : (
+                    {item.type === "send" ? (
+                      <div
+                        className="align-self-center nunito-700"
+                        style={{ color: "#FF5B37" }}
+                      >
+                        -Rp{item.amount}
+                      </div>
+                    ) : item.type === "topup" ? (
+                      <div
+                        className="align-self-center nunito-700"
+                        style={{ color: "#FF5B37" }}
+                      >
+                        +Rp{item.amount}
+                      </div>
+                    ) : (
+                      <div
+                        className="align-self-center nunito-700"
+                        style={{ color: "#1EC15F" }}
+                      >
+                        +Rp{item.amount}
+                      </div>
+                    )}
+                  </div>
+                  {/* ) : (
                     <></>
-                  )}
+                  )} */}
                 </div>
               ))}
             </>

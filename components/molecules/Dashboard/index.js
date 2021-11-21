@@ -1,7 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
+import { Line } from "react-chartjs-2";
 
-export default function Dashboard({ income, expense }) {
+export default function Dashboard({ income, expense, data, options }) {
   return (
     <div
       style={{
@@ -38,7 +39,9 @@ export default function Dashboard({ income, expense }) {
         </div>
       </div>
 
-      <div>Chart component</div>
+      <div>
+        <Line data={data} options={options} />
+      </div>
     </div>
   );
 }

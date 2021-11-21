@@ -59,6 +59,66 @@ function Home(props) {
   const [data, setData] = useState(props.data);
   const [userData, setUserData] = useState({});
 
+  let labelChart = [];
+  data.dashboard.listIncome.map((item) => {
+    labelChart.push(item.day);
+  });
+
+  let dataChart = [];
+  data.dashboard.listIncome.map((item) => {
+    dataChart.push(item.total);
+  });
+
+  let dataChartExpense = [];
+  data.dashboard.listExpense.map((item) => {
+    dataChartExpense.push(item.total);
+  });
+
+  // DASHBOARD
+  const [dataDashboard, setDataDashboard] = useState({
+    labels: labelChart,
+    datasets: [
+      {
+        label: "# of Income",
+        data: dataChart,
+        fill: false,
+        backgroundColor: "#1EC15F",
+        borderColor: "#1EC15F",
+        yAxisID: "y-axis-1",
+      },
+      {
+        label: "# of Expense",
+        data: dataChartExpense,
+        fill: false,
+        backgroundColor: "#FF5B37",
+        borderColor: "#FF5B37",
+        yAxisID: "y-axis-2",
+      },
+    ],
+  });
+
+  const options = {
+    scales: {
+      yAxes: [
+        {
+          type: "linear",
+          display: true,
+          position: "left",
+          id: "y-axis-1",
+        },
+        {
+          type: "linear",
+          display: true,
+          position: "right",
+          id: "y-axis-2",
+          gridLines: {
+            drawOnArea: false,
+          },
+        },
+      ],
+    },
+  };
+
   useEffect(() => {
     getUser();
   }, []);
@@ -90,6 +150,9 @@ function Home(props) {
           <Dashboard
             income={data.dashboard.totalIncome}
             expense={data.dashboard.totalExpense}
+            // data
+            data={dataDashboard}
+            options={options}
           />
         </div>
         <div className="col-5">
