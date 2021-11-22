@@ -40,10 +40,20 @@ export async function getServerSideProps(context) {
 
 export default function PersonalInfo(props) {
   const [data, setData] = useState(props.data.user);
-  const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
+  // MODAL
+  const [show, setShow] = useState(false);
+  const [showFirstName, setShowFirstName] = useState(false);
+  const [showLastName, setShowLastName] = useState(false);
+
+  const handleCloseTelp = () => setShow(false);
+  const handleShowTelp = () => setShow(true);
+
+  const handleCloseFirstName = () => setShowFirstName(false);
+  const handleShowFirstName = () => setShowFirstName(true);
+
+  const handleCloseLastName = () => setShowLastName(false);
+  const handleShowLastName = () => setShowLastName(true);
 
   const [isError, setIsError] = useState({
     status: false,
@@ -55,11 +65,22 @@ export default function PersonalInfo(props) {
     msg: "",
   });
 
-  const [noTelp, setNoTelp] = useState("");
+  const [noTelp, setNoTelp] = useState(props.data.user.noTelp);
+  const [firstName, setFirstName] = useState(props.data.user.firstName);
+  const [lastName, setLastName] = useState(props.data.user.lastName);
+
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleText = (e) => {
+  const handleTextNoTelp = (e) => {
     setNoTelp(e.target.value);
+  };
+
+  const handleTextFirstName = (e) => {
+    setFirstName(e.target.value);
+  };
+
+  const handleTextLastName = (e) => {
+    setLastName(e.target.value);
   };
 
   const handleSubmit = () => {
@@ -68,19 +89,8 @@ export default function PersonalInfo(props) {
       .patch(`/user/profile/${props.data.dataCookie.id}`, { noTelp: noTelp })
       .then((res) => {
         console.log(res);
-        // setIsSuccess({
-        //   status: true,
-        //   msg: res.data.msg,
-        // });
-
-        // setTimeout(() => {
-        //   setIsSuccess({
-        //     status: false,
-        //     msg: "",
-        //   });
-        // }, 3000);
         setIsLoading(false);
-        handleClose();
+        handleCloseTelp();
 
         axios
           .get(`/user/profile/${props.data.dataCookie.id}`)
@@ -110,17 +120,83 @@ export default function PersonalInfo(props) {
       });
   };
 
-  // // GET USER
-  // const getUser = () => {
-  //   axios
-  //     .get(`/user/profile/${props.dataCookie.id}`)
-  //     .then((res) => {
-  //       console.log(res.data.data)
-  //     })
-  //     .catch((err) => {
-  //       console.log(err.response);
-  //     });
-  // };
+  const handleSubmitFirstName = () => {
+    setIsLoading(true);
+    axios
+      .patch(`/user/profile/${props.data.dataCookie.id}`, {
+        firstName: firstName,
+      })
+      .then((res) => {
+        console.log(res);
+        setIsLoading(false);
+        handleCloseFirstName();
+
+        axios
+          .get(`/user/profile/${props.data.dataCookie.id}`)
+          .then((res) => {
+            console.log(res.data.data);
+            setData(res.data.data);
+          })
+          .catch((err) => {
+            console.log(err.response);
+          });
+      })
+      .catch((err) => {
+        setIsError({
+          status: true,
+          msg: err.response.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsError({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
+        setIsLoading(false);
+        setIsLoading(false);
+        console.log(err.response);
+      });
+  };
+
+  const handleSubmitLastName = () => {
+    setIsLoading(true);
+    axios
+      .patch(`/user/profile/${props.data.dataCookie.id}`, {
+        lastName: lastName,
+      })
+      .then((res) => {
+        console.log(res);
+        setIsLoading(false);
+        handleCloseLastName();
+
+        axios
+          .get(`/user/profile/${props.data.dataCookie.id}`)
+          .then((res) => {
+            console.log(res.data.data);
+            setData(res.data.data);
+          })
+          .catch((err) => {
+            console.log(err.response);
+          });
+      })
+      .catch((err) => {
+        setIsError({
+          status: true,
+          msg: err.response.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsError({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
+        setIsLoading(false);
+        setIsLoading(false);
+        console.log(err.response);
+      });
+  };
 
   return (
     <MainLayout
@@ -154,7 +230,7 @@ export default function PersonalInfo(props) {
         </p>
 
         <div
-          className="d-flex"
+          className="d-flex justify-content-between"
           style={{
             boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
             borderRadius: "10px",
@@ -169,10 +245,18 @@ export default function PersonalInfo(props) {
               <h5 className="nunito-600 mt-2">{data.firstName}</h5>
             </div>
           </div>
+
+          <div
+            className="align-self-center nunito-400 font-primary"
+            onClick={handleShowFirstName}
+            style={{ cursor: "pointer" }}
+          >
+            Manage
+          </div>
         </div>
 
         <div
-          className="d-flex"
+          className="d-flex justify-content-between"
           style={{
             boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
             borderRadius: "10px",
@@ -186,6 +270,14 @@ export default function PersonalInfo(props) {
               <span className="nunito-400 font-thrid">Last Name</span>
               <h5 className="nunito-600 mt-2">{data.lastName}</h5>
             </div>
+          </div>
+
+          <div
+            className="align-self-center nunito-400 font-primary"
+            onClick={handleShowLastName}
+            style={{ cursor: "pointer" }}
+          >
+            Manage
           </div>
         </div>
 
@@ -225,7 +317,7 @@ export default function PersonalInfo(props) {
           </div>
           <div
             className="align-self-center nunito-400 font-primary"
-            onClick={handleShow}
+            onClick={handleShowTelp}
             style={{ cursor: "pointer" }}
           >
             Manage
@@ -233,8 +325,106 @@ export default function PersonalInfo(props) {
         </div>
       </div>
 
-      {/* UPDATE HO TELP */}
-      <Modal show={show} onHide={handleClose} centered>
+      {/* UPDATE FIRSTNAME */}
+      <Modal show={showFirstName} onHide={handleCloseFirstName} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>First Name</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="nunito-400 font-secondary">
+            Enter first name to update your profile
+          </p>
+          <input
+            type="text"
+            name="firstName"
+            value={firstName}
+            placeholder="Input First Name ..."
+            onChange={handleTextFirstName}
+            className="nunito-700 font-primary"
+            style={{
+              height: "70px",
+              width: "100%",
+              textAlign: "center",
+              fontSize: "20px",
+              marginTop: "40px",
+              marginBottom: "50px",
+              border: "1px solid rgba(169, 169, 169, 0.6)",
+              borderRadius: "10px",
+              outline: "none",
+            }}
+          />
+
+          {isError.status && <ErrorHandling msg={isError.msg} top="50px" />}
+          {isSuccess.status && (
+            <ErrorHandling msg={isSuccess.msg} top="50px" isSuccess={true} />
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          {isLoading ? (
+            <Button width="170px">
+              <Spinner animation="border" variant="light" />
+            </Button>
+          ) : (
+            <Button
+              name="Submit"
+              width="170px"
+              handleClick={handleSubmitFirstName}
+            />
+          )}
+        </Modal.Footer>
+      </Modal>
+
+      {/* UPDATE LASTNAME */}
+      <Modal show={showLastName} onHide={handleCloseLastName} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Last Name</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="nunito-400 font-secondary">
+            Enter last name to update your profile
+          </p>
+          <input
+            type="text"
+            name="lastName"
+            value={lastName}
+            placeholder="Input Last Name ..."
+            onChange={handleTextLastName}
+            className="nunito-700 font-primary"
+            style={{
+              height: "70px",
+              width: "100%",
+              textAlign: "center",
+              fontSize: "20px",
+              marginTop: "40px",
+              marginBottom: "50px",
+              border: "1px solid rgba(169, 169, 169, 0.6)",
+              borderRadius: "10px",
+              outline: "none",
+            }}
+          />
+
+          {isError.status && <ErrorHandling msg={isError.msg} top="50px" />}
+          {isSuccess.status && (
+            <ErrorHandling msg={isSuccess.msg} top="50px" isSuccess={true} />
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          {isLoading ? (
+            <Button width="170px">
+              <Spinner animation="border" variant="light" />
+            </Button>
+          ) : (
+            <Button
+              name="Submit"
+              width="170px"
+              handleClick={handleSubmitLastName}
+            />
+          )}
+        </Modal.Footer>
+      </Modal>
+
+      {/* UPDATE NO TELP */}
+      <Modal show={show} onHide={handleCloseTelp} centered>
         <Modal.Header closeButton>
           <Modal.Title>Phone Number</Modal.Title>
         </Modal.Header>
@@ -245,8 +435,9 @@ export default function PersonalInfo(props) {
           <input
             type="number"
             name="noTelp"
+            value={noTelp}
             placeholder="Input Phone Number ..."
-            onChange={handleText}
+            onChange={handleTextNoTelp}
             className="nunito-700 font-primary"
             style={{
               height: "70px",

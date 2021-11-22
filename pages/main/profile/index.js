@@ -111,6 +111,47 @@ export default function Transfer(props) {
     }
   };
 
+  const handleDelete = () => {
+    axios
+      .delete(`/user/image/${props.data.dataCookie.id}`)
+      .then((res) => {
+        setIsSuccess({
+          status: true,
+          msg: res.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsSuccess({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
+        axios
+          .get(`/user/profile/${props.data.dataCookie.id}`)
+          .then((res) => {
+            console.log(res);
+            setDataUser(res.data.data);
+            console.log(dataUser);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        setIsError({
+          status: true,
+          msg: err.response.data.msg,
+        });
+
+        setTimeout(() => {
+          setIsError({
+            status: false,
+            msg: "",
+          });
+        }, 3000);
+      });
+  };
+
   const getUser = () => {
     axios
       .get(`/user/profile/${props.data.dataCookie.id}`)
@@ -182,6 +223,22 @@ export default function Transfer(props) {
 
             <span className="nunito-400 font-secondary ms-2">Edit</span>
           </div>
+
+          <button
+            className="nunito-400"
+            style={{
+              marginTop: "10px",
+              backgroundColor: "#FF5B37",
+              padding: "10px 5px",
+              color: "white",
+              border: "none",
+              width: "130px",
+              borderRadius: "12px",
+            }}
+            onClick={handleDelete}
+          >
+            delete image
+          </button>
 
           <input
             type="file"
