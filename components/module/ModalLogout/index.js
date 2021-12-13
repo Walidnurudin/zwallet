@@ -4,15 +4,17 @@ import { Modal } from "react-bootstrap";
 import Cookie from "js-cookie";
 import { useRouter } from "next/router";
 import axios from "utils/axios";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "stores/actions/auth";
 
 function ModalLogout({ show, onHide, handleClose }) {
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
   const router = useRouter();
 
   const handleLogout = () => {
-    axios
-      .post(`/auth/logout`)
+    dispatch(logout())
       .then((res) => {
-        console.log(res);
         Cookie.remove("token");
         Cookie.remove("id");
         router.push("/login");

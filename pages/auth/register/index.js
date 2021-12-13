@@ -6,6 +6,8 @@ import AuthLayout from "components/layouts/AuthLayout";
 import { Input, Button, ErrorHandling } from "components/module";
 import { getDataCookie } from "middleware/authorizationPage";
 import { Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "stores/actions/auth";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -21,6 +23,8 @@ export async function getServerSideProps(context) {
 }
 
 export default function Register() {
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
   const router = useRouter();
   const [form, setForm] = useState({
     firstName: "",
@@ -42,6 +46,29 @@ export default function Register() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
+
+    // dispatch(register(form))
+    //   .then((res) => {
+    //     console.log(res.action);
+    //     router.push("/login");
+    //     setIsLoading(false);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err.response);
+    //     setIsError({
+    //       status: true,
+    //       msg: auth.msg,
+    //     });
+
+    //     setTimeout(() => {
+    //       setIsError({
+    //         status: false,
+    //         msg: "",
+    //       });
+    //     }, 3000);
+    //     setIsLoading(false);
+    //   });
+
     axios
       .post("/auth/register", form)
       .then((res) => {

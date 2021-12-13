@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import axios from "utils/axios";
 import AuthLayout from "components/layouts/AuthLayout";
 import { useRouter } from "next/router";
 import Cookie from "js-cookie";
 import { getDataCookie } from "middleware/authorizationPage";
 import { Input, Button, ErrorHandling } from "components/module";
 import { Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "stores/actions/auth";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -22,7 +23,10 @@ export async function getServerSideProps(context) {
 }
 
 export default function Login() {
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
   const router = useRouter();
+
   const [form, setForm] = useState({ email: "", password: "" });
   const [isError, setIsError] = useState({
     status: false,
@@ -37,17 +41,18 @@ export default function Login() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    axios
-      .post("/auth/login", form)
+
+    dispatch(login(form))
       .then((res) => {
-        if (res.data.data.pin) {
-          Cookie.set("token", res.data.data.token);
-          Cookie.set("id", res.data.data.id);
+        console.log(res.action);
+        if (res.action.payload.data.data.pin) {
+          Cookie.set("token", res.action.payload.data.data.token);
+          Cookie.set("id", res.action.payload.data.data.id);
           router.push("/home");
           setIsLoading(false);
         } else {
-          Cookie.set("token", res.data.data.token);
-          Cookie.set("id", res.data.data.id);
+          Cookie.set("token", res.action.payload.data.data.token);
+          Cookie.set("id", res.action.payload.data.data.id);
           router.push("/create-pin");
           setIsLoading(false);
         }
@@ -55,7 +60,7 @@ export default function Login() {
       .catch((err) => {
         setIsError({
           status: true,
-          msg: err.response.data.msg,
+          msg: auth.msg,
         });
 
         setTimeout(() => {
