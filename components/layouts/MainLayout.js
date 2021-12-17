@@ -31,11 +31,11 @@ export default function MainLayout(props) {
         </div>
       </div>
 
-      <div className="row mb-5 mb-md-0">
-        <div className="d-none d-md-block col-0 col-md-12">
+      <div className="row m-0 color-primary">
+        <div className="d-none d-md-block col-md-12">
           <Footer />
         </div>
-        <div className="d-block d-md-none col-12 col-md-0">
+        <div className="d-block d-md-none col-12 mb-5">
           <FooterMobile />
         </div>
       </div>
