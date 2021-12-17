@@ -12,6 +12,7 @@ import axios from "utils/axios";
 import { getDataCookie } from "middleware/authorizationPage";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -193,15 +194,32 @@ export default function Transfer(props) {
   };
 
   const continueAmount = () => {
-    setTransfer({
-      ...transfer,
-      date: new Date().toString(),
-    });
+    if (transfer.amount > user.data.balance) {
+      return toast.error("Not enought amount");
+    } else if (!transfer.amount) {
+      return toast.error("Please fill your amount");
+    } else if (transfer.amount < 10000) {
+      return toast.error(`Minimum ${formatRp(10000)} to transfer`);
+    } else {
+      setTransfer({
+        ...transfer,
+        date: new Date().toString(),
+      });
 
+      setComp({
+        isSearch: false,
+        isAmount: false,
+        isConfirmation: true,
+        isStatus: false,
+      });
+    }
+  };
+
+  const backAmount = () => {
     setComp({
-      isSearch: false,
+      isSearch: true,
       isAmount: false,
-      isConfirmation: true,
+      isConfirmation: false,
       isStatus: false,
     });
   };
@@ -215,10 +233,25 @@ export default function Transfer(props) {
     });
   };
 
+  const backTransfer = () => {
+    setTransfer({
+      amount: null,
+      notes: "",
+      date: "",
+    });
+
+    setComp({
+      isSearch: false,
+      isAmount: true,
+      isConfirmation: false,
+      isStatus: false,
+    });
+  };
+
   // TRANSFER DATA
   const [transferUser, setTransferUser] = useState({});
   const [transfer, setTransfer] = useState({
-    amount: "",
+    amount: null,
     notes: "",
     date: "",
   });
@@ -302,6 +335,21 @@ export default function Transfer(props) {
           image={transferUser.image}
           handleText={handleText}
           handleSubmit={continueAmount}
+          handleBack={backAmount}
+          styleUnderValue={
+            transfer.amount === null
+              ? true
+              : transfer.amount < 10000
+              ? false
+              : true
+          }
+          underValue={
+            transfer.amount === null
+              ? false
+              : transfer.amount < 10000
+              ? true
+              : false
+          }
         />
       ) : comp.isConfirmation ? (
         <ConfirmationTransfer
@@ -313,6 +361,7 @@ export default function Transfer(props) {
           image={transferUser.image}
           notes={transfer.notes}
           handleSubmit={handleSubmit}
+          handleBack={backTransfer}
         />
       ) : (
         <Status

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { ModalComponent } from "components/module";
 import axios from "utils/axios";
+import { formatRp } from "utils/formatRp";
 
 export default function Balance({ balance, noTelp }) {
   const router = useRouter();
@@ -48,7 +49,7 @@ export default function Balance({ balance, noTelp }) {
             style={{ marginTop: "10px", marginBottom: "15px" }}
             className="text-white nunito-700"
           >
-            Rp{balance || 0}
+            {formatRp(balance) || 0}
           </h1>
           <p
             className="text-white nunito-400 m-0"

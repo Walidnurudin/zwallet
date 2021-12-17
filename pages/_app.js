@@ -2,6 +2,7 @@ import Head from "next/head";
 import "../styles/globals.css";
 import "bootstrap/dist/css/bootstrap.css";
 // import "bootstrap/dist/js/bootstrap";
+import { ToastContainer } from "react-toastify";
 
 // REDUX
 import { Provider } from "react-redux";
@@ -21,6 +22,7 @@ function MyApp({ Component, pageProps }) {
             <link rel="icon" href="../assets/images/logo/zwallet.png" />
           </Head>
           <Component {...pageProps} />
+          <ToastContainer autoClose={2000} pauseOnHover={false} />
         </PersistGate>
       </Provider>
     </>

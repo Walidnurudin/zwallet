@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
+import React from "react";
 import { useRouter } from "next/router";
+import { formatRp } from "utils/formatRp";
 
 function TransactionHistory({ data }) {
   const router = useRouter();
@@ -65,21 +66,21 @@ function TransactionHistory({ data }) {
                         className="align-self-center nunito-700"
                         style={{ color: "#FF5B37" }}
                       >
-                        -Rp{item.amount}
+                        -{formatRp(item.amount)}
                       </div>
                     ) : item.type === "topup" ? (
                       <div
                         className="align-self-center nunito-700"
                         style={{ color: "#FF5B37" }}
                       >
-                        +Rp{item.amount}
+                        +{formatRp(item.amount)}
                       </div>
                     ) : (
                       <div
                         className="align-self-center nunito-700"
                         style={{ color: "#1EC15F" }}
                       >
-                        +Rp{item.amount}
+                        +{formatRp(item.amount)}
                       </div>
                     )}
                   </div>

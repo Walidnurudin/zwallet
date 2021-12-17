@@ -61,6 +61,7 @@ function SearchReceiver({
                     boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
                     borderRadius: "10px",
                     padding: "20px",
+                    cursor: "pointer",
                   }}
                 >
                   <div className="d-flex">

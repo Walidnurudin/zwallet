@@ -6,6 +6,7 @@ import { getDataCookie } from "middleware/authorizationPage";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import Pagination from "react-paginate";
+import { formatRp } from "utils/formatRp";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -191,21 +192,21 @@ export default function Transfer(props) {
                           className="align-self-center nunito-700"
                           style={{ color: "#FF5B37" }}
                         >
-                          -Rp{item.amount}
+                          -{formatRp(item.amount)}
                         </div>
                       ) : item.type === "topup" ? (
                         <div
                           className="align-self-center nunito-700"
                           style={{ color: "#FF5B37" }}
                         >
-                          +Rp{item.amount}
+                          +{formatRp(item.amount)}
                         </div>
                       ) : (
                         <div
                           className="align-self-center nunito-700"
                           style={{ color: "#1EC15F" }}
                         >
-                          +Rp{item.amount}
+                          +{formatRp(item.amount)}
                         </div>
                       )}
                     </div>

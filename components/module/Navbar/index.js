@@ -2,6 +2,7 @@
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import axios from "utils/axios";
+import { formatRp } from "utils/formatRp";
 
 export default function Navbar(props) {
   const router = useRouter();
@@ -89,7 +90,7 @@ export default function Navbar(props) {
                       </div>
                       <div>
                         <p className="font-secondary nunito-400">Transfer</p>
-                        <h5 className="nunito-700">Rp{item.amount}</h5>
+                        <h5 className="nunito-700">{formatRp(item.amount)}</h5>
                       </div>
                     </>
                   ) : (
@@ -103,7 +104,7 @@ export default function Navbar(props) {
                       </div>
                       <div>
                         <p className="font-secondary nunito-400">{item.type}</p>
-                        <h5 className="nunito-700">Rp{item.amount}</h5>
+                        <h5 className="nunito-700">{formatRp(item.amount)}</h5>
                       </div>
                     </>
                   )}

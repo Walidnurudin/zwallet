@@ -6,6 +6,7 @@ import axios from "utils/axios";
 import { useRouter } from "next/router";
 import { Button } from "components/module";
 import { useSelector } from "react-redux";
+import { formatRp } from "utils/formatRp";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -95,7 +96,9 @@ export default function HistoryDetail(props) {
               {router.query.type} - {history[0].status}
             </p>
 
-            <h1 className="nunito-700 font-primary">Rp{history[0].amount}</h1>
+            <h1 className="nunito-700 font-primary">
+              {formatRp(history[0].amount)}
+            </h1>
 
             <Button
               name="Back"

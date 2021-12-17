@@ -1,8 +1,19 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState } from "react";
+import React from "react";
 import { Input, Button } from "components/module";
+import { formatRp } from "utils/formatRp";
 
-function Amount({ name, noTelp, balance, image, handleText, handleSubmit }) {
+function Amount({
+  name,
+  noTelp,
+  balance,
+  image,
+  handleText,
+  handleSubmit,
+  handleBack,
+  underValue,
+  styleUnderValue,
+}) {
   return (
     <div
       style={{
@@ -67,26 +78,39 @@ function Amount({ name, noTelp, balance, image, handleText, handleSubmit }) {
           }}
         >
           <input
-            type="text"
+            type="number"
             name="amount"
             placeholder="0.00"
             onChange={handleText}
-            className="nunito-700 font-primary"
+            className="nunito-700"
             style={{
               height: "86px",
               width: "100%",
               textAlign: "center",
               fontSize: "42px",
+              color: `${styleUnderValue ? "#6379f4" : "red"}`,
               border: "none",
               outline: "none",
             }}
           />
 
+          {underValue && (
+            <p
+              style={{
+                color: "#ff5b37",
+                textAlign: "center",
+                marginTop: "20px",
+              }}
+            >
+              Minimum {formatRp(10000)} to transfer
+            </p>
+          )}
+
           <h5
             className="nunito-700"
             style={{ marginTop: "40px", marginBottom: "60px" }}
           >
-            Rp{balance} Available
+            {formatRp(balance)} Available
           </h5>
 
           <Input
@@ -101,6 +125,13 @@ function Amount({ name, noTelp, balance, image, handleText, handleSubmit }) {
         </div>
 
         <div className="d-flex justify-content-end">
+          <Button
+            name="Back"
+            handleClick={handleBack}
+            width="170px"
+            color="gray"
+          />
+          <div style={{ width: "50px" }}></div>
           <Button name="Continue" handleClick={handleSubmit} width="170px" />
         </div>
       </div>

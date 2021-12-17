@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { Line } from "react-chartjs-2";
+import { formatRp } from "utils/formatRp";
 
 export default function Dashboard({ income, expense, data, options }) {
   return (
@@ -25,7 +26,7 @@ export default function Dashboard({ income, expense, data, options }) {
             width="28px"
           />
           <p className="nunito-400 font-secondary my-2">Income</p>
-          <h5 className="nunito-700">Rp{income}</h5>
+          <h5 className="nunito-700">{formatRp(income)}</h5>
         </div>
 
         <div>
@@ -35,7 +36,7 @@ export default function Dashboard({ income, expense, data, options }) {
             width="28px"
           />
           <p className="nunito-400 font-secondary my-2">Expense</p>
-          <h5 className="nunito-700">Rp{expense}</h5>
+          <h5 className="nunito-700">{formatRp(expense)}</h5>
         </div>
       </div>
 

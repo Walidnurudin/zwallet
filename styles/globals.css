@@ -1,4 +1,5 @@
 /* IMPORT ALL FILE CSS */
+@import "react-toastify/dist/ReactToastify.css";
 
 /* PAGE */
 @import url("../pages/auth/login/Login.css");
@@ -30,6 +31,16 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
 }
 
 /* COSTUM */

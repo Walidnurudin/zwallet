@@ -17,8 +17,6 @@ export async function getServerSideProps(context) {
     };
   }
 
-  console.log(dataCookie.token);
-
   // GET DASHBOARD
   const dashboard = await axios
     .get(`/dashboard/${dataCookie.id}`, {

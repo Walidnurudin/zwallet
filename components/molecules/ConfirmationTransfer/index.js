@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { Button } from "components/module";
+import { formatRp } from "utils/formatRp";
+import { formatDate } from "utils/formatDate";
 
 function ConfirmationTransfer({
   name,
@@ -11,6 +13,7 @@ function ConfirmationTransfer({
   notes,
   image,
   handleSubmit,
+  handleBack,
 }) {
   return (
     <div
@@ -68,7 +71,7 @@ function ConfirmationTransfer({
           <div>
             <div>
               <span className="nunito-400 font-thrid">Amount</span>
-              <h5 className="nunito-600 mt-2">{amount}</h5>
+              <h5 className="nunito-600 mt-2">{formatRp(amount)}</h5>
             </div>
           </div>
         </div>
@@ -85,7 +88,7 @@ function ConfirmationTransfer({
           <div>
             <div>
               <span className="nunito-400 font-thrid">Balance Left</span>
-              <h5 className="nunito-600 mt-2">{balance}</h5>
+              <h5 className="nunito-600 mt-2">{formatRp(balance - amount)}</h5>
             </div>
           </div>
         </div>
@@ -102,7 +105,7 @@ function ConfirmationTransfer({
           <div>
             <div>
               <span className="nunito-400 font-thrid">Date & Time</span>
-              <h5 className="nunito-600 mt-2">{date}</h5>
+              <h5 className="nunito-600 mt-2">{formatDate(date)}</h5>
             </div>
           </div>
         </div>
@@ -119,7 +122,7 @@ function ConfirmationTransfer({
           <div>
             <div>
               <span className="nunito-400 font-thrid">Notes</span>
-              <h5 className="nunito-600 mt-2">{notes}</h5>
+              <h5 className="nunito-600 mt-2">{notes || "-"}</h5>
             </div>
           </div>
         </div>
@@ -128,6 +131,13 @@ function ConfirmationTransfer({
           className="d-flex justify-content-end"
           style={{ marginTop: "35px" }}
         >
+          <Button
+            name="Back"
+            handleClick={handleBack}
+            width="170px"
+            color="gray"
+          />
+          <div style={{ width: "50px" }}></div>
           <Button name="Continue" handleClick={handleSubmit} width="170px" />
         </div>
       </div>
