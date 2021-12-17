@@ -11,6 +11,7 @@ import {
 import axios from "utils/axios";
 import { getDataCookie } from "middleware/authorizationPage";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -161,24 +162,11 @@ export default function Transfer(props) {
   };
 
   // GET USER
-  const [dataUser, setDataUser] = useState({});
-
-  const getUser = () => {
-    axios
-      .get(`/user/profile/${props.data.dataCookie.id}`)
-      .then((res) => {
-        console.log(res);
-        setDataUser(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const user = useSelector((state) => state.user);
 
   // did mount
   useEffect(() => {
     getAllUser();
-    getUser();
   }, []);
 
   // did update
@@ -287,16 +275,13 @@ export default function Transfer(props) {
     // continueConfirmation();
   };
 
-  console.log(data.data);
-  console.log(data.pagination);
-
   return (
     <MainLayout
       title="Transfer"
-      firstName={dataUser.firstName}
-      lastName={dataUser.lastName}
-      noTelp={dataUser.noTelp}
-      image={dataUser.image}
+      firstName={user.data.firstName}
+      lastName={user.data.lastName}
+      noTelp={user.data.noTelp}
+      image={user.data.image}
     >
       {/* COMPONENT */}
 
@@ -313,7 +298,7 @@ export default function Transfer(props) {
         <Amount
           name={`${transferUser.firstName} ${transferUser.lastName}`}
           noTelp={transferUser.noTelp}
-          balance={dataUser.balance}
+          balance={user.data.balance}
           image={transferUser.image}
           handleText={handleText}
           handleSubmit={continueAmount}
@@ -323,7 +308,7 @@ export default function Transfer(props) {
           name={`${transferUser.firstName} ${transferUser.lastName}`}
           noTelp={transferUser.noTelp}
           amount={transfer.amount}
-          balance={dataUser.balance}
+          balance={user.data.balance}
           date={transfer.date}
           image={transferUser.image}
           notes={transfer.notes}
@@ -334,7 +319,7 @@ export default function Transfer(props) {
           name={`${transferUser.firstName} ${transferUser.lastName}`}
           noTelp={transferUser.noTelp}
           amount={transfer.amount}
-          balance={dataUser.balance}
+          balance={user.data.balance}
           date={transfer.date}
           image={transferUser.image}
           notes={transfer.notes}

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import MainLayout from "components/layouts/MainLayout";
 import { getDataCookie } from "middleware/authorizationPage";
 import { Input, Button, ErrorHandling } from "components/module";
-import axios from "utils/axios";
 import { Spinner } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { updatePassword } from "stores/actions/user";
+import { useRouter } from "next/router";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -24,6 +26,10 @@ export async function getServerSideProps(context) {
 }
 
 export default function ChangePassword(props) {
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const [password, setPassword] = useState({
     oldPassword: "",
     newPassword: "",
@@ -41,20 +47,6 @@ export default function ChangePassword(props) {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [userData, setUserData] = useState({});
-
-  // GET USER
-  const getUser = () => {
-    axios
-      .get(`/user/profile/${props.data.dataCookie.id}`)
-      .then((res) => {
-        setUserData(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
-  };
-
   const handleText = (e) => {
     setPassword({
       ...password,
@@ -64,12 +56,12 @@ export default function ChangePassword(props) {
 
   const handleSubmit = () => {
     setIsLoading(true);
-    axios
-      .patch(`/user/password/${props.data.dataCookie.id}`, password)
+
+    dispatch(updatePassword(user.data.id, password))
       .then((res) => {
         setIsSuccess({
           status: true,
-          msg: res.data.msg,
+          msg: res.value.data.msg,
         });
 
         setTimeout(() => {
@@ -77,7 +69,9 @@ export default function ChangePassword(props) {
             status: false,
             msg: "",
           });
-        }, 3000);
+
+          router.push("/profile");
+        }, 2000);
         setPassword({
           oldPassword: "",
           newPassword: "",
@@ -99,19 +93,51 @@ export default function ChangePassword(props) {
         }, 3000);
         setIsLoading(false);
       });
-  };
 
-  useEffect(() => {
-    getUser();
-  }, []);
+    // axios
+    //   .patch(`/user/password/${props.data.dataCookie.id}`, password)
+    //   .then((res) => {
+    //     setIsSuccess({
+    //       status: true,
+    //       msg: res.data.msg,
+    //     });
+
+    //     setTimeout(() => {
+    //       setIsSuccess({
+    //         status: false,
+    //         msg: "",
+    //       });
+    //     }, 3000);
+    //     setPassword({
+    //       oldPassword: "",
+    //       newPassword: "",
+    //       confirmPassword: "",
+    //     });
+    //     setIsLoading(false);
+    //   })
+    //   .catch((err) => {
+    //     setIsError({
+    //       status: true,
+    //       msg: err.response.data.msg,
+    //     });
+
+    //     setTimeout(() => {
+    //       setIsError({
+    //         status: false,
+    //         msg: "",
+    //       });
+    //     }, 3000);
+    //     setIsLoading(false);
+    //   });
+  };
 
   return (
     <MainLayout
       title="Change Password"
-      firstName={userData.firstName}
-      lastName={userData.lastName}
-      noTelp={userData.noTelp}
-      image={userData.image}
+      firstName={user.data.firstName}
+      lastName={user.data.lastName}
+      noTelp={user.data.noTelp}
+      image={user.data.image}
     >
       <div
         style={{

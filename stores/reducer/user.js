@@ -7,8 +7,8 @@ const initialState = {
 
 const user = (state = initialState, action) => {
   switch (action.type) {
-    // GET USER
-    case "GET_USER_PENDING":
+    // GET USER PROFILE
+    case "GET_USER_PROFILE_PENDING":
       return {
         ...state,
         data: "",
@@ -16,16 +16,15 @@ const user = (state = initialState, action) => {
         isError: false,
         msg: "",
       };
-    case "GET_USER_FULFILLED":
+    case "GET_USER_PROFILE_FULFILLED":
       return {
         ...state,
-        data: action.payload.data.data[0],
-        role: action.payload.data.data[0].role,
+        data: action.payload.data.data,
         isLoading: false,
         isError: false,
         msg: action.payload.data.msg,
       };
-    case "GET_USER_REJECTED":
+    case "GET_USER_PROFILE_REJECTED":
       return {
         ...state,
         isLoading: false,
@@ -77,6 +76,31 @@ const user = (state = initialState, action) => {
       };
 
     case "UPDATE_USER_IMAGE_REJECTED":
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+        msg: action.payload.response.data.msg,
+      };
+
+    // DELETE USER IMAGE
+    case "DELETE_USER_IMAGE_PENDING":
+      return {
+        ...state,
+        isLoading: true,
+        isError: false,
+        msg: "",
+      };
+
+    case "DELETE_USER_IMAGE_FULFILLED":
+      return {
+        ...state,
+        isLoading: false,
+        isError: false,
+        msg: action.payload.data.msg,
+      };
+
+    case "DELETE_USER_IMAGE_REJECTED":
       return {
         ...state,
         isLoading: false,

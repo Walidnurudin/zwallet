@@ -3,6 +3,7 @@ import axios from "utils/axios";
 import { getDataCookie } from "middleware/authorizationPage";
 import MainLayout from "components/layouts/MainLayout";
 import { Balance, Dashboard, TransactionHistory } from "components/molecules";
+import { useSelector } from "react-redux";
 
 // SERVER SIDE RENDERING
 export async function getServerSideProps(context) {
@@ -57,8 +58,8 @@ export async function getServerSideProps(context) {
 }
 
 function Home(props) {
+  const user = useSelector((state) => state.user);
   const [data, setData] = useState(props.data);
-  const [userData, setUserData] = useState({});
 
   let labelChart = [];
   data.dashboard.listIncome?.map((item) => {
@@ -126,32 +127,16 @@ function Home(props) {
     },
   };
 
-  useEffect(() => {
-    getUser();
-  }, []);
-
-  // GET USER
-  const getUser = () => {
-    axios
-      .get(`/user/profile/${props.data.dataCookie.id}`)
-      .then((res) => {
-        setUserData(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err.response);
-      });
-  };
-
-  console.log(data);
+  console.log(user);
   return (
     <MainLayout
       title="Home"
-      firstName={userData.firstName}
-      lastName={userData.lastName}
-      noTelp={userData.noTelp}
-      image={userData.image}
+      firstName={user.data.firstName}
+      lastName={user.data.lastName}
+      noTelp={user.data.noTelp}
+      image={user.data.image}
     >
-      <Balance balance={userData.balance} noTelp={userData.noTelp} />
+      <Balance balance={user.data.balance} noTelp={user.data.noTelp} />
       <div className="row">
         <div className="col-12 col-md-7">
           <Dashboard

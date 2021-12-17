@@ -8,6 +8,7 @@ import { Input, Button, ErrorHandling } from "components/module";
 import { Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "stores/actions/auth";
+import { getUserProfile } from "stores/actions/user";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -45,6 +46,7 @@ export default function Login() {
     dispatch(login(form))
       .then((res) => {
         console.log(res.action);
+        dispatch(getUserProfile());
         if (res.action.payload.data.data.pin) {
           Cookie.set("token", res.action.payload.data.data.token);
           Cookie.set("id", res.action.payload.data.data.id);

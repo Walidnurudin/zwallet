@@ -4,6 +4,7 @@ import MainLayout from "components/layouts/MainLayout";
 import axios from "utils/axios";
 import { getDataCookie } from "middleware/authorizationPage";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 import Pagination from "react-paginate";
 
 export async function getServerSideProps(context) {
@@ -25,10 +26,10 @@ export async function getServerSideProps(context) {
 }
 
 export default function Transfer(props) {
+  const user = useSelector((state) => state.user);
   const router = useRouter();
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState({});
-  const [dataUser, setDataUser] = useState({});
   const [filter, setFilter] = useState({
     page: 1,
     limit: 5,
@@ -55,18 +56,6 @@ export default function Transfer(props) {
       })
       .catch((err) => {
         console.log(err.response);
-      });
-  };
-
-  // GET USER
-  const getUser = () => {
-    axios
-      .get(`/user/profile/${props.data.dataCookie.id}`)
-      .then((res) => {
-        setDataUser(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
       });
   };
 
@@ -116,15 +105,14 @@ export default function Transfer(props) {
   // did mount
   useEffect(() => {
     history();
-    getUser();
   }, []);
 
   return (
     <MainLayout
       title="Transfer"
-      firstName={dataUser.firstName}
-      lastName={dataUser.lastName}
-      image={dataUser.image}
+      firstName={user.data.firstName}
+      lastName={user.data.lastName}
+      image={user.data.image}
       // handleGetAfterTopup={history}
     >
       <div

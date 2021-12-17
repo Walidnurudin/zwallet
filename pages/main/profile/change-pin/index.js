@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import MainLayout from "components/layouts/MainLayout";
 import { getDataCookie } from "middleware/authorizationPage";
 import { Button, ErrorHandling } from "components/module";
-import axios from "utils/axios";
 import { Spinner } from "react-bootstrap";
+import { useSelector, useDispatch } from "react-redux";
+import { updatePin } from "stores/actions/user";
+import { useRouter } from "next/router";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -25,7 +27,9 @@ export async function getServerSideProps(context) {
 
 export default function ChangePin(props) {
   const [pin, setPin] = useState({});
-  const [userData, setUserData] = useState({});
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const [isError, setIsError] = useState({
     status: false,
@@ -57,16 +61,13 @@ export default function ChangePin(props) {
       pin.pin1 + pin.pin2 + pin.pin3 + pin.pin4 + pin.pin5 + pin.pin6;
 
     e.preventDefault();
-
-    console.log("SUBMIT PIN");
-
     setIsLoading(true);
-    axios
-      .patch(`/user/pin/${props.data.dataCookie.id}`, { pin: allPin })
+
+    dispatch(updatePin(user.data.id, { pin: allPin }))
       .then((res) => {
         setIsSuccess({
           status: true,
-          msg: res.data.msg,
+          msg: res.value.data.msg,
         });
 
         setTimeout(() => {
@@ -74,7 +75,8 @@ export default function ChangePin(props) {
             status: false,
             msg: "",
           });
-        }, 3000);
+          router.push("/profile");
+        }, 2000);
         setIsLoading(false);
       })
       .catch((err) => {
@@ -93,30 +95,13 @@ export default function ChangePin(props) {
       });
   };
 
-  const getUser = () => {
-    axios
-      .get(`/user/profile/${props.data.dataCookie.id}`)
-      .then((res) => {
-        console.log(res);
-        setUserData(res.data.data);
-        console.log(userData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    getUser();
-  }, []);
-
   return (
     <MainLayout
       title="Change PIN"
-      firstName={userData.firstName}
-      lastName={userData.lastName}
-      noTelp={userData.noTelp}
-      image={userData.image}
+      firstName={user.data.firstName}
+      lastName={user.data.lastName}
+      noTelp={user.data.noTelp}
+      image={user.data.image}
     >
       <div
         style={{

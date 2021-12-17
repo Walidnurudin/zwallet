@@ -2,9 +2,10 @@ import MainLayout from "components/layouts/MainLayout";
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import axios from "utils/axios";
 import { getDataCookie } from "middleware/authorizationPage";
 import { ModalLogout, ErrorHandling } from "components/module";
+import { useSelector, useDispatch } from "react-redux";
+import { updateImage, getUserProfile, deleteImage } from "stores/actions/user";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -27,6 +28,8 @@ export async function getServerSideProps(context) {
 export default function Transfer(props) {
   const router = useRouter();
   const inputFile = useRef(null);
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   // MODAL LOGOUT
   const [showLogout, setShowLogout] = useState(false);
@@ -35,7 +38,6 @@ export default function Transfer(props) {
   const handleShowLogout = () => setShowLogout(true);
 
   const [image, setImage] = useState({ image: "" });
-  const [dataUser, setDataUser] = useState({});
   const [isError, setIsError] = useState({
     status: false,
     msg: "",
@@ -51,7 +53,7 @@ export default function Transfer(props) {
     inputFile.current.click();
   };
 
-  const updateImage = () => {
+  const handleUpdateImage = () => {
     if (image === null || !image.image) {
       // notifError("Masukan gambar");
     } else {
@@ -69,13 +71,12 @@ export default function Transfer(props) {
         console.log(data[0] + ", " + data[1]);
       }
 
-      axios
-        .patch(`/user/image/${props.data.dataCookie.id}`, formData)
+      dispatch(updateImage(user.data.id, formData))
         .then((res) => {
           console.log(res);
           setIsSuccess({
             status: true,
-            msg: res.data.msg,
+            msg: res.value.data.msg,
           });
 
           setTimeout(() => {
@@ -84,16 +85,7 @@ export default function Transfer(props) {
               msg: "",
             });
           }, 3000);
-          axios
-            .get(`/user/profile/${props.data.dataCookie.id}`)
-            .then((res) => {
-              console.log(res);
-              setDataUser(res.data.data);
-              console.log(dataUser);
-            })
-            .catch((err) => {
-              console.log(err);
-            });
+          dispatch(getUserProfile());
         })
         .catch((err) => {
           setIsError({
@@ -112,12 +104,12 @@ export default function Transfer(props) {
   };
 
   const handleDelete = () => {
-    axios
-      .delete(`/user/image/${props.data.dataCookie.id}`)
+    dispatch(deleteImage(user.data.id))
       .then((res) => {
+        console.log(res);
         setIsSuccess({
           status: true,
-          msg: res.data.msg,
+          msg: res.value.data.msg,
         });
 
         setTimeout(() => {
@@ -126,16 +118,7 @@ export default function Transfer(props) {
             msg: "",
           });
         }, 3000);
-        axios
-          .get(`/user/profile/${props.data.dataCookie.id}`)
-          .then((res) => {
-            console.log(res);
-            setDataUser(res.data.data);
-            console.log(dataUser);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        dispatch(getUserProfile());
       })
       .catch((err) => {
         setIsError({
@@ -152,34 +135,17 @@ export default function Transfer(props) {
       });
   };
 
-  const getUser = () => {
-    axios
-      .get(`/user/profile/${props.data.dataCookie.id}`)
-      .then((res) => {
-        console.log(res);
-        setDataUser(res.data.data);
-        console.log(dataUser);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   useEffect(() => {
-    getUser();
-  }, []);
-
-  useEffect(() => {
-    updateImage();
+    handleUpdateImage();
   }, [image]);
 
   return (
     <MainLayout
       title="Profile"
-      firstName={dataUser.firstName}
-      lastName={dataUser.lastName}
-      noTelp={dataUser.noTelp}
-      image={dataUser.image}
+      firstName={user.data.firstName}
+      lastName={user.data.lastName}
+      noTelp={user.data.noTelp}
+      image={user.data.image}
     >
       <div
         style={{
@@ -200,8 +166,8 @@ export default function Transfer(props) {
         >
           <img
             src={
-              dataUser.image
-                ? `${process.env.URL_BACKEND}uploads/${dataUser.image}`
+              user.data.image
+                ? `${process.env.URL_BACKEND}uploads/${user.data.image}`
                 : "../assets/images/transaction/def.jpeg"
             }
             alt="user"
@@ -255,10 +221,10 @@ export default function Transfer(props) {
 
           <div style={{ marginTop: "15px", marginBottom: "50px" }}>
             <h5 className="nunito-700">
-              {dataUser.firstName} {dataUser.lastName}
+              {user.data.firstName} {user.data.lastName}
             </h5>
             <p className="nunito-400 font-secondary">
-              {dataUser.noTelp || "-"}
+              {user.data.noTelp || "-"}
             </p>
           </div>
 

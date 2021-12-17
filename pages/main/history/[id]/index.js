@@ -5,6 +5,7 @@ import { getDataCookie } from "middleware/authorizationPage";
 import axios from "utils/axios";
 import { useRouter } from "next/router";
 import { Button } from "components/module";
+import { useSelector } from "react-redux";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -17,32 +18,17 @@ export async function getServerSideProps(context) {
     };
   }
 
-  // GET USER
-  const user = await axios
-    .get(`/user/profile/${dataCookie.id}`, {
-      headers: {
-        Authorization: `Bearer ${dataCookie.token}`,
-      },
-    })
-    .then((res) => {
-      return res.data.data;
-    })
-    .catch((err) => {
-      console.log(err.response);
-      return [];
-    });
-
   return {
     props: {
-      data: { dataCookie, user },
+      data: { dataCookie },
     },
   };
 }
 
 export default function HistoryDetail(props) {
+  const user = useSelector((state) => state.user);
   const router = useRouter();
   const [history, setHistory] = useState([]);
-  const [data, setData] = useState(props.data.user);
 
   // // GET USER
   const getHistoryById = () => {
@@ -64,10 +50,10 @@ export default function HistoryDetail(props) {
   return (
     <MainLayout
       title="Personal Info"
-      firstName={data.firstName}
-      lastName={data.lastName}
-      noTelp={data.noTelp}
-      image={data.image}
+      firstName={user.data.firstName}
+      lastName={user.data.lastName}
+      noTelp={user.data.noTelp}
+      image={user.data.image}
     >
       <div
         style={{

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MainLayout from "components/layouts/MainLayout";
 import { getDataCookie } from "middleware/authorizationPage";
-import axios from "utils/axios";
 import { Modal, Spinner } from "react-bootstrap";
 import { Button, ErrorHandling } from "components/module";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserProfile, updateProfile } from "stores/actions/user";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -16,30 +17,16 @@ export async function getServerSideProps(context) {
     };
   }
 
-  // GET USER
-  const user = await axios
-    .get(`/user/profile/${dataCookie.id}`, {
-      headers: {
-        Authorization: `Bearer ${dataCookie.token}`,
-      },
-    })
-    .then((res) => {
-      return res.data.data;
-    })
-    .catch((err) => {
-      console.log(err.response);
-      return [];
-    });
-
   return {
     props: {
-      data: { dataCookie, user },
+      data: { dataCookie },
     },
   };
 }
 
 export default function PersonalInfo(props) {
-  const [data, setData] = useState(props.data.user);
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   // MODAL
   const [show, setShow] = useState(false);
@@ -65,9 +52,9 @@ export default function PersonalInfo(props) {
     msg: "",
   });
 
-  const [noTelp, setNoTelp] = useState(props.data.user.noTelp);
-  const [firstName, setFirstName] = useState(props.data.user.firstName);
-  const [lastName, setLastName] = useState(props.data.user.lastName);
+  const [noTelp, setNoTelp] = useState(user.data.noTelp);
+  const [firstName, setFirstName] = useState(user.data.firstName);
+  const [lastName, setLastName] = useState(user.data.lastName);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -85,22 +72,12 @@ export default function PersonalInfo(props) {
 
   const handleSubmit = () => {
     setIsLoading(true);
-    axios
-      .patch(`/user/profile/${props.data.dataCookie.id}`, { noTelp: noTelp })
+
+    dispatch(updateProfile(user.data.id, { noTelp: noTelp }))
       .then((res) => {
-        console.log(res);
         setIsLoading(false);
         handleCloseTelp();
-
-        axios
-          .get(`/user/profile/${props.data.dataCookie.id}`)
-          .then((res) => {
-            console.log(res.data.data);
-            setData(res.data.data);
-          })
-          .catch((err) => {
-            console.log(err.response);
-          });
+        dispatch(getUserProfile(user.data.id));
       })
       .catch((err) => {
         setIsError({
@@ -115,31 +92,17 @@ export default function PersonalInfo(props) {
           });
         }, 3000);
         setIsLoading(false);
-        setIsLoading(false);
-        console.log(err.response);
       });
   };
 
   const handleSubmitFirstName = () => {
     setIsLoading(true);
-    axios
-      .patch(`/user/profile/${props.data.dataCookie.id}`, {
-        firstName: firstName,
-      })
+
+    dispatch(updateProfile(user.data.id, { firstName: firstName }))
       .then((res) => {
-        console.log(res);
         setIsLoading(false);
         handleCloseFirstName();
-
-        axios
-          .get(`/user/profile/${props.data.dataCookie.id}`)
-          .then((res) => {
-            console.log(res.data.data);
-            setData(res.data.data);
-          })
-          .catch((err) => {
-            console.log(err.response);
-          });
+        dispatch(getUserProfile(user.data.id));
       })
       .catch((err) => {
         setIsError({
@@ -154,31 +117,17 @@ export default function PersonalInfo(props) {
           });
         }, 3000);
         setIsLoading(false);
-        setIsLoading(false);
-        console.log(err.response);
       });
   };
 
   const handleSubmitLastName = () => {
     setIsLoading(true);
-    axios
-      .patch(`/user/profile/${props.data.dataCookie.id}`, {
-        lastName: lastName,
-      })
+
+    dispatch(updateProfile(user.data.id, { lastName: lastName }))
       .then((res) => {
-        console.log(res);
         setIsLoading(false);
         handleCloseLastName();
-
-        axios
-          .get(`/user/profile/${props.data.dataCookie.id}`)
-          .then((res) => {
-            console.log(res.data.data);
-            setData(res.data.data);
-          })
-          .catch((err) => {
-            console.log(err.response);
-          });
+        dispatch(getUserProfile(user.data.id));
       })
       .catch((err) => {
         setIsError({
@@ -193,18 +142,16 @@ export default function PersonalInfo(props) {
           });
         }, 3000);
         setIsLoading(false);
-        setIsLoading(false);
-        console.log(err.response);
       });
   };
 
   return (
     <MainLayout
       title="Personal Info"
-      firstName={data.firstName}
-      lastName={data.lastName}
-      noTelp={data.noTelp}
-      image={data.image}
+      firstName={user.data.firstName}
+      lastName={user.data.lastName}
+      noTelp={user.data.noTelp}
+      image={user.data.image}
     >
       <div
         style={{
@@ -242,7 +189,7 @@ export default function PersonalInfo(props) {
           <div>
             <div>
               <span className="nunito-400 font-thrid">First Name</span>
-              <h5 className="nunito-600 mt-2">{data.firstName}</h5>
+              <h5 className="nunito-600 mt-2">{user.data.firstName}</h5>
             </div>
           </div>
 
@@ -268,7 +215,7 @@ export default function PersonalInfo(props) {
           <div>
             <div>
               <span className="nunito-400 font-thrid">Last Name</span>
-              <h5 className="nunito-600 mt-2">{data.lastName}</h5>
+              <h5 className="nunito-600 mt-2">{user.data.lastName}</h5>
             </div>
           </div>
 
@@ -294,7 +241,9 @@ export default function PersonalInfo(props) {
           <div>
             <div>
               <span className="nunito-400 font-thrid">Verified E-mail</span>
-              <h5 className="nunito-600 mt-2 font-secondary">{data.email}</h5>
+              <h5 className="nunito-600 mt-2 font-secondary">
+                {user.data.email}
+              </h5>
             </div>
           </div>
         </div>
@@ -312,7 +261,7 @@ export default function PersonalInfo(props) {
           <div>
             <div>
               <span className="nunito-400 font-thrid">Phone Number</span>
-              <h5 className="nunito-600 mt-2">{data.noTelp || "-"}</h5>
+              <h5 className="nunito-600 mt-2">{user.data.noTelp || "-"}</h5>
             </div>
           </div>
           <div
