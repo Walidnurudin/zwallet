@@ -10,6 +10,8 @@ export default function ModalComponent({
   handleSubmitTopup,
   handleTextPin,
   handleSubmitPin,
+  topUpError,
+  msgErrorTopUp,
 }) {
   return (
     <>
@@ -162,6 +164,17 @@ export default function ModalComponent({
                 outline: "none",
               }}
             />
+            {topUpError && (
+              <p
+                style={{
+                  color: "#ff5b37",
+                  textAlign: "center",
+                  marginTop: "20px",
+                }}
+              >
+                {msgErrorTopUp}
+              </p>
+            )}
           </Modal.Body>
           <Modal.Footer>
             <Button

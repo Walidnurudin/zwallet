@@ -3,12 +3,17 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "utils/axios";
 import { ModalComponent, ModalLogout } from "..";
+import { formatRp } from "utils/formatRp";
 
 export default function Sidebar() {
   const router = useRouter();
 
   // MODAL
   const [show, setShow] = useState(false);
+  const [errTopup, setErrorTopop] = useState({
+    show: false,
+    msg: "",
+  });
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -27,16 +32,30 @@ export default function Sidebar() {
   };
 
   const handleSubmitTopup = () => {
-    axios
-      .post(`/transaction/top-up`, { amount: data })
-      .then((res) => {
-        console.log(res.data);
-        router.push(res.data.data.redirectUrl);
-        handleClose();
-      })
-      .catch((err) => {
-        console.log(err.response);
+    if (data < 10000) {
+      setErrorTopop({
+        show: true,
+        msg: `Minimal ${formatRp(10000)} to top up`,
       });
+
+      setTimeout(() => {
+        setErrorTopop({
+          show: false,
+          msg: ``,
+        });
+      }, 3000);
+    } else {
+      axios
+        .post(`/transaction/top-up`, { amount: data })
+        .then((res) => {
+          console.log(res.data);
+          router.push(res.data.data.redirectUrl);
+          handleClose();
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    }
   };
 
   // SIDEBAR
@@ -202,13 +221,15 @@ export default function Sidebar() {
         </div>
       </div>
 
-      {/* MODAL */}
+      {/* MODAL TOP UP */}
       <ModalComponent
         show={show}
         onHide={handleClose}
         isPin={false}
         handleTextTopup={handleTextTopup}
         handleSubmitTopup={handleSubmitTopup}
+        topUpError={errTopup.show}
+        msgErrorTopUp={errTopup.msg}
       />
 
       {/* MODAL LOGOUT */}

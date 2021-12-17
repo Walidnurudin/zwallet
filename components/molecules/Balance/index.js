@@ -11,6 +11,10 @@ export default function Balance({ balance, noTelp }) {
   // TOP UP
   const [data, setData] = useState("");
   const [show, setShow] = useState(false);
+  const [errTopup, setErrorTopop] = useState({
+    show: false,
+    msg: "",
+  });
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -20,16 +24,30 @@ export default function Balance({ balance, noTelp }) {
   };
 
   const handleSubmitTopup = () => {
-    axios
-      .post(`/transaction/top-up`, { amount: data })
-      .then((res) => {
-        console.log(res.data);
-        router.push(res.data.data.redirectUrl);
-        handleClose();
-      })
-      .catch((err) => {
-        console.log(err.response);
+    if (data < 10000) {
+      setErrorTopop({
+        show: true,
+        msg: `Minimal ${formatRp(10000)} to top up`,
       });
+
+      setTimeout(() => {
+        setErrorTopop({
+          show: false,
+          msg: ``,
+        });
+      }, 3000);
+    } else {
+      axios
+        .post(`/transaction/top-up`, { amount: data })
+        .then((res) => {
+          console.log(res.data);
+          router.push(res.data.data.redirectUrl);
+          handleClose();
+        })
+        .catch((err) => {
+          console.log(err.response);
+        });
+    }
   };
 
   return (
@@ -108,6 +126,8 @@ export default function Balance({ balance, noTelp }) {
         isPin={false}
         handleTextTopup={handleTextTopup}
         handleSubmitTopup={handleSubmitTopup}
+        topUpError={errTopup.show}
+        msgErrorTopUp={errTopup.msg}
       />
     </>
   );
