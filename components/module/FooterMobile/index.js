@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import axios from "utils/axios";
 import { ModalComponent, ModalLogout } from "..";
 
-export default function Sidebar() {
+export default function FooterMobile() {
   const router = useRouter();
 
   // MODAL
@@ -61,8 +61,8 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="sidebar__wrapper d-flex justify-content-between flex-column">
-      <div className="d-flex flex-column gap-5">
+    <div className="footer__mobile__wrapper">
+      <div className="d-flex gap-5 justify-content-between">
         <div
           className="d-flex gap-3"
           style={{ cursor: "pointer" }}
@@ -76,12 +76,6 @@ export default function Sidebar() {
                 width="28px"
                 height="28px"
               />
-              <div
-                className="align-self-center nunito-700 font-secondary"
-                style={{ color: "#6379F4" }}
-              >
-                Dashboard
-              </div>
             </>
           ) : (
             <>
@@ -91,9 +85,6 @@ export default function Sidebar() {
                 width="28px"
                 height="28px"
               />
-              <div className="align-self-center nunito-400 font-secondary">
-                Dashboard
-              </div>
             </>
           )}
         </div>
@@ -110,12 +101,6 @@ export default function Sidebar() {
                 width="28px"
                 height="28px"
               />
-              <div
-                className="align-self-center nunito-700 font-secondary"
-                style={{ color: "#6379F4" }}
-              >
-                Transfer
-              </div>
             </>
           ) : (
             <>
@@ -125,9 +110,6 @@ export default function Sidebar() {
                 width="28px"
                 height="28px"
               />
-              <div className="align-self-center nunito-400 font-secondary">
-                Transfer
-              </div>
             </>
           )}
         </div>
@@ -142,9 +124,6 @@ export default function Sidebar() {
             width="28px"
             height="28px"
           />
-          <div className="align-self-center nunito-400 font-secondary">
-            Top Up
-          </div>
         </div>
         <div
           className="d-flex gap-3"
@@ -161,12 +140,6 @@ export default function Sidebar() {
                 width="28px"
                 height="28px"
               />
-              <div
-                className="align-self-center nunito-700 font-secondary"
-                style={{ color: "#6379F4" }}
-              >
-                Profile
-              </div>
             </>
           ) : (
             <>
@@ -176,15 +149,9 @@ export default function Sidebar() {
                 width="28px"
                 height="28px"
               />
-              <div className="align-self-center nunito-400 font-secondary">
-                Profile
-              </div>
             </>
           )}
         </div>
-      </div>
-
-      <div className="d-flex">
         <div
           className="d-flex gap-3"
           style={{ cursor: "pointer" }}
@@ -196,9 +163,6 @@ export default function Sidebar() {
             width="28px"
             height="28px"
           />
-          <div className="align-self-center nunito-400 font-secondary">
-            Logout
-          </div>
         </div>
       </div>
 

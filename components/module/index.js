@@ -6,6 +6,7 @@ import Button from "./Button";
 import ModalComponent from "./ModalComponent";
 import ModalLogout from "./ModalLogout";
 import ErrorHandling from "./ErrorHandling";
+import FooterMobile from "./FooterMobile";
 
 export {
   Footer,
@@ -16,4 +17,5 @@ export {
   ModalComponent,
   ModalLogout,
   ErrorHandling,
+  FooterMobile,
 };

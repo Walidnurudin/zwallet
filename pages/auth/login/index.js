@@ -46,7 +46,7 @@ export default function Login() {
     dispatch(login(form))
       .then((res) => {
         console.log(res.action);
-        dispatch(getUserProfile());
+        dispatch(getUserProfile(res.action.payload.data.data.id));
         if (res.action.payload.data.data.pin) {
           Cookie.set("token", res.action.payload.data.data.token);
           Cookie.set("id", res.action.payload.data.data.id);
@@ -62,7 +62,7 @@ export default function Login() {
       .catch((err) => {
         setIsError({
           status: true,
-          msg: auth.msg,
+          msg: err.response.data.msg,
         });
 
         setTimeout(() => {

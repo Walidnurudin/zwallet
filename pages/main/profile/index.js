@@ -85,7 +85,7 @@ export default function Transfer(props) {
               msg: "",
             });
           }, 3000);
-          dispatch(getUserProfile());
+          dispatch(getUserProfile(user.data.id));
         })
         .catch((err) => {
           setIsError({
@@ -118,7 +118,7 @@ export default function Transfer(props) {
             msg: "",
           });
         }, 3000);
-        dispatch(getUserProfile());
+        dispatch(getUserProfile(user.data.id));
       })
       .catch((err) => {
         setIsError({
