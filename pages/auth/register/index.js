@@ -7,6 +7,7 @@ import { Input, Button, ErrorHandling } from "components/module";
 import { getDataCookie } from "middleware/authorizationPage";
 import { Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { register } from "stores/actions/auth";
 
 export async function getServerSideProps(context) {
@@ -72,7 +73,7 @@ export default function Register() {
     axios
       .post("/auth/register", form)
       .then((res) => {
-        console.log(res);
+        toast.success("success registration, check email for verification");
         router.push("/login");
         setIsLoading(false);
       })

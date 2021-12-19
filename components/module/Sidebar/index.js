@@ -48,8 +48,11 @@ export default function Sidebar() {
       axios
         .post(`/transaction/top-up`, { amount: data })
         .then((res) => {
-          console.log(res.data);
-          router.push(res.data.data.redirectUrl);
+          window.open(
+            res.data.data.redirectUrl,
+            "_blank",
+            "noreferrer noopenner"
+          );
           handleClose();
         })
         .catch((err) => {

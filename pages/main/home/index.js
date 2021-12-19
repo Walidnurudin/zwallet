@@ -3,7 +3,8 @@ import axios from "utils/axios";
 import { getDataCookie } from "middleware/authorizationPage";
 import MainLayout from "components/layouts/MainLayout";
 import { Balance, Dashboard, TransactionHistory } from "components/molecules";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getUserProfile } from "stores/actions/user";
 
 // SERVER SIDE RENDERING
 export async function getServerSideProps(context) {
@@ -57,6 +58,8 @@ export async function getServerSideProps(context) {
 
 function Home(props) {
   const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
   const [data, setData] = useState(props.data);
 
   let labelChart = [];
@@ -125,7 +128,10 @@ function Home(props) {
     },
   };
 
-  console.log(user);
+  useEffect(() => {
+    dispatch(getUserProfile(user.data.id));
+  }, []);
+
   return (
     <MainLayout
       title="Home"

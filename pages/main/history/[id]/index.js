@@ -80,7 +80,7 @@ export default function HistoryDetail(props) {
               src={
                 history[0].image
                   ? `${process.env.URL_BACKEND}uploads/${history[0].image}`
-                  : "../assets/images/landing-page/user1.png"
+                  : "../assets/images/transaction/def.jpeg"
               }
               alt="user"
               width="80px"
