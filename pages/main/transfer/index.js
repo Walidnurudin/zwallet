@@ -11,8 +11,9 @@ import {
 import axios from "utils/axios";
 import { getDataCookie } from "middleware/authorizationPage";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { getUserProfile } from "stores/actions/user";
 
 export async function getServerSideProps(context) {
   const dataCookie = await getDataCookie(context);
@@ -49,6 +50,8 @@ export async function getServerSideProps(context) {
 
 export default function Transfer(props) {
   const router = useRouter();
+  const dispatch = useDispatch();
+
   // MODAL
   const [show, setShow] = useState(false);
 
@@ -267,7 +270,7 @@ export default function Transfer(props) {
         notes: transfer.notes,
       })
       .then((res) => {
-        console.log(res.data.data);
+        dispatch(getUserProfile(user.data.id));
         setIsSuccess(true);
         continueConfirmation();
         handleClose();
@@ -275,7 +278,6 @@ export default function Transfer(props) {
         axios
           .get(`/export/transaction/${res.data.data.id}`)
           .then((res) => {
-            console.log("GENERATE ", res.data);
             setRedirectPdf(res.data.data.url);
           })
           .catch((err) => {

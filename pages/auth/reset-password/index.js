@@ -23,7 +23,7 @@ export async function getServerSideProps(context) {
 export default function ResetPassword() {
   const [form, setForm] = useState({
     email: "",
-    linkDirect: "http://localhost:3000/reset-password",
+    linkDirect: `${process.env.URL_FRONTEND}reset-password`,
   });
 
   const [isError, setIsError] = useState({

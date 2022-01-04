@@ -3,6 +3,7 @@ module.exports = {
   env: {
     // URL_BACKEND: "http://localhost:3001/",
     URL_BACKEND: "https://zwalet.herokuapp.com/",
+    URL_FRONTEND: "https://zwallet-x.vercel.app/",
   },
   async rewrites() {
     return [

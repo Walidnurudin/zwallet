@@ -114,7 +114,7 @@ export default function Transfer(props) {
       firstName={user.data.firstName}
       lastName={user.data.lastName}
       image={user.data.image}
-      // handleGetAfterTopup={history}
+      noTelp={user.data.noTelp}
     >
       <div
         style={{

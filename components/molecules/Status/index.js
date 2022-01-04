@@ -2,6 +2,8 @@
 import React from "react";
 import { Button } from "components/module";
 import { useRouter } from "next/router";
+import { formatRp } from "utils/formatRp";
+import { formatDate } from "utils/formatDate";
 
 export default function Status({
   name,
@@ -73,7 +75,7 @@ export default function Status({
           <div>
             <div>
               <span className="nunito-400 font-thrid">Amount</span>
-              <h5 className="nunito-600 mt-2">{amount}</h5>
+              <h5 className="nunito-600 mt-2">{formatRp(amount)}</h5>
             </div>
           </div>
         </div>
@@ -90,7 +92,7 @@ export default function Status({
           <div>
             <div>
               <span className="nunito-400 font-thrid">Balance Left</span>
-              <h5 className="nunito-600 mt-2">{balance}</h5>
+              <h5 className="nunito-600 mt-2">{formatRp(balance)}</h5>
             </div>
           </div>
         </div>
@@ -107,7 +109,7 @@ export default function Status({
           <div>
             <div>
               <span className="nunito-400 font-thrid">Date & Time</span>
-              <h5 className="nunito-600 mt-2">{date}</h5>
+              <h5 className="nunito-600 mt-2">{formatDate(date)}</h5>
             </div>
           </div>
         </div>
