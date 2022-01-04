@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import Button from "./Button";
 import ModalComponent from "./ModalComponent";
-import ModalLogout from "./ModalLogout";
+import ModalConfirm from "./ModalConfirm";
 import ErrorHandling from "./ErrorHandling";
 import FooterMobile from "./FooterMobile";
 
@@ -15,7 +15,7 @@ export {
   Sidebar,
   Button,
   ModalComponent,
-  ModalLogout,
+  ModalConfirm,
   ErrorHandling,
   FooterMobile,
 };

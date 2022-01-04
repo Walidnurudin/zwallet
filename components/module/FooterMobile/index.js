@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "utils/axios";
-import { ModalComponent, ModalLogout } from "..";
+import { ModalComponent, ModalConfirm } from "..";
 
 export default function FooterMobile() {
   const router = useRouter();
@@ -176,7 +176,9 @@ export default function FooterMobile() {
       />
 
       {/* MODAL LOGOUT */}
-      <ModalLogout
+      <ModalConfirm
+        isLogout={true}
+        msg="Are you sure want to logout?"
         show={showLogout}
         onHide={handleCloseLogout}
         handleClose={handleCloseLogout}

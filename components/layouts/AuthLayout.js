@@ -45,7 +45,9 @@ export default function AuthLayout(props) {
           </div>
         </div>
 
-        <div className="col-12 col-md-5 p-0">{props.children}</div>
+        <div className="col-12 col-md-5 p-0 d-flex align-items-center mt-5 mt-md-0">
+          {props.children}
+        </div>
       </div>
     </>
   );

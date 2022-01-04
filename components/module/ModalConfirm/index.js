@@ -3,13 +3,18 @@ import { Button } from "..";
 import { Modal } from "react-bootstrap";
 import Cookie from "js-cookie";
 import { useRouter } from "next/router";
-import axios from "utils/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "stores/actions/auth";
 
-function ModalLogout({ show, onHide, handleClose }) {
+function ModalConfirm({
+  msg,
+  show,
+  onHide,
+  handleClose,
+  isLogout,
+  handleDelete,
+}) {
   const dispatch = useDispatch();
-  const auth = useSelector((state) => state.auth);
   const router = useRouter();
 
   const handleLogout = () => {
@@ -28,9 +33,7 @@ function ModalLogout({ show, onHide, handleClose }) {
     <>
       <Modal show={show} onHide={onHide}>
         <Modal.Header>
-          <Modal.Title className="nunito-600">
-            Are you sure want to logout?
-          </Modal.Title>
+          <Modal.Title className="nunito-600">{msg}</Modal.Title>
         </Modal.Header>
         <Modal.Footer>
           <div className="d-flex gap-3">
@@ -41,10 +44,10 @@ function ModalLogout({ show, onHide, handleClose }) {
               handleClick={handleClose}
             />
             <Button
-              name="Logout"
+              name={isLogout ? "Logout" : "Delete"}
               width="100px"
               color="#FF5B37"
-              handleClick={handleLogout}
+              handleClick={isLogout ? handleLogout : handleDelete}
             />
           </div>
         </Modal.Footer>
@@ -53,4 +56,4 @@ function ModalLogout({ show, onHide, handleClose }) {
   );
 }
 
-export default ModalLogout;
+export default ModalConfirm;

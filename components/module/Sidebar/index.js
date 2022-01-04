@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "utils/axios";
-import { ModalComponent, ModalLogout } from "..";
+import { ModalComponent, ModalConfirm } from "..";
 import { formatRp } from "utils/formatRp";
 
 export default function Sidebar() {
@@ -236,7 +236,9 @@ export default function Sidebar() {
       />
 
       {/* MODAL LOGOUT */}
-      <ModalLogout
+      <ModalConfirm
+        isLogout={true}
+        msg="Are you sure want to logout?"
         show={showLogout}
         onHide={handleCloseLogout}
         handleClose={handleCloseLogout}

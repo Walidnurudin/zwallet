@@ -3,7 +3,7 @@ import MainLayout from "components/layouts/MainLayout";
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { getDataCookie } from "middleware/authorizationPage";
-import { ModalLogout, ErrorHandling } from "components/module";
+import { ModalConfirm, ErrorHandling } from "components/module";
 import { useSelector, useDispatch } from "react-redux";
 import { updateImage, getUserProfile, deleteImage } from "stores/actions/user";
 
@@ -36,6 +36,12 @@ export default function Transfer(props) {
 
   const handleCloseLogout = () => setShowLogout(false);
   const handleShowLogout = () => setShowLogout(true);
+
+  // MODAL DELETE IMAGE
+  const [showDeleteImage, setShowDeleteImage] = useState(false);
+
+  const handleCloseDeleteImage = () => setShowDeleteImage(false);
+  const handleShowDeleteImage = () => setShowDeleteImage(true);
 
   const [image, setImage] = useState({ image: "" });
   const [isError, setIsError] = useState({
@@ -73,7 +79,6 @@ export default function Transfer(props) {
 
       dispatch(updateImage(user.data.id, formData))
         .then((res) => {
-          console.log(res);
           setIsSuccess({
             status: true,
             msg: res.value.data.msg,
@@ -106,7 +111,7 @@ export default function Transfer(props) {
   const handleDelete = () => {
     dispatch(deleteImage(user.data.id))
       .then((res) => {
-        console.log(res);
+        handleCloseDeleteImage();
         setIsSuccess({
           status: true,
           msg: res.value.data.msg,
@@ -121,6 +126,7 @@ export default function Transfer(props) {
         dispatch(getUserProfile(user.data.id));
       })
       .catch((err) => {
+        handleCloseDeleteImage();
         setIsError({
           status: true,
           msg: err.response.data.msg,
@@ -201,7 +207,7 @@ export default function Transfer(props) {
               width: "130px",
               borderRadius: "12px",
             }}
-            onClick={handleDelete}
+            onClick={handleShowDeleteImage}
           >
             delete image
           </button>
@@ -237,12 +243,11 @@ export default function Transfer(props) {
             <div
               style={{
                 padding: "18px 20px",
-                width: "433px",
                 background: "#E5E8ED",
                 borderRadius: "10px",
                 cursor: "pointer",
               }}
-              className="d-flex justify-content-between align-items-center"
+              className="d-flex justify-content-between align-items-center w-75"
               onClick={() => router.push("/profile/personal-info")}
             >
               <p className="nunito-700 m-0">Personal Information</p>
@@ -257,13 +262,12 @@ export default function Transfer(props) {
             <div
               style={{
                 padding: "18px 20px",
-                width: "433px",
                 background: "#E5E8ED",
                 borderRadius: "10px",
                 cursor: "pointer",
                 marginTop: "20px",
               }}
-              className="d-flex justify-content-between align-items-center"
+              className="d-flex justify-content-between align-items-center w-75"
               onClick={() => router.push("/profile/change-password")}
             >
               <p className="nunito-700 m-0">Change Password</p>
@@ -278,13 +282,12 @@ export default function Transfer(props) {
             <div
               style={{
                 padding: "18px 20px",
-                width: "433px",
                 background: "#E5E8ED",
                 borderRadius: "10px",
                 cursor: "pointer",
                 marginTop: "20px",
               }}
-              className="d-flex justify-content-between align-items-center"
+              className="d-flex justify-content-between align-items-center w-75"
               onClick={() => router.push("/profile/change-pin")}
             >
               <p className="nunito-700 m-0">Change PIN</p>
@@ -299,13 +302,12 @@ export default function Transfer(props) {
             <div
               style={{
                 padding: "18px 20px",
-                width: "433px",
                 background: "#E5E8ED",
                 borderRadius: "10px",
                 cursor: "pointer",
                 marginTop: "20px",
               }}
-              className="d-flex justify-content-between align-items-center"
+              className="d-flex justify-content-between align-items-center w-75"
               onClick={handleShowLogout}
             >
               <p className="nunito-700 m-0">Logout</p>
@@ -315,10 +317,22 @@ export default function Transfer(props) {
       </div>
 
       {/* MODAL LOGOUT */}
-      <ModalLogout
+      <ModalConfirm
+        isLogout={true}
+        msg="Are you sure want to logout?"
         show={showLogout}
         onHide={handleCloseLogout}
         handleClose={handleCloseLogout}
+      />
+
+      {/* MODAL DELETE IMAGE */}
+      <ModalConfirm
+        isLogout={false}
+        handleDelete={handleDelete}
+        msg="Are you sure want to delete this image?"
+        show={showDeleteImage}
+        onHide={handleCloseDeleteImage}
+        handleClose={handleCloseDeleteImage}
       />
     </MainLayout>
   );

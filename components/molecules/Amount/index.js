@@ -119,7 +119,7 @@ function Amount({
             placeholder="Add some notes"
             image="../assets/images/transaction/edit.png"
             top="60px"
-            width="350px"
+            width="75%"
             handleChange={handleText}
           />
         </div>

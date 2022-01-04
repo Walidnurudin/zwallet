@@ -101,6 +101,12 @@ export default function ResetPassword() {
               handleChange={handleChangeText}
             />
 
+            <div className="d-flex justify-content-end mt-3 link-none">
+              <Link href="/login" className="nunito-600">
+                Login?
+              </Link>
+            </div>
+
             {isError.status && <ErrorHandling msg={isError.msg} top="50px" />}
             {isSuccess.status && (
               <ErrorHandling msg={isSuccess.msg} top="50px" isSuccess={true} />

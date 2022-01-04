@@ -132,14 +132,7 @@ export default function ChangePin(props) {
             <div className="d-flex gap-3 justify-content-center">
               <div className="">
                 <input
-                  style={{
-                    width: "50px",
-                    height: "65px",
-                    borderRadius: "10px",
-                    border: "1px solid #6379F4",
-                    outline: "none",
-                    padding: "12px 18px",
-                  }}
+                  className="input__pin"
                   maxLength="1"
                   onChange={(event) => addPin(event)}
                   name="1"
@@ -148,14 +141,7 @@ export default function ChangePin(props) {
               </div>
               <div className="">
                 <input
-                  style={{
-                    width: "50px",
-                    height: "65px",
-                    borderRadius: "10px",
-                    border: "1px solid #6379F4",
-                    outline: "none",
-                    padding: "12px 18px",
-                  }}
+                  className="input__pin"
                   maxLength="1"
                   onChange={(event) => addPin(event)}
                   name="2"
@@ -164,14 +150,7 @@ export default function ChangePin(props) {
               </div>
               <div className="">
                 <input
-                  style={{
-                    width: "50px",
-                    height: "65px",
-                    borderRadius: "10px",
-                    border: "1px solid #6379F4",
-                    outline: "none",
-                    padding: "12px 18px",
-                  }}
+                  className="input__pin"
                   maxLength="1"
                   onChange={(event) => addPin(event)}
                   name="3"
@@ -180,14 +159,7 @@ export default function ChangePin(props) {
               </div>
               <div className="">
                 <input
-                  style={{
-                    width: "50px",
-                    height: "65px",
-                    borderRadius: "10px",
-                    border: "1px solid #6379F4",
-                    outline: "none",
-                    padding: "12px 18px",
-                  }}
+                  className="input__pin"
                   maxLength="1"
                   onChange={(event) => addPin(event)}
                   name="4"
@@ -196,14 +168,7 @@ export default function ChangePin(props) {
               </div>
               <div className="">
                 <input
-                  style={{
-                    width: "50px",
-                    height: "65px",
-                    borderRadius: "10px",
-                    border: "1px solid #6379F4",
-                    outline: "none",
-                    padding: "12px 18px",
-                  }}
+                  className="input__pin"
                   maxLength="1"
                   onChange={(event) => addPin(event)}
                   name="5"
@@ -212,14 +177,7 @@ export default function ChangePin(props) {
               </div>
               <div className="">
                 <input
-                  style={{
-                    width: "50px",
-                    height: "65px",
-                    borderRadius: "10px",
-                    border: "1px solid #6379F4",
-                    outline: "none",
-                    padding: "12px 18px",
-                  }}
+                  className="input__pin"
                   maxLength="1"
                   onChange={(event) => addPin(event)}
                   name="6"
@@ -237,7 +195,7 @@ export default function ChangePin(props) {
 
         <div className="text-center">
           {isLoading ? (
-            <Button top="90px" width="432px">
+            <Button top="90px" width="75%">
               <Spinner animation="border" variant="light" />
             </Button>
           ) : (
@@ -245,7 +203,7 @@ export default function ChangePin(props) {
               name="Continue"
               top="90px"
               handleClick={handleSubmit}
-              width="432px"
+              width="75%"
             />
           )}
         </div>

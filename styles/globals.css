@@ -6,6 +6,7 @@
 @import url("../pages/auth/register/Register.css");
 @import url("../pages/auth/create-pin/CreatePin.css");
 @import url("../pages/auth/reset-password/ResetPassword.css");
+@import url("../pages/main/profile/change-pin/Pin.css");
 
 /* COMPONENT */
 @import url("../styles/Layout.css");
